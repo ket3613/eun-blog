@@ -1,12 +1,13 @@
+# --- build ---
 FROM node:20-alpine AS build
 WORKDIR /app
 COPY package.json package-lock.json ./
 RUN npm ci
 COPY . .
-# build → export 분리
-RUN npx --no-install next build && npx --no-install next export
+# next.config.ts에 output: 'export' 있어야 함
+RUN npx --no-install next build
 
-# 산출물은 기본적으로 ./out
+# --- runtime ---
 FROM nginx:alpine
 ENV TZ=Asia/Seoul
 COPY --from=build /app/out /usr/share/nginx/html
