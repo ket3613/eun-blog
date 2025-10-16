@@ -1,17 +1,15 @@
-# --- 빌드 스테이지: Node로 리액트 번들 빌드 ---
-FROM node:18-alpine AS build
-WORKDIR /app
-# 종속성 캐시 최적화
-COPY package*.json ./
-RUN npm ci
-# 소스 복사 후 빌드
-COPY . .
-RUN npm run build
+# 베이스 JRE 이미지 선택
+FROM openjdk:17-jdk-slim
 
-# --- 런타임 스테이지: Nginx로 정적 서비스 ---
-FROM nginx:alpine
-# 리액트 빌드 산출물 복사
-COPY --from=build /app/build /usr/share/nginx/html
-# 기본 Nginx conf 그대로 사용(필요시 커스텀 conf 추가)
-EXPOSE 80
-CMD ["nginx","-g","daemon off;"]
+# 컨테이너 내부 작업 디렉터리
+WORKDIR /app
+
+# ↓ 빌드 컨텍스트(DEPLOY_DIR)에 있는 JAR을 복사
+#    Jenkinsfile에서 컨텍스트를 DEPLOY_DIR로 설정했으므로 파일이 존재함
+COPY eun-api.jar /app/app.jar
+
+# 애플리케이션 포트(컨테이너 내부)
+EXPOSE 8080
+
+# 애플리케이션 실행 커맨드
+ENTRYPOINT ["java","-jar","/app/app.jar"]
