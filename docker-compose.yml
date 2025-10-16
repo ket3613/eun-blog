@@ -1,0 +1,10 @@
+version: "3.8"
+services:
+  app:
+    image: eun-blog:latest
+    container_name: eun-blog
+    ports:
+      - "8082:8080"     # Jenkins가 8080 사용 중 → 8081로 노출
+    restart: always
+    environment:
+      - TZ=Asia/Seoul
