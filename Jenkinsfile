@@ -29,7 +29,7 @@ pipeline {
           [ -z "$ART" ] && echo "no jar produced" && exit 1
 
           mkdir -p ${DEPLOY_DIR}
-          cp -f "$ART" ${DEPLOY_DIR}/eun-api.jar
+          cp -f "$ART" ${DEPLOY_DIR}/eun-blog.jar
           ls -l ${DEPLOY_DIR}   # 확인용
         '''
       }
@@ -41,7 +41,7 @@ pipeline {
           # 리포 루트의 Dockerfile을 배포 폴더(컨텍스트)로 복사
           cp -f ${WORKSPACE}/Dockerfile ${DEPLOY_DIR}/
 
-          # 컨텍스트=DEPLOY_DIR (여기에 eun-api.jar 와 Dockerfile 둘 다 있어야 COPY 성공)
+          # 컨텍스트=DEPLOY_DIR (여기에 eun-blog.jar 와 Dockerfile 둘 다 있어야 COPY 성공)
           docker build -t ${IMAGE} -f ${DEPLOY_DIR}/Dockerfile ${DEPLOY_DIR}
         '''
       }
