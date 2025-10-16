@@ -7,5 +7,9 @@ const nextConfig: NextConfig = {
   trailingSlash: true        // Nginx 정적 호스팅에 유리
   // rewrites/redirects/middleware/API routes 사용 금지
 }
+export default {
+  output: 'export',
+  images: { unoptimized: true },
+  trailingSlash: true
+}
 
-export default nextConfig
