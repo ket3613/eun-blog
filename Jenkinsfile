@@ -1,30 +1,40 @@
 pipeline {
   agent any
   environment {
-    DEPLOY_DIR = '/home/ket3613/Desktop/eun-blog'  // 배포 폴더
-    IMAGE      = 'eun-blog:latest'                 // 빌드 이미지 태그
+    COMPOSE_DIR = '/host/eun-blog'   // 호스트 경로 바인드 지점
+    SERVICE = 'app'
+    IMAGE = 'eun-blog:latest'
   }
   stages {
-    stage('Checkout'){ steps { checkout scm } }
-
-    stage('Docker Build'){ steps {
-      sh '''
-        # 리포 루트의 Dockerfile로 멀티스테이지 빌드
-        docker build -t ${IMAGE} ${WORKSPACE}
-      '''
-    }}
-
-    stage('Deploy'){ steps {
-      sh '''
-        # 배포 폴더 준비 및 compose 배치
-        mkdir -p ${DEPLOY_DIR}
-        cp -f ${WORKSPACE}/docker-compose.yml ${DEPLOY_DIR}/
-
-        # 컨테이너 기동/갱신
-        cd ${DEPLOY_DIR}
-        docker compose up -d --force-recreate --build web || true
-        docker compose ps
-      '''
-    }}
+    stage('Checkout') {
+      steps { checkout scm }
+    }
+    stage('Build') {
+      steps {
+        sh '''
+          set -euo pipefail
+          docker build -t ${IMAGE} ${WORKSPACE}
+          docker images | grep eun-blog
+        '''
+      }
+    }
+    stage('Deploy') {
+      steps {
+        sh '''
+          set -euo pipefail
+          mkdir -p ${COMPOSE_DIR}
+          cp -f ${WORKSPACE}/docker-compose.yml ${COMPOSE_DIR}/
+          cd ${COMPOSE_DIR}
+          # 서비스명 정확히
+          docker compose up -d --force-recreate ${SERVICE}
+          docker compose ps
+        '''
+      }
+    }
+  }
+  post {
+    always {
+      sh 'docker ps -a | grep eun-blog || true'
+    }
   }
 }
