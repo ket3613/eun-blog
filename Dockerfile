@@ -1,15 +1,22 @@
-# --- build ---
-FROM node:20-alpine AS build
+# --- deps ---
+FROM node:20-alpine AS deps
 WORKDIR /app
 COPY package.json package-lock.json ./
-RUN npm ci
+RUN npm ci --omit=dev
+
+# --- builder ---
+FROM node:20-alpine AS builder
+WORKDIR /app
+COPY --from=deps /app/node_modules ./node_modules
 COPY . .
-# next.config.ts에 output: 'export' 있어야 함
-RUN npx --no-install next build
+RUN npm run build
 
 # --- runtime ---
-FROM nginx:alpine
-ENV TZ=Asia/Seoul
-COPY --from=build /app/out /usr/share/nginx/html
-EXPOSE 80
-CMD ["nginx","-g","daemon off;"]
+FROM node:20-alpine AS runner
+WORKDIR /app
+ENV NODE_ENV=production
+COPY --from=builder /app/.next/standalone ./
+COPY --from=builder /app/.next/static ./.next/static
+COPY --from=builder /app/public ./public
+EXPOSE 3000
+CMD ["node", "server.js"]
