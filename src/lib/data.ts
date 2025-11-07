@@ -5,7 +5,7 @@ export const profile = {
     title: "Backend Engineer",
     bio: "Java/Spring, AWS, ERP, API 서버 운영",
     email: "ket3613@example.com",
-    avatar: "/1.jpg", // 프로필 이미지 경로
+    avatar: "/file.svg", // 프로필 이미지 경로 (임시 더미)
     links: [
         { label: "GitHub", href: "https://github.com/ket3613" },
         { label: "Blog", href: "#" }
@@ -30,16 +30,61 @@ export const profile = {
 };
 
 // 프로젝트 타입 정의
-export type Project = { id: string; name: string; summary: string; stack: string[]; url?: string };
+export type Project = {
+    id: string;
+    name: string;
+    summary: string;
+    stack: string[];
+    url?: string; // 기존 단일 URL(보존)
+    demoUrl?: string; // 데모 링크
+    repoUrl?: string; // GitHub 등 저장소 링크
+    image?: string; // 카드 썸네일
+    year?: number; // 진행 연도
+};
 
 // 프로젝트 목록
 export const projects: Project[] = [
-    { id: "p1", name: "IFMOR 고도화", summary: "항공 기내식 ERP 개선", stack: ["Java","Spring","Oracle"], url: "#" },
-    { id: "p2", name: "API Gateway", summary: "Apigee 기반 인증/사용량 관리", stack: ["Apigee","OAuth2","Kong"], url: "#" }
+    {
+        id: "p1",
+        name: "IFMOR 고도화",
+        summary: "항공 기내식 ERP 개선 — 주문/생산/원가 모듈 성능 최적화",
+        stack: ["Java", "Spring", "Oracle", "JMS"],
+        year: 2024,
+        image: "/file.svg",
+        repoUrl: "#"
+    },
+    {
+        id: "p2",
+        name: "API Gateway",
+        summary: "Apigee 기반 인증·라우팅·사용량 관리 정책 설계 및 운영",
+        stack: ["Apigee", "OAuth2", "Kong", "Grafana"],
+        year: 2023,
+        image: "/file.svg",
+        demoUrl: "#"
+    },
+    {
+        id: "p3",
+        name: "실시간 알림 플랫폼",
+        summary: "주문상태·장애 알림을 위한 Pub/Sub & WebSocket 기반 알림 허브",
+        stack: ["Spring Boot", "Kafka", "Redis", "WebSocket"],
+        year: 2025,
+        image: "/file.svg",
+        repoUrl: "#",
+        demoUrl: "#"
+    },
+    {
+        id: "p4",
+        name: "데이터 파이프라인",
+        summary: "ETL 파이프라인으로 집계/리포팅 자동화 및 원가분석 대시보드",
+        stack: ["Python", "Airflow", "S3", "Athena"],
+        year: 2022,
+        image: "/file.svg",
+        repoUrl: "#"
+    }
 ];
 
 // 인증이 필요한 보호된 이미지 목록
 export const protectedImages = [
-    { id: "img1", alt: "프로젝트 대시보드", src: "/placeholder/1.png" },
-    { id: "img2", alt: "시스템 아키텍처", src: "/placeholder/2.png" }
+    { id: "img1", alt: "프로젝트 대시보드", src: "/file.svg" },
+    { id: "img2", alt: "시스템 아키텍처", src: "/file.svg" }
 ];

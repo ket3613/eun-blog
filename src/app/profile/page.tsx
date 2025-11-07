@@ -1,77 +1,98 @@
+"use client";
 import Image from "next/image";
 import { profile } from "@/lib/data";
+import { motion } from "framer-motion";
+import s from "@/styles/profile.module.css";
 
 export default function ProfilePage() {
   return (
-    <section style={{ display: "grid", gap: 20 }}>
-      {/* 헤더 + 아바타 */}
-      <header style={{ display: "flex", alignItems: "center", gap: 16 }}>
-        <div style={{ position: "relative", width: 84, height: 84, borderRadius: "50%", overflow: "hidden", border: "1px solid #1f232b" }}>
-          <Image src={profile.avatar} alt={`${profile.name} avatar`} fill sizes="84px" />
+    <section className={s.section}>
+      {/* Hero */}
+      <header className={s.hero}>
+        <div className={s.heroGlow} />
+        <div className={s.row}>
+          <div className={s.avatar}>
+            <Image src={profile.avatar} alt={`${profile.name} avatar`} fill sizes="96px" />
+          </div>
+          <div>
+            <h1 className={s.name}>{profile.name}</h1>
+            <p className={s.title}>{profile.title}</p>
+          </div>
         </div>
-        <div>
-          <h1 style={{ fontSize: 22, fontWeight: 700, margin: 0 }}>{profile.name}</h1>
-          <p style={{ color: "#9aa0a6", margin: "6px 0 0 0" }}>{profile.title}</p>
+        <p style={{ marginTop: 14 }}>{profile.bio}</p>
+        {profile.highlights?.length ? (
+          <div className={s.badges} style={{ marginTop: 12 }}>
+            {profile.highlights.map((h, i) => (
+              <motion.span
+                key={h}
+                className={s.badge}
+                initial={{ opacity: 0, y: 6 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ delay: 0.05 * i }}
+                whileHover={{ y: -2, scale: 1.03 }}
+              >
+                {h}
+              </motion.span>
+            ))}
+          </div>
+        ) : null}
+        <div className={s.actions} style={{ marginTop: 16 }}>
+          <a className={`${s.btn} ${s.btnPrimary}`} href={`mailto:${profile.email}`}>이메일</a>
+          {profile.links.map((l) => (
+            <a key={l.href} className={s.btn} href={l.href} target="_blank" rel="noreferrer">
+              {l.label}
+            </a>
+          ))}
+          {profile.resumeUrl && (
+            <a className={s.btn} href={profile.resumeUrl}>이력서 PDF</a>
+          )}
         </div>
       </header>
 
-      {/* 소개 */}
-      <p style={{ margin: 0 }}>{profile.bio}</p>
+      {/* Cards grid */}
+      <div className={s.cards}>
+        {/* Skills */}
+        {profile.skills?.length ? (
+          <section className={s.card}>
+            <h2 className={s.cardTitle}>기술스택</h2>
+            <div style={{ display: "grid", gap: 12 }}>
+              {profile.skills.map((sk) => (
+                <div className={s.skillRow} key={sk.name}>
+                  <div className={s.skillMeta}>
+                    <span>{sk.name}</span>
+                    <span>{sk.level}%</span>
+                  </div>
+                  <div className={s.bar}>
+                    <motion.div
+                      className={s.fill}
+                      initial={{ width: 0 }}
+                      whileInView={{ width: `${sk.level}%` }}
+                      viewport={{ once: true }}
+                      transition={{ duration: 0.6, ease: "easeOut" }}
+                    />
+                  </div>
+                </div>
+              ))}
+            </div>
+          </section>
+        ) : null}
 
-      {/* 하이라이트 배지 */}
-      {profile.highlights?.length ? (
-        <div style={{ display: "flex", gap: 8, flexWrap: "wrap" }}>
-          {profile.highlights.map((h) => (
-            <span key={h} style={{ fontSize: 12, border: "1px solid #1f232b", padding: "6px 8px", borderRadius: 999 }}>{h}</span>
-          ))}
-        </div>
-      ) : null}
-
-      {/* 연락처 + 링크 */}
-      <div style={{ display: "flex", gap: 12, alignItems: "center", flexWrap: "wrap" }}>
-        <a href={`mailto:${profile.email}`} style={{ border: "1px solid #1f232b", padding: "8px 10px", borderRadius: 8 }}>이메일</a>
-        {profile.links.map((l) => (
-          <a key={l.href} href={l.href} style={{ border: "1px solid #1f232b", padding: "8px 10px", borderRadius: 8 }}>{l.label}</a>
-        ))}
-        {profile.resumeUrl && (
-          <a href={profile.resumeUrl} style={{ border: "1px solid #1f232b", padding: "8px 10px", borderRadius: 8 }}>이력서 PDF</a>
-        )}
+        {/* Experience */}
+        {profile.experience?.length ? (
+          <section className={s.card}>
+            <h2 className={s.cardTitle}>경력</h2>
+            <ul className={s.timeline} style={{ listStyle: "none", padding: 0, margin: 0 }}>
+              {profile.experience.map((e) => (
+                <li key={e.period} className={s.item}>
+                  <div style={{ fontWeight: 700 }}>{e.role} · {e.org}</div>
+                  <div className={s.period}>{e.period}</div>
+                  <div className={s.note}>{e.note}</div>
+                </li>
+              ))}
+            </ul>
+          </section>
+        ) : null}
       </div>
-
-      {/* 기술스택: 진행바 */}
-      {profile.skills?.length ? (
-        <section>
-          <h2 style={{ fontSize: 18, margin: "0 0 10px 0" }}>기술스택</h2>
-          <div style={{ display: "grid", gap: 10 }}>
-            {profile.skills.map((s) => (
-              <div key={s.name}>
-                <div style={{ display: "flex", justifyContent: "space-between", fontSize: 12, color: "#9aa0a6" }}>
-                  <span>{s.name}</span><span>{s.level}%</span>
-                </div>
-                <div style={{ height: 8, border: "1px solid #1f232b", borderRadius: 999, overflow: "hidden" }}>
-                  <div style={{ width: `${s.level}%`, height: "100%", background: "#1f6feb" }} />
-                </div>
-              </div>
-            ))}
-          </div>
-        </section>
-      ) : null}
-
-      {/* 경력 타임라인 */}
-      {profile.experience?.length ? (
-        <section>
-          <h2 style={{ fontSize: 18, margin: "0 0 10px 0" }}>경력</h2>
-          <ul style={{ listStyle: "none", padding: 0, margin: 0, display: "grid", gap: 10 }}>
-            {profile.experience.map((e) => (
-              <li key={e.period} style={{ border: "1px solid #1f232b", borderRadius: 12, padding: 12 }}>
-                <div style={{ fontWeight: 600 }}>{e.role} · {e.org}</div>
-                <div style={{ fontSize: 12, color: "#9aa0a6", marginTop: 2 }}>{e.period}</div>
-                <div style={{ marginTop: 6 }}>{e.note}</div>
-              </li>
-            ))}
-          </ul>
-        </section>
-      ) : null}
     </section>
   );
 }
