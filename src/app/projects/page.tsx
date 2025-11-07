@@ -10,19 +10,27 @@ import { useMemo, useState } from "react";
  * 프로젝트 목록을 더 화려하고 깔끔하게 보여주는 페이지
  */
 export default function ProjectsPage() {
+    //필터선언
+    //const [상태_변수, 상태_변경_함수] = useState(초기값);
   const [filter, setFilter] = useState<string>("ALL");
 
+  //1.이부분 통해서 전체 기술스텍 모두 나열함
+  //모든 기술스택을 set에 중복제거 기능을 사용해서 한번에 넣고 보두 표출
+    // ...Array.from(set) 이건 add 기능 한번에 넣는 방법
   const stacks = useMemo(() => {
     const set = new Set<string>();
     projects.forEach(p => p.stack.forEach(s => set.add(s)));
     return ["ALL", ...Array.from(set)];
   }, []);
 
+  //3.그중에 선택한 값만 나열하고 싶으니 filter 생성
+  //filter 사용법을 알아야함 사용해서 ProjeactData라는 VO<list> 를 선별
   const list = useMemo(() => {
     if (filter === "ALL") return projects;
     return projects.filter(p => p.stack.includes(filter));
   }, [filter]);
 
+  //2.배열로 가져온거 모두 그린다
   return (
     <section className={s.section}>
       {/* Hero */}
