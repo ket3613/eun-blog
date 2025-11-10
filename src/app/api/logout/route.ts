@@ -1,12 +1,19 @@
 import { NextResponse } from "next/server";
+import { cookies } from "next/headers";
 
-// GET 요청으로 로그아웃을 처리하는 함수
+/**
+ * 로그아웃 엔드포인트
+ * - 세션 쿠키를 무효화하여 로그아웃 처리
+ */
 export async function GET() {
-    // 루트 경로로 리다이렉트 응답 생성
-    const res = NextResponse.redirect(new URL("/", process.env.NEXT_PUBLIC_BASE_URL || "http://localhost:3000"));
-
-    // 세션 쿠키를 빈 값으로 설정하고 즉시 만료시켜 로그아웃 처리
-    res.cookies.set("session","", { path:"/", httpOnly:true, maxAge:0 });
-
-    return res;
+  // 쿠키 삭제(무효화)
+  // - 동일한 속성들(secure, sameSite, path)이 설정될 때 브라우저가 정확히 덮어씀
+  (await cookies()).set("session", "", {
+    httpOnly: true,
+    secure: process.env.NODE_ENV === "production",
+    sameSite: "strict",
+    path: "/",
+    maxAge: 0,
+  });
+  return NextResponse.redirect("/");
 }

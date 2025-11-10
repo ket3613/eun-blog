@@ -4,6 +4,11 @@ import { useState } from "react";
 
 /**
  * 로그인 폼을 제공하는 클라이언트 컴포넌트
+ *
+ * 변경 사항(로컬 개발 모드):
+ * - 요청에 따라 실제 로그인 API 호출을 잠시 비활성화하고 주석 처리
+ * - 미들웨어에서 개발 환경은 인증을 우회하므로, 제출 시 바로 보호 페이지로 이동
+ * - 프로덕션 전환 시 아래 주석을 되돌리고 API 호출을 활성화하세요.
  */
 export default function LoginPage() {
     // 사용자 아이디 상태
@@ -22,17 +27,20 @@ export default function LoginPage() {
         // 에러 메시지 초기화
         setErr("");
 
-        // 로그인 API 호출
-        const res = await fetch("/api/login", {
-            method: "POST",
-            headers: { "Content-Type": "application/json" },
-            body: JSON.stringify({ user, pass })
-        });
+        // [로컬 전용] API 호출 비활성화 — 미들웨어가 개발 환경에서는 인증을 우회합니다.
+        // 따라서 로그인 버튼 클릭 시 바로 보호 페이지로 이동시킵니다.
+        // 프로덕션에서는 아래 주석을 원복하여 실제 API를 호출하세요.
+        location.href = "/images";
+        return;
 
-        // 로그인 성공 시 이미지 페이지로 이동
-        if (res.ok) location.href = "/images";
-        // 로그인 실패 시 에러 메시지 표시
-        else setErr("로그인 실패");
+        // --- 실제 API 호출 (프로덕션에서 사용) ---
+        // const res = await fetch("/api/login", {
+        //     method: "POST",
+        //     headers: { "Content-Type": "application/json" },
+        //     body: JSON.stringify({ user, pass })
+        // });
+        // if (res.ok) location.href = "/images";
+        // else setErr("로그인 실패");
     }
 
     return (

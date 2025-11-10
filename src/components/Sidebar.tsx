@@ -6,6 +6,7 @@ import s from "@/styles/sidebar.module.css";
 const items = [
     { href: "/profile", label: "프로필" },
     { href: "/projects", label: "프로젝트" },
+    { href: "/tech", label: "기술 게시판" },
     { href: "/images", label: "이미지(로그인)" }
 ];
 

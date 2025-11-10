@@ -76,6 +76,7 @@ export default function ProjectsPage() {
             </div>
 
             <p className={s.summary}>{p.summary}</p>
+            <p className={s.description}>{p.description}</p>
 
             <div className={s.tags}>
               {p.stack.map(tag => (

@@ -34,6 +34,7 @@ export type Project = {
     id: string;
     name: string;
     summary: string;
+    description: string;
     stack: string[];
     url?: string; // 기존 단일 URL(보존)
     demoUrl?: string; // 데모 링크
@@ -46,8 +47,9 @@ export type Project = {
 export const projects: Project[] = [
     {
         id: "p1",
-        name: "IFMOR 고도화",
+        name: "IFMOR",
         summary: "항공 기내식 ERP 개선 — 주문/생산/원가 모듈 성능 최적화",
+        description: "",
         stack: ["Java", "Spring", "Oracle", "JMS"],
         year: 2024,
         image: "/file.svg",
@@ -55,8 +57,9 @@ export const projects: Project[] = [
     },
     {
         id: "p2",
-        name: "API Gateway",
+        name: "IFSF",
         summary: "Apigee 기반 인증·라우팅·사용량 관리 정책 설계 및 운영",
+        description: "",
         stack: ["Apigee", "OAuth2", "Kong", "Grafana"],
         year: 2023,
         image: "/file.svg",
@@ -64,8 +67,9 @@ export const projects: Project[] = [
     },
     {
         id: "p3",
-        name: "실시간 알림 플랫폼",
+        name: "BCO",
         summary: "주문상태·장애 알림을 위한 Pub/Sub & WebSocket 기반 알림 허브",
+        description: "",
         stack: ["Spring Boot", "Kafka", "Redis", "WebSocket"],
         year: 2025,
         image: "/file.svg",
@@ -74,11 +78,32 @@ export const projects: Project[] = [
     },
     {
         id: "p4",
-        name: "데이터 파이프라인",
+        name: "MPMD",
         summary: "ETL 파이프라인으로 집계/리포팅 자동화 및 원가분석 대시보드",
+        description: "",
         stack: ["Python", "Airflow", "S3", "Athena"],
         year: 2022,
         image: "/file.svg",
+        repoUrl: "#"
+    },
+    {
+        id: "p5",
+        name: "eun-taek-api",
+        summary: "개인 api서버 ",
+        description: "개인 backend 사용을 위한 api 서버 ",
+        stack: ["Python", "Airflow", "S3", "Athena"],
+        year: 2022,
+        image: "/file.svg",
+        repoUrl: "#"
+    },
+    {
+        id: "p6",
+        name: "eun-taek-blog",
+        summary: "react 구성된 개인 플로그",
+        description: "",
+        stack: ["Python", "Airflow", "S3", "Athena"],
+        year: 2022,
+        image: "/next.svg",
         repoUrl: "#"
     }
 ];
