@@ -6,34 +6,33 @@ pipeline {
     IMAGE = 'eun-blog:latest'
   }
   stages {
-    // A 선택 시 Checkout stage 삭제
-    stage('Build'){
-
-
+    stage('Checkout') {
+      steps { checkout scm }
+    }
+    stage('Build') {
       steps {
         sh '''
           set -eu
-          docker build -t ${IMAGE} ${WORKSPACE}
-
+          docker build -t ${IMAGE} .
         '''
       }
     }
-    stage('Deploy'){
+    stage('Deploy') {
       steps {
         sh '''
           set -eu
           mkdir -p ${COMPOSE_DIR}
           cp -f ${WORKSPACE}/docker-compose.yml ${COMPOSE_DIR}/
           cd ${COMPOSE_DIR}
-
           docker compose up -d --force-recreate ${SERVICE}
           docker compose ps
         '''
       }
     }
   }
-
-
-
-
-
+  post {
+    always {
+      sh 'docker ps -a | grep ${IMAGE} || true'
+    }
+  }
+}
