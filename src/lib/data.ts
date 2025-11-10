@@ -6,18 +6,19 @@ export const profile = {
     bio: "Java/Spring, AWS, ERP, API 서버 운영",
     email: "ket3613@example.com",
     avatar: "/file.svg", // 프로필 이미지 경로 (임시 더미)
+    role:"Admin",
     links: [
         { label: "GitHub", href: "https://github.com/ket3613" },
         { label: "Blog", href: "#" }
     ],
     // 기술 스택과 숙련도 목록
     skills: [
-        { name: "Java", level: 90 },
-        { name: "Spring/Spring Boot", level: 85 },
-        { name: "OracleDB/SQL", level: 80 },
-        { name: "AWS", level: 75 },
-        { name: "Docker", level: 70 },
-        { name: "React", level: 60 }
+        { name: "Java", years: 6 },
+        { name: "Spring/Spring Boot", years: 5 },
+        { name: "OracleDB/SQL", years: 5 },
+        { name: "AWS", years: 4 },
+        { name: "Docker", years: 4 },
+        { name: "React", years: 3 }
     ],
     // 주요 강점
     highlights: ["API 설계", "대용량 트래픽 운영", "모니터링/알림", "ERP 커스텀"],

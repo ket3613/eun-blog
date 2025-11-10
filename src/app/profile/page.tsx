@@ -55,21 +55,12 @@ export default function ProfilePage() {
         {profile.skills?.length ? (
           <section className={s.card}>
             <h2 className={s.cardTitle}>기술스택</h2>
-            <div style={{ display: "grid", gap: 12 }}>
+            <div className={s.skillsGrid}>
               {profile.skills.map((sk) => (
                 <div className={s.skillRow} key={sk.name}>
                   <div className={s.skillMeta}>
                     <span>{sk.name}</span>
-                    <span>{sk.level}%</span>
-                  </div>
-                  <div className={s.bar}>
-                    <motion.div
-                      className={s.fill}
-                      initial={{ width: 0 }}
-                      whileInView={{ width: `${sk.level}%` }}
-                      viewport={{ once: true }}
-                      transition={{ duration: 0.6, ease: "easeOut" }}
-                    />
+                    <span>{sk.years}년</span>
                   </div>
                 </div>
               ))}
