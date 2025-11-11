@@ -14,7 +14,7 @@ export default function Sidebar() {
     const pathname = usePathname();
     return (
         <aside className={s.wrap}>
-            <div className={s.brand}>eun-blog(React)</div>
+            <div className={s.brand}>eun-Blog</div>
             <nav className={s.nav}>
                 {items.map(it => (
                     <Link key={it.href} href={it.href} className={`${s.link} ${pathname.startsWith(it.href) ? s.active : ""}`}>

@@ -44,3 +44,33 @@
     color: var(--text);
     background: #0e1116
 }
+
+@media (max-width: 768px) {
+    .wrap {
+        position: static;
+        top: auto;
+        height: auto;
+        padding: 16px;
+        border-right: none;
+        border-bottom: 1px solid var(--line);
+    }
+
+    .brand {
+        font-size: 18px;
+    }
+
+    .nav {
+        flex-direction: row;
+        flex-wrap: wrap;
+        gap: 8px;
+    }
+
+    .link {
+        padding: 8px 10px;
+    }
+
+    .footer {
+        margin-top: 12px;
+        font-size: 11px;
+    }
+}

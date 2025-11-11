@@ -85,11 +85,6 @@ export default function ProjectsPage() {
             </div>
 
             <div className={s.actions}>
-              {p.demoUrl ? (
-                <a href={p.demoUrl} target="_blank" rel="noreferrer" className={s.link}>
-                  <FiExternalLink /> 데모
-                </a>
-              ) : null}
               {p.repoUrl ? (
                 <a href={p.repoUrl} target="_blank" rel="noreferrer" className={s.link}>
                   <FiGithub /> 저장소

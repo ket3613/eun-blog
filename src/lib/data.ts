@@ -4,12 +4,11 @@ export const profile = {
     name: "강은택",
     title: "Backend Engineer",
     bio: "Java/Spring, AWS, ERP, API 서버 운영",
-    email: "ket3613@example.com",
+    email: "ket3613@naver.com",
     avatar: "/file.svg", // 프로필 이미지 경로 (임시 더미)
     role:"Admin",
     links: [
         { label: "GitHub", href: "https://github.com/ket3613" },
-        { label: "Blog", href: "#" }
     ],
     // 기술 스택과 숙련도 목록
     skills: [
@@ -18,7 +17,12 @@ export const profile = {
         { name: "OracleDB/SQL", years: 5 },
         { name: "AWS", years: 4 },
         { name: "Docker", years: 4 },
-        { name: "React", years: 3 }
+        { name: "React", years: 3 },
+        { name: "test1", years: 4 },
+        { name: "test2", years: 4 },
+        { name: "test3", years: 3 },
+        { name: "test4", years: 4 },
+        { name: "test5", years: 3 }
     ],
     // 주요 강점
     highlights: ["API 설계", "대용량 트래픽 운영", "모니터링/알림", "ERP 커스텀"],
@@ -38,7 +42,6 @@ export type Project = {
     description: string;
     stack: string[];
     url?: string; // 기존 단일 URL(보존)
-    demoUrl?: string; // 데모 링크
     repoUrl?: string; // GitHub 등 저장소 링크
     image?: string; // 카드 썸네일
     year?: number; // 진행 연도
@@ -63,8 +66,7 @@ export const projects: Project[] = [
         description: "",
         stack: ["Apigee", "OAuth2", "Kong", "Grafana"],
         year: 2023,
-        image: "/file.svg",
-        demoUrl: "#"
+        image: "/file.svg"
     },
     {
         id: "p3",
@@ -74,8 +76,7 @@ export const projects: Project[] = [
         stack: ["Spring Boot", "Kafka", "Redis", "WebSocket"],
         year: 2025,
         image: "/file.svg",
-        repoUrl: "#",
-        demoUrl: "#"
+        repoUrl: "#"
     },
     {
         id: "p4",

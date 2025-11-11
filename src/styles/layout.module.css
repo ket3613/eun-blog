@@ -19,3 +19,23 @@
     font-size: 24px;
     font-weight: 700
 }
+
+@media (max-width: 768px) {
+    .container {
+        display: block;
+        min-height: auto;
+    }
+
+    .main {
+        padding: 16px;
+    }
+
+    .header {
+        flex-wrap: wrap;
+        gap: 12px;
+    }
+
+    .title {
+        font-size: 20px;
+    }
+}
