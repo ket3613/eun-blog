@@ -2,7 +2,6 @@
 import Image from "next/image";
 import { projects } from "@/lib/data";
 import { motion } from "framer-motion";
-import { FiExternalLink, FiGithub } from "react-icons/fi";
 import s from "@/styles/projects.module.css";
 import { useMemo, useState } from "react";
 
@@ -40,13 +39,17 @@ export default function ProjectsPage() {
         <p className={s.subtitle}>운영/백엔드 중심의 실전 프로젝트 모음</p>
         <div className={s.filters}>
           {stacks.map(ch => (
-            <button
+            <motion.button
               key={ch}
               className={`${s.chip} ${filter === ch ? s.chipActive : ""}`}
               onClick={() => setFilter(ch)}
+
+              whileHover={{ scale: 1.5}}
+              whileTap={{ scale: 1 }}
+              transition={{ type: "spring", stiffness: 500, damping: 20 }}
             >
               {ch}
-            </button>
+            </motion.button>
           ))}
         </div>
       </header>
@@ -87,7 +90,7 @@ export default function ProjectsPage() {
             <div className={s.actions}>
               {p.repoUrl ? (
                 <a href={p.repoUrl} target="_blank" rel="noreferrer" className={s.link}>
-                  <FiGithub /> 저장소
+                    저장소
                 </a>
               ) : null}
             </div>
