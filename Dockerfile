@@ -1,7 +1,7 @@
 ##############################
 # 1) deps stage: 의존성 설치
 ##############################
-FROM node:22-alpine AS deps
+FROM node:24.11.1 AS deps
 WORKDIR /app
 
 # package.json만 먼저 복사 → node_modules 캐시 활용
@@ -16,7 +16,7 @@ RUN npm ci --include=dev
 ##############################
 # 2) builder stage: Next.js build
 ##############################
-FROM node:22-alpine AS builder
+FROM node:24.11.1 AS builder
 WORKDIR /app
 
 # deps 단계에서 설치한 node_modules 복사
@@ -35,7 +35,7 @@ RUN npm run build
 ##############################
 # 3) runtime stage: 실제 배포
 ##############################
-FROM node:22-alpine AS runner
+FROM node:24.11.1 AS runner
 WORKDIR /app
 
 # 런타임 모드 설정

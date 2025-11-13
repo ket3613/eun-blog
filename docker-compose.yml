@@ -4,7 +4,7 @@ services:
     image: eun-blog:latest
     container_name: eun-blog
     ports:
-      - "8082:80"         # ← 8082:80 로 수정
+      - "8082:8082"         # ← 8082:80 로 수정
     restart: always
     environment:
       - TZ=Asia/Seoul
