@@ -18,7 +18,7 @@ export default function ProjectsPage() {
     // ...Array.from(set) 이건 add 기능 한번에 넣는 방법
   const stacks = useMemo(() => {
     const set = new Set<string>();
-    projects.forEach(p => p.stack.forEach(s => set.add(s)));
+    projects.forEach(p => p.stack.forEach(tag => set.add(tag)));
     return ["ALL", ...Array.from(set)];
   }, []);
 

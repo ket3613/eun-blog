@@ -1,5 +1,7 @@
 "use client";
 import { useEffect, useMemo, useState, useTransition } from "react";
+import Image from "next/image";
+import Link from "next/link";
 
 /**
  * 기술 글 작성/수정 폼
@@ -120,7 +122,7 @@ export default function TechForm({ init, mode = "create" }: { init?: Init; mode?
         {previews.length > 0 && (
           <div style={{ display: "flex", gap: 8, flexWrap: "wrap", marginTop: 8 }}>
             {previews.map((src, i) => (
-              <img key={i} src={src} alt={`preview-${i}`} style={{ width: 120, height: 90, objectFit: "cover", borderRadius: 6, border: "1px solid #1f232b" }} />
+              <Image key={i} src={src} alt={`preview-${i}`} width={120} height={90} style={{ objectFit: "cover", borderRadius: 6, border: "1px solid #1f232b" }} unoptimized />
             ))}
           </div>
         )}
@@ -131,7 +133,7 @@ export default function TechForm({ init, mode = "create" }: { init?: Init; mode?
                 style={{ padding: "10px 12px", borderRadius: 10, border: "1px solid #1f232b", background: "#151922", color: "white" }}>
           {pending ? "저장 중..." : "저장"}
         </button>
-        <a href="/tech" style={{ padding: "10px 12px", borderRadius: 10, border: "1px solid #1f232b" }}>취소</a>
+        <Link href="/tech" style={{ padding: "10px 12px", borderRadius: 10, border: "1px solid #1f232b" }}>취소</Link>
       </div>
 
       {err && <p style={{ color: "#ef4444" }}>{err}</p>}

@@ -23,7 +23,7 @@ export default function Sidebar() {
                 ))}
             </nav>
             <div className={s.footer}>
-                <a href="/login">로그인</a> · <a href="/api/logout">로그아웃</a>
+                <Link href="/login">로그인</Link> · <a href="/api/logout">로그아웃</a>
             </div>
         </aside>
     );

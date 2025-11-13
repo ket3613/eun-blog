@@ -1,6 +1,7 @@
 import TechForm from "@/components/TechForm";
 import { cookies } from "next/headers";
 import { verifyToken } from "@/lib/auth";
+import Link from "next/link";
 
 export default async function NewTechPage() {
   const token = (await cookies()).get("session")?.value;
@@ -10,7 +11,7 @@ export default async function NewTechPage() {
     return (
       <section>
         <h1 style={{ fontSize: 22, fontWeight: 700, marginBottom: 12 }}>새 글 작성</h1>
-        <p>접근 권한이 없습니다. <a href="/login">로그인</a> 하세요.</p>
+        <p>접근 권한이 없습니다. <Link href="/login">로그인</Link> 하세요.</p>
       </section>
     );
   }

@@ -1,4 +1,5 @@
 import Image from "next/image";
+import Link from "next/link";
 import { cookies } from "next/headers";
 import { verifyToken } from "@/lib/auth";
 import { protectedImages } from "@/lib/data";
@@ -18,7 +19,7 @@ export default async function ImagesPage() {
         return (
             <section>
                 <h1 style={{ fontSize: 22, fontWeight: 700, marginBottom: 12 }}>이미지</h1>
-                <p>접근 권한이 없습니다. <a href="/login">로그인</a> 하세요.</p>
+                <p>접근 권한이 없습니다. <Link href="/login">로그인</Link> 하세요.</p>
             </section>
         );
     }

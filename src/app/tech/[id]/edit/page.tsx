@@ -11,7 +11,7 @@ export default async function EditTechPage({ params }: { params: { id: string } 
     return (
       <section>
         <h1 style={{ fontSize: 22, fontWeight: 700, marginBottom: 12 }}>글 수정</h1>
-        <p>접근 권한이 없습니다. <a href="/login">로그인</a> 하세요.</p>
+        <p>접근 권한이 없습니다. <Link href="/login">로그인</Link> 하세요.</p>
       </section>
     );
   }
