@@ -22,17 +22,6 @@ async function ensureDirs() {
   await fs.mkdir(uploadsDir, { recursive: true });
 }
 
-async function readAll(): Promise<TechPost[]> {
-  await ensureDirs();
-  try {
-    const buf = await fs.readFile(dataFile, "utf8");
-    return JSON.parse(buf) as TechPost[];
-  } catch (e: any) {
-    if (e.code === "ENOENT") return [];
-    throw e;
-  }
-}
-
 async function writeAll(list: TechPost[]) {
   await ensureDirs();
   await fs.writeFile(dataFile, JSON.stringify(list, null, 2), "utf8");
