@@ -1,6 +1,8 @@
 # --- deps stage: 의존성 설치 단계 ---
-FROM node:20-alpine AS deps         # Node 20 + Alpine (가벼운 베이스 이미지)
-WORKDIR /app                        # 앞으로 모든 작업은 /app 디렉터리에서 수행
+ # Node 20 + Alpine (가벼운 베이스 이미지)
+ # 앞으로 모든 작업은 /app 디렉터리에서 수행
+FROM node:20-alpine AS deps
+WORKDIR /app
 
 # 패키지 정보만 먼저 복사해서, node_modules 캐시를 최대한 활용
 COPY package.json package-lock.json ./
@@ -15,7 +17,8 @@ RUN npm ci --include=dev
 
 
 # --- builder stage: 실제 Next.js 빌드 단계 ---
-FROM node:20-alpine AS builder      # 빌드도 Node 20 Alpine 사용
+ # 빌드도 Node 20 Alpine 사용
+FROM node:20-alpine AS builder
 WORKDIR /app
 
 # deps 단계에서 설치한 node_modules를 그대로 복사
@@ -31,21 +34,26 @@ ENV NEXT_TELEMETRY_DISABLED=1
 # Next.js 빌드 수행
 #  - package.json / next.config.js 에서 "output": "standalone" 이 설정되어 있어야
 #    .next/standalone 이 생성됨
-RUN npm run build  # .next/standalone 생성
+# .next/standalone 생성
+RUN npm run build
 
 
 # --- runtime stage: 실제 배포용 컨테이너 ---
-FROM node:20-alpine AS runner       # 런타임도 Node 20 Alpine 사용
+# 런타임도 Node 20 Alpine 사용
+FROM node:20-alpine AS runner
 WORKDIR /app
 
 # 런타임 환경변수
+# PORT=8082       컨테이너 내부 Next 서버 포트
+# HOSTNAME=0.0.0.0 모든 인터페이스에서 요청 수신
 ENV NODE_ENV=production
-ENV PORT=8082                       # 컨테이너 내부 Next 서버 포트
-ENV HOSTNAME=0.0.0.0                # 모든 인터페이스에서 요청 수신
+ENV PORT=8082
+ENV HOSTNAME=0.0.0.0
 
 # builder 단계에서 생성된 standalone 번들/정적 파일/퍼블릭 파일만 복사
 #  - .next/standalone 은 Next 서버 실행에 필요한 node_modules, server.js 등을 포함
-COPY --from=builder /app/.next/standalone ./   # server.js, node_modules 포함
+# server.js, node_modules 포함
+COPY --from=builder /app/.next/standalone ./
 COPY --from=builder /app/.next/static ./.next/static
 COPY --from=builder /app/public ./public
 
