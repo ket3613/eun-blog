@@ -2,7 +2,7 @@
 // 프로필 정보 객체
 export const profile = {
     name: "강은택",
-    title: "Backend Engineer",
+    position: "Backend Engineer",
     bio: "Java/Spring, AWS, ERP, API 서버 운영",
     email: "ket3613@naver.com",
     avatar: "/file.svg", // 프로필 이미지 경로 (임시 더미)

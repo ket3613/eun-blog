@@ -3,8 +3,19 @@ import Image from "next/image";
 import { profile } from "@/lib/data";
 import { motion } from "framer-motion";
 import s from "@/styles/profile.module.css";
+import {useEffect, useState} from "react";
+import {Profile} from "@/lib/dataType";
+import {getProfile} from "@/lib/profileApi";
 
 export default function ProfilePage() {
+    const [profile, setProfile] = useState<Profile | null>(null);
+
+    useEffect(() => {
+        getProfile().then(setProfile).catch(console.error);
+    }, []);
+
+    if (!profile) return <div>로딩중...</div>;
+
   return (
     <section className={s.section}>
       {/* Hero */}
@@ -16,7 +27,7 @@ export default function ProfilePage() {
           </div>
           <div>
             <h1 className={s.name}>{profile.name}</h1>
-            <p className={s.title}>{profile.title}</p>
+            <p className={s.title}>{profile.position}</p>
           </div>
         </div>
         <p style={{ marginTop: 14 }}>{profile.bio}</p>
