@@ -1,19 +1,25 @@
 "use client";
 import Image from "next/image";
-import { profile } from "@/lib/data";
 import { motion } from "framer-motion";
 import s from "@/styles/profile.module.css";
 import {useEffect, useState} from "react";
 import {Profile} from "@/lib/dataType";
-import {getProfile} from "@/lib/profileApi";
+import {getProfile} from "@/app/api/profile";
 
 export default function ProfilePage() {
     const [profile, setProfile] = useState<Profile | null>(null);
+    const [error, setError] = useState<string | null>(null);
 
     useEffect(() => {
-        getProfile().then(setProfile).catch(console.error);
+        getProfile("강은택")
+            .then(setProfile)
+            .catch((err) => {
+                console.log(err)
+                setError('프로필을 불러오지 못했습니다.');
+            });
     }, []);
 
+    if (error) return <div>{error}</div>;
     if (!profile) return <div>로딩중...</div>;
 
   return (
