@@ -1,20 +1,15 @@
-# docker-compose.yml
 services:
-  app:                    # ← web 아님
+  app:
     build:
-      context: .
-      dockerfile: Dockerfile
+      context: .              # Dockerfile 있는 폴더
+      dockerfile: Dockerfile  # 이름이 Dockerfile이면 생략 가능
       args:
-        # 빌드 타임에 클라이언트 번들로 주입되는 공개 환경변수
-        NEXT_PUBLIC_API_BASE_URL: ${NEXT_PUBLIC_API_BASE_URL}
+        NEXT_PUBLIC_API_BASE_URL: "https://api.euntaek.cc"   # ← 여기 하드코딩
     image: eun-blog:latest
     container_name: eun-blog
     ports:
       - "8082:8082"
     restart: always
-    env_file:
-      - .env
     environment:
       - TZ=Asia/Seoul
-      # 런타임에서도 동일 변수 노출(서버 전용 코드에서 접근 가능)
-      - NEXT_PUBLIC_API_BASE_URL=${NEXT_PUBLIC_API_BASE_URL}
+    # env_file: .env   ← 요 줄(또는 비슷한 줄)이 있다면 반드시 삭제
