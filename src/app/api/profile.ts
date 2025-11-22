@@ -1,9 +1,17 @@
 import {ApiResponse, Profile} from "@/lib/dataType";
 
 export async function getProfile(userName: string) {
-    const BASE_URL = process.env.NEXT_PUBLIC_API_BASE_URL;
-    const url = new URL('/api/users/getUser', BASE_URL);
-    url.searchParams.set('userName', userName); // 여기서 자동 인코딩됨
+
+    const baseUrl = process.env.NEXT_PUBLIC_API_BASE_URL;
+    console.log('BASE_URL =', baseUrl);  // "https://api.euntaek.cc" 찍혀야 정상
+
+    if (!baseUrl) {
+        throw new Error('NEXT_PUBLIC_API_BASE_URL is not set');
+    }
+
+    const url = new URL('/api/users/getUser', baseUrl);
+    url.searchParams.set('userName', userName);
+
     console.log(url);
     const res = await fetch(url.toString(), {
         method: 'GET',
