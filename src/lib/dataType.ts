@@ -23,4 +23,10 @@ export type Profile = {
     experience: Experience[];
     resumeUrl: string;
 };
+
+export type ApiResponse = {
+    success: string;
+    data: Profile;
+    error: string;
+};
 /* -------------강은택 프로필 받아오는 VO----------------*/
