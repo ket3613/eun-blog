@@ -33,7 +33,8 @@ ENV NEXT_TELEMETRY_DISABLED=1
 # CI나 docker build 시 아래 ARG로 값을 전달하세요.
 #   docker build --build-arg NEXT_PUBLIC_API_BASE_URL=https://api.euntaek.cc -t eun-blog:latest .
 ARG NEXT_PUBLIC_API_BASE_URL
-ENV NEXT_PUBLIC_API_BASE_URL=${NEXT_PUBLIC_API_BASE_URL}
+ENV NEXT_PUBLIC_API_BASE_URL=$NEXT_PUBLIC_API_BASE_URL
+
 
 # 🔥 Next.js standalone 빌드를 수행
 RUN npm run build
