@@ -1,6 +1,6 @@
 export type Skill = {
-    name: string;
-    years: number;
+    skillName: string;
+    year: number;
 };
 
 export type Experience = {
@@ -8,6 +8,8 @@ export type Experience = {
     role: string;
     org: string;
     note: string;
+    startDate: string;
+    endDate: string;
 };
 
 export type Profile = {
@@ -17,7 +19,7 @@ export type Profile = {
     email: string;
     avatar: string;
     role: string;
-    links: { label: string; href: string }[];
+    links: string;
     skills: Skill[];
     highlights: string[];
     experience: Experience[];

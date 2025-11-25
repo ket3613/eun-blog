@@ -30,7 +30,7 @@ export default function ProfilePage() {
         <div className={s.heroGlow} />
         <div className={s.row}>
           <div className={s.avatar}>
-            <Image src={profile.avatar} alt={`${profile.name} avatar`} fill sizes="96px" />
+            <Image src="/my_image.jpeg" alt={`${profile.name} avatar`} fill sizes="360px" />
           </div>
           <div>
             <h1 className={s.name}>{profile.name}</h1>
@@ -56,11 +56,9 @@ export default function ProfilePage() {
         ) : null}
         <div className={s.actions} style={{ marginTop: 16 }}>
           <a className={`${s.btn} ${s.btnPrimary}`} href={`mailto:${profile.email}`}>이메일</a>
-          {profile.links.map((l) => (
-            <a key={l.href} className={s.btn} href={l.href} target="_blank" rel="noreferrer">
-              {l.label}
+            <a className={s.btn} href={profile.links} target="_blank" rel="noreferrer">
+                {profile.links}
             </a>
-          ))}
           {profile.resumeUrl && (
             <a className={s.btn} href={profile.resumeUrl}>이력서 PDF</a>
           )}
@@ -75,10 +73,10 @@ export default function ProfilePage() {
             <h2 className={s.cardTitle}>기술스택</h2>
             <div className={s.skillsGrid}>
               {profile.skills.map((sk) => (
-                <div className={s.skillRow} key={sk.name}>
+                <div className={s.skillRow} key={sk.skillName}>
                   <div className={s.skillMeta}>
-                    <span>{sk.name}</span>
-                    <span>{sk.years}년</span>
+                    <span>{sk.skillName}</span>
+                    <span>{sk.year}년</span>
                   </div>
                 </div>
               ))}
@@ -92,9 +90,9 @@ export default function ProfilePage() {
             <h2 className={s.cardTitle}>경력</h2>
             <ul className={s.timeline} style={{ listStyle: "none", padding: 0, margin: 0 }}>
               {profile.experience.map((e) => (
-                <li key={e.period} className={s.item}>
+                <li key={e.startDate} className={s.item}>
                   <div style={{ fontWeight: 700 }}>{e.role} · {e.org}</div>
-                  <div className={s.period}>{e.period}</div>
+                  <div className={s.period}>{e.startDate} ~ {e.endDate}</div>
                   <div className={s.note}>{e.note}</div>
                 </li>
               ))}
