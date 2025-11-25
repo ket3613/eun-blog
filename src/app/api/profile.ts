@@ -2,7 +2,7 @@ import {ApiResponse, Profile} from "@/lib/dataType";
 
 export async function getProfile(userName: string) {
 
-    const baseUrl = process.env.NEXT_PUBLIC_API_BASE_URL;
+    const baseUrl = "https://api.euntaek.cc";
     console.log('BASE_URL =', baseUrl);  // "https://api.euntaek.cc" 찍혀야 정상
 
     if (!baseUrl) {
