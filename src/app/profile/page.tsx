@@ -20,8 +20,9 @@ export default function ProfilePage() {
     }, []);
 
     console.log(profile);
-    if (error) return <div>{error}</div>;
-    if (!profile) return <div>로딩중...</div>;
+    if (!profile){
+        return <div>{error}</div>
+    }
 
   return (
     <section className={s.section}>
