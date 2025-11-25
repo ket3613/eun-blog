@@ -23,7 +23,6 @@ pipeline {
           docker build \
             --build-arg NEXT_PUBLIC_API_BASE_URL=${NEXT_PUBLIC_API_BASE_URL} \
             -t ${IMAGE} .
-...
           cp -f ${WORKSPACE}/docker-compose.yml ${COMPOSE_DIR}/
           cd ${COMPOSE_DIR}
           docker compose up -d --force-recreate ${SERVICE}
