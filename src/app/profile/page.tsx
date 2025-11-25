@@ -14,14 +14,19 @@ export default function ProfilePage() {
         getProfile("강은택")
             .then(setProfile)
             .catch((err) => {
-                console.log(err)
-                setError('프로필을 불러오지 못했습니다.');
+                console.error(err);
+                setError("프로필을 불러오지 못했습니다.");
             });
     }, []);
 
-    console.log(profile);
-    if (!profile){
-        return <div>{error}</div>
+    // 1) 아직 아무것도 안 받은 상태 (SSR/CSR 첫 렌더 동일)
+    if (!profile && !error) {
+        return <div>프로필 불러오는 중...</div>;
+    }
+
+    // 2) 에러 상태
+    if (error) {
+        return <div>{error}</div>;
     }
 
   return (

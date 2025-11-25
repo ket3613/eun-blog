@@ -3,20 +3,22 @@ import {ApiResponse, Profile} from "@/lib/dataType";
 export async function getProfile(userName: string) {
 
     const baseUrl = process.env.NEXT_PUBLIC_API_BASE_URL;
-    console.log('BASE_URL =', baseUrl);  // "https://api.euntaek.cc" 찍혀야 정상
 
     if (!baseUrl) {
-        throw new Error('NEXT_PUBLIC_API_BASE_URL is not set');
+        if (typeof window !== 'undefined') {
+            console.error('NEXT_PUBLIC_API_BASE_URL is not set');
+        }
+        // 디버깅용: 일단 빈 데이터 반환해서 화면만 깨지지 않게 할 수도 있음
+        // throw new Error('NEXT_PUBLIC_API_BASE_URL is not set');
+        return Promise.reject(new Error('NEXT_PUBLIC_API_BASE_URL is not set'));
     }
 
     const url = new URL('/api/users/getUser', baseUrl);
     url.searchParams.set('userName', userName);
 
-    console.log(url);
     const res = await fetch(url.toString(), {
         method: 'GET',
     });
-    console.log(res);
 
     if (!res.ok) {
         // 서버 에러 처리
