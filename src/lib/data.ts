@@ -47,20 +47,45 @@ export type Project = {
     year?: number; // 진행 연도
 };
 
+// Programming Languages : Java, Javascript, Typescript, Python, C++, C#
+// Backend & Frameworks
+// - Framework : Spring, Spring Boot,
+// - Server / Application : REST API, Web Application
+// Library : MyBatis, Spring Data JPA
+// ORM : JPA, Hibernate, MyBatis
+// DB : OracleDB, PostgreSQL, MySQL
+// Data : DataDog, Grafana, Kafka, RabbitMQ
+// Cloude : AWS, Docker
+// CI/CD : Jenkins, Github
+// Others : Git, Maven, Gradle, Jenkinsfile, Dockerfile, Jenkinsfile, Jenkins Pipeline,
+// IDE : Eclipse, Visual Studio Code, IntelliJ IDEA, AndroidStudio, PyCharm, WebStorm, DataGrip, DBeaver
+// OS : Windows, Linux
+
+
 // 프로젝트 목록
 export const projects: Project[] = [
     {
         id: "p1",
-        name: "ORCLE ERP 운영",
+        name: "ORACLE ERP 기내식 운영",
         summary: "항공 기내식 ERP 주문 최적화 및 운영",
         description: "",
-        stack: ["Oracle ERP", "Oracle SQL"],
+        stack: ["Oracle ERP", "OracleDB"],
         year: 2023,
         image: "/file.svg",
         repoUrl: "#"
     },
     {
         id: "p2",
+        name: "ORACLE ERP 홈페이지",
+        summary: "ERP 접속 홈페이지 관리",
+        description: "",
+        stack: ["SpringBoot", "JSP", "jQuery", "PostgreSQL", "Okta", "AWS" ],
+        year: 2025,
+        image: "/file.svg",
+        repoUrl: "#"
+    },
+    {
+        id: "p3",
         name: "IFMOR",
         summary: "기내식 API 서버 운영 및 개발",
         description: "",
@@ -69,42 +94,63 @@ export const projects: Project[] = [
         image: "/file.svg"
     },
     {
-        id: "p3",
+        id: "p4",
         name: "IFSF",
         summary: "기내운영 FeedBack 공유 사이트",
         description: "",
-        stack: ["Spring Boot", "Java", "APIGee", "OracleDB","JSP","jQuery","datadog"],
-        year: 2023,
-        image: "/file.svg",
-        repoUrl: "#"
-    },
-    {
-        id: "p4",
-        name: "CBS",
-        summary: "기내 하기물품 관리 시스템",
-        description: "",
-        stack: ["SpringBoot", "Java", "OracleDB", "JSP","jQuery",],
+        stack: ["SpringBoot", "Java", "AWS","OracleDB","APIGee","JSP","jQuery","datadog"],
         year: 2023,
         image: "/file.svg",
         repoUrl: "#"
     },
     {
         id: "p5",
-        name: "MPMD",
-        summary: "MMS 문자과금 시스템",
+        name: "CBS",
+        summary: "기내 하기물품 관리 시스템",
         description: "",
-        stack: ["SpringBoot", "java", "rabbitMq", "shellScript"],
-        year: 2022,
+        stack: ["SpringBoot", "Java", "OracleDB", "JSP", "jQuery", "datadog"],
+        year: 2023,
         image: "/file.svg",
         repoUrl: "#"
     },
     {
         id: "p6",
-        name: "SPOP",
-        summary: "react 구성된 개인 플로그",
+        name: "MPMD",
+        summary: "MMS 문자과금 시스템",
         description: "",
-        stack: ["Python", "Airflow", "S3", "Athena"],
+        stack: ["SpringBoot", "Java","OracleDB","RabbitMQ","shellScript","Linux","Grafana"],
         year: 2022,
+        image: "/file.svg",
+        repoUrl: "#"
+    },
+    {
+        id: "p7",
+        name: "SPOP",
+        summary: "과금 관련 웹페이지 ",
+        description: "",
+        stack: ["SpringBoot", "Java", "OracleDB", "JSP", "jQuery","shellScript", "Linux","Grafana"],
+        year: 2023,
+        image: "/next.svg",
+        repoUrl: "#"
+    },
+    {
+        id: "p8",
+        name: "CoinTrading",
+        summary: "코인 매매 프로그램 (개인프로젝트)",
+        description: "여러 사이트에대한 정보를 조합해서 매매 및 매도 자동 프로그램",
+        stack: ["Python", "FastAPI", "docker-compose", "Athena"],
+        year: 2024,
+        image: "/next.svg",
+        repoUrl: "#"
+    },
+    {
+        id: "p9",
+        name: "eun-blog",
+        summary: "개인 홈페이지구성(개인프로젝트)",
+        description: "cloudflare 도메인 구성으로 서브도메인 생성으로 API,jenkins,docker-compose 사용한 서버구성",
+        stack: ["React", "Nextjs", "Vercel", "Cloudflare","docker-compose",
+            "SpringBoot", "Java","PostgreSQL","JenKins", "GitHub", "Raspberry pi 5"],
+        year: 2025,
         image: "/next.svg",
         repoUrl: "#"
     }
