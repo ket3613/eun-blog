@@ -16,12 +16,11 @@ export default function ProjectsPage() {
   //1.이부분 통해서 전체 기술스텍 모두 나열함
   //모든 기술스택을 set에 중복제거 기능을 사용해서 한번에 넣고 보두 표출
     // ...Array.from(set) 이건 add 기능 한번에 넣는 방법
-    const stacks = useMemo(() => {
-        const set = new Set<string>();
-        projects.forEach(p => p.stack.forEach(tag => set.add(tag.stackName)));
-        return ["ALL", ...Array.from(set)];
-    }, [projects]);
-
+  const stacks = useMemo(() => {
+    const set = new Set<string>();
+    projects.forEach(p => p.stack.forEach(tag => set.add(tag.stackName)));
+    return ["ALL", ...Array.from(set)];
+  }, []);
 
   //3.그중에 선택한 값만 나열하고 싶으니 filter 생성
   //filter 사용법을 알아야함 사용해서 ProjeactData라는 VO<list> 를 선별
