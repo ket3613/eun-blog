@@ -9,6 +9,7 @@ import { useMemo, useState } from "react";
  * 프로젝트 목록을 더 화려하고 깔끔하게 보여주는 페이지
  */
 export default function ProjectsPage() {
+    const categories = ["프론트", "백엔드", "인프라", "데브옵스"];
     //필터선언
     //const [상태_변수, 상태_변경_함수] = useState(초기값);
   const [filter, setFilter] = useState<string>("ALL");
@@ -18,7 +19,7 @@ export default function ProjectsPage() {
     // ...Array.from(set) 이건 add 기능 한번에 넣는 방법
   const stacks = useMemo(() => {
     const set = new Set<string>();
-    projects.forEach(p => p.stack.forEach(tag => set.add(tag)));
+    projects.forEach(p => p.stack.forEach(tag => set.add(tag.stackName)));
     return ["ALL", ...Array.from(set)];
   }, []);
 
@@ -26,7 +27,7 @@ export default function ProjectsPage() {
   //filter 사용법을 알아야함 사용해서 ProjeactData라는 VO<list> 를 선별
   const list = useMemo(() => {
     if (filter === "ALL") return projects;
-    return projects.filter(p => p.stack.includes(filter));
+    return projects.filter(p => p.stack.some(t => t.stackName === filter));
   }, [filter]);
 
   //2.배열로 가져온거 모두 그린다
@@ -43,7 +44,6 @@ export default function ProjectsPage() {
               key={ch}
               className={`${s.chip} ${filter === ch ? s.chipActive : ""}`}
               onClick={() => setFilter(ch)}
-
               whileHover={{ scale: 1.5}}
               whileTap={{ scale: 1 }}
               transition={{ type: "spring", stiffness: 500, damping: 20 }}
@@ -73,7 +73,7 @@ export default function ProjectsPage() {
                 <h2 className={s.name}>{p.name}</h2>
                 <div className={s.meta}>
                   {p.year ? <span>{p.year}</span> : null}
-                  <span>{p.stack[0]} 외 {Math.max(0, p.stack.length - 1)}개</span>
+                  <span>{p.stack[0]?.stackName ?? "스택 없음"} 외 {Math.max(0, p.stack.length - 1)}개</span>
                 </div>
               </div>
             </div>
@@ -83,16 +83,8 @@ export default function ProjectsPage() {
 
             <div className={s.tags}>
               {p.stack.map(tag => (
-                <span key={tag} className={s.tag}>{tag}</span>
+                <span key={tag.stackName} className={s.tag}>{tag.stackName}</span>
               ))}
-            </div>
-
-            <div className={s.actions}>
-              {p.repoUrl ? (
-                <a href={p.repoUrl} target="_blank" rel="noreferrer" className={s.link}>
-                    저장소
-                </a>
-              ) : null}
             </div>
           </motion.article>
         ))}
