@@ -19,14 +19,18 @@ export default function ProfilePage() {
             });
     }, []);
 
-    // 1) 아직 아무것도 안 받은 상태 (SSR/CSR 첫 렌더 동일)
-    if (!profile && !error) {
-        return <div>프로필 불러오는 중...</div>;
+    // 1) 에러 먼저 처리
+    if (error) {
+        return <div className={s.container}>{error}</div>;
     }
 
-    // 2) 에러 상태
-    if (error) {
-        return <div>{error}</div>;
+    // 2) 아직 profile 이 null 인 경우 처리 (로딩 상태 등)
+    if (!profile) {
+        return (
+            <div className={s.container}>
+                프로필을 불러오는 중입니다...
+            </div>
+        );
     }
 
   return (
