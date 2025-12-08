@@ -1,92 +1,51 @@
-"use client";
-import Image from "next/image";
-import { projects } from "@/lib/data";
-import { motion } from "framer-motion";
-import s from "@/styles/projects.module.css";
-import { useMemo, useState } from "react";
+import ProjectList from "@/components/ProjectList";
+import { Project } from "@/lib/data";
 
-/**
- * 프로젝트 목록을 더 화려하고 깔끔하게 보여주는 페이지
- */
-export default function ProjectsPage() {
-    //필터선언
-    //const [상태_변수, 상태_변경_함수] = useState(초기값);
-  const [filter, setFilter] = useState<string>("ALL");
+async function getProjects(): Promise<Project[]> {
+  try {
+    const res = await fetch("https://api.euntaek.cc/api/projects/getProjects", {
+      cache: "no-store", // Ensure fresh data
+      headers: {
+        accept: "*/*",
+      },
+    });
 
-  //1.이부분 통해서 전체 기술스텍 모두 나열함
-  //모든 기술스택을 set에 중복제거 기능을 사용해서 한번에 넣고 보두 표출
-    // ...Array.from(set) 이건 add 기능 한번에 넣는 방법
-  const stacks = useMemo(() => {
-    const set = new Set<string>();
-    projects.forEach(p => p.stack.forEach(tag => set.add(tag.stackName)));
-    return ["ALL", ...Array.from(set)];
-  }, []);
+    if (!res.ok) {
+      console.error("Failed to fetch projects:", res.status, res.statusText);
+      throw new Error("Failed to fetch data");
+    }
 
-  //3.그중에 선택한 값만 나열하고 싶으니 filter 생성
-  //filter 사용법을 알아야함 사용해서 ProjeactData라는 VO<list> 를 선별
-  const list = useMemo(() => {
-    if (filter === "ALL") return projects;
-    return projects.filter(p => p.stack.some(t => t.stackName === filter));
-  }, [filter]);
+    const json = await res.json();
+    if (json.success && Array.isArray(json.data)) {
+      return json.data as Project[];
+    }
 
-  //2.배열로 가져온거 모두 그린다
+    return [];
+  } catch (error) {
+    console.error("Error fetching projects:", error);
+    return [];
+  }
+}
+
+export default async function ProjectsPage() {
+  const projects = await getProjects();
+
   return (
-    <section className={s.section}>
-      {/* Hero */}
-      <header className={s.hero}>
-        <div className={s.glow} />
-        <h1 className={s.title}>프로젝트</h1>
-        <p className={s.subtitle}>운영/백엔드 중심의 실전 프로젝트 모음</p>
-        <div className={s.filters}>
-          {stacks.map(ch => (
-            <motion.button
-              key={ch}
-              className={`${s.chip} ${filter === ch ? s.chipActive : ""}`}
-              onClick={() => setFilter(ch)}
-              whileHover={{ scale: 1.5}}
-              whileTap={{ scale: 1 }}
-              transition={{ type: "spring", stiffness: 500, damping: 20 }}
-            >
-              {ch}
-            </motion.button>
-          ))}
+    <section className="min-h-screen py-24 px-4 sm:px-6 lg:px-8 bg-black">
+      <div className="max-w-7xl mx-auto">
+        {/* Header */}
+        <div className="text-center mb-16 relative">
+          <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[200px] h-[200px] bg-blue-500/20 blur-[100px] rounded-full pointer-events-none" />
+          <h1 className="text-4xl md:text-5xl font-extrabold text-transparent bg-clip-text bg-gradient-to-r from-blue-400 to-cyan-300 mb-4 relative z-10">
+            Projects
+          </h1>
+          <p className="text-gray-400 text-lg max-w-2xl mx-auto relative z-10">
+            운영/백엔드 중심의 실전 프로젝트 모음
+          </p>
         </div>
-      </header>
 
-      {/* Grid */}
-      <div className={s.grid}>
-        {list.map((p, i) => (
-          <motion.article
-            key={p.id}
-            className={s.card}
-            initial={{ opacity: 0, y: 8 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ delay: i * 0.05 }}
-            whileHover={{ y: -2 }}
-          >
-            <div className={s.header}>
-              <div className={s.thumb}>
-                <Image src={p.image || "/file.svg"} alt={`${p.name} thumbnail`} fill sizes="64px" />
-              </div>
-              <div>
-                <h2 className={s.name}>{p.name}</h2>
-                <div className={s.meta}>
-                  {p.year ? <span>{p.year}</span> : null}
-                  <span>{p.stack[0]?.stackName ?? "스택 없음"} 외 {Math.max(0, p.stack.length - 1)}개</span>
-                </div>
-              </div>
-            </div>
-
-            <p className={s.summary}>{p.summary}</p>
-            <p className={s.description}>{p.description}</p>
-
-            <div className={s.tags}>
-              {p.stack.map(tag => (
-                <span key={tag.stackName} className={s.tag}>{tag.stackName}</span>
-              ))}
-            </div>
-          </motion.article>
-        ))}
+        {/* List */}
+        <ProjectList initialProjects={projects} />
       </div>
     </section>
   );
