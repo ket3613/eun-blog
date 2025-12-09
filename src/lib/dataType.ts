@@ -1,6 +1,8 @@
 export type Skill = {
     skillName: string;
     year: number;
+    category : number;
+    imagePath : string;
 };
 
 export type Experience = {
