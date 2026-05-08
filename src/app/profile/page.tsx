@@ -44,7 +44,7 @@ export default function ProfilePage() {
           </div>
           <div>
             <h1 className={s.name}>{profile.name}</h1>
-            <p className={s.title}>{profile.position}</p>
+            <p className={s.title}>{profile.title}</p>
           </div>
         </div>
         <p style={{ marginTop: 14 }}>{profile.bio}</p>

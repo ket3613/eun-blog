@@ -16,7 +16,7 @@ export type Experience = {
 
 export type Profile = {
     name: string;
-    position: string;
+    title: string;
     bio: string;
     email: string;
     avatar: string;
@@ -28,9 +28,9 @@ export type Profile = {
     resumeUrl: string;
 };
 
-export type ApiResponse = {
-    success: string;
-    data: Profile;
+export type ApiResponse<T = Profile> = {
+    success: boolean;
+    data: T;
     error: string;
 };
 /* -------------강은택 프로필 받아오는 VO----------------*/
