@@ -2,9 +2,16 @@
 import Image from "next/image";
 import { motion } from "framer-motion";
 import s from "@/styles/profile.module.css";
-import {useEffect, useState} from "react";
-import {Profile} from "@/lib/dataType";
-import {getProfile} from "@/app/api/profile";
+import { useEffect, useState } from "react";
+import { Profile, Skill } from "@/lib/dataType";
+import { getProfile } from "@/app/api/profile";
+
+const CATEGORY_LABELS: Record<number, string> = {
+    1: "Frontend",
+    2: "Backend",
+    3: "Infra",
+    4: "DevOps",
+};
 
 export default function ProfilePage() {
     const [profile, setProfile] = useState<Profile | null>(null);
@@ -19,12 +26,10 @@ export default function ProfilePage() {
             });
     }, []);
 
-    // 1) 에러 먼저 처리
     if (error) {
         return <div className={s.container}>{error}</div>;
     }
 
-    // 2) 아직 profile 이 null 인 경우 처리 (로딩 상태 등)
     if (!profile) {
         return (
             <div className={s.container}>
@@ -33,83 +38,97 @@ export default function ProfilePage() {
         );
     }
 
-  return (
-    <section className={s.section}>
-      {/* Hero */}
-      <header className={s.hero}>
-        <div className={s.heroGlow} />
-        <div className={s.row}>
-          <div className={s.avatar}>
-            <Image src="/my_image.jpeg" alt={`${profile.name} avatar`} fill sizes="360px" />
-          </div>
-          <div>
-            <h1 className={s.name}>{profile.name}</h1>
-            <p className={s.title}>{profile.title}</p>
-          </div>
-        </div>
-        <p style={{ marginTop: 14 }}>{profile.bio}</p>
-        {profile.highlights?.length ? (
-          <div className={s.badges} style={{ marginTop: 12 }}>
-            {profile.highlights.map((h, i) => (
-              <motion.span
-                key={h}
-                className={s.badge}
-                initial={{ opacity: 0, y: 6 }}
-                animate={{ opacity: 1, y: 0 }}
-                transition={{ delay: 0.05 * i }}
-                whileHover={{ y: -2, scale: 1.03 }}
-              >
-                {h}
-              </motion.span>
-            ))}
-          </div>
-        ) : null}
-        <div className={s.actions} style={{ marginTop: 16 }}>
-          <a className={`${s.btn} ${s.btnPrimary}`} href={`mailto:${profile.email}`}>이메일</a>
-            <a className={s.btn} href={profile.links} target="_blank" rel="noreferrer">
-                {profile.links}
-            </a>
-          {profile.resumeUrl && (
-            <a className={s.btn} href={profile.resumeUrl}>이력서 PDF</a>
-          )}
-        </div>
-      </header>
+    const skillsByCategory = profile.skills?.reduce<Record<number, Skill[]>>((acc, sk) => {
+        (acc[sk.category] ??= []).push(sk);
+        return acc;
+    }, {}) ?? {};
 
-      {/* Cards grid */}
-      <div className={s.cards}>
-        {/* Skills */}
-        {profile.skills?.length ? (
-          <section className={s.card}>
-            <h2 className={s.cardTitle}>기술스택</h2>
-            <div className={s.skillsGrid}>
-              {profile.skills.map((sk) => (
-                <div className={s.skillRow} key={sk.skillName}>
-                  <div className={s.skillMeta}>
-                    <span>{sk.skillName}</span>
-                    <span>{sk.year}년</span>
-                  </div>
+    return (
+        <section className={s.section}>
+            {/* Hero */}
+            <header className={s.hero}>
+                <div className={s.heroGlow} />
+                <div className={s.row}>
+                    <div className={s.avatar}>
+                        <Image src="/my_image.jpeg" alt={`${profile.name} avatar`} fill sizes="360px" />
+                    </div>
+                    <div>
+                        <h1 className={s.name}>{profile.name}</h1>
+                        <p className={s.title}>{profile.title}</p>
+                    </div>
                 </div>
-              ))}
-            </div>
-          </section>
-        ) : null}
+                <p style={{ marginTop: 14 }}>{profile.bio}</p>
+                {profile.highlights?.length ? (
+                    <div className={s.badges} style={{ marginTop: 12 }}>
+                        {profile.highlights.map((h, i) => (
+                            <motion.span
+                                key={h}
+                                className={s.badge}
+                                initial={{ opacity: 0, y: 6 }}
+                                animate={{ opacity: 1, y: 0 }}
+                                transition={{ delay: 0.05 * i }}
+                                whileHover={{ y: -2, scale: 1.03 }}
+                            >
+                                {h}
+                            </motion.span>
+                        ))}
+                    </div>
+                ) : null}
+                <div className={s.actions} style={{ marginTop: 16 }}>
+                    <a className={`${s.btn} ${s.btnPrimary}`} href={`mailto:${profile.email}`}>이메일</a>
+                    <a className={s.btn} href={profile.links} target="_blank" rel="noreferrer">
+                        {profile.links}
+                    </a>
+                    {profile.resumeUrl && (
+                        <a className={s.btn} href={profile.resumeUrl}>이력서 PDF</a>
+                    )}
+                </div>
+            </header>
 
-        {/* Experience */}
-        {profile.experience?.length ? (
-          <section className={s.card}>
-            <h2 className={s.cardTitle}>경력</h2>
-            <ul className={s.timeline} style={{ listStyle: "none", padding: 0, margin: 0 }}>
-              {profile.experience.map((e) => (
-                <li key={e.startDate} className={s.item}>
-                  <div style={{ fontWeight: 700 }}>{e.role} · {e.org}</div>
-                  <div className={s.period}>{e.startDate} ~ {e.endDate}</div>
-                  <div className={s.note}>{e.note}</div>
-                </li>
-              ))}
-            </ul>
-          </section>
-        ) : null}
-      </div>
-    </section>
-  );
+            {/* Cards grid */}
+            <div className={s.cards}>
+                {/* Skills */}
+                {profile.skills?.length ? (
+                    <section className={s.card}>
+                        <h2 className={s.cardTitle}>기술스택</h2>
+                        {Object.entries(skillsByCategory)
+                            .sort(([a], [b]) => Number(a) - Number(b))
+                            .map(([cat, skills]) => (
+                                <div key={cat} className={s.skillGroup}>
+                                    <h3 className={s.skillGroupTitle}>
+                                        {CATEGORY_LABELS[Number(cat)] ?? `Category ${cat}`}
+                                    </h3>
+                                    <div className={s.skillsGrid}>
+                                        {skills.map((sk) => (
+                                            <div className={s.skillRow} key={sk.skillName}>
+                                                <div className={s.skillMeta}>
+                                                    <span>{sk.skillName}</span>
+                                                    <span>{sk.year}년</span>
+                                                </div>
+                                            </div>
+                                        ))}
+                                    </div>
+                                </div>
+                            ))}
+                    </section>
+                ) : null}
+
+                {/* Experience */}
+                {profile.experience?.length ? (
+                    <section className={s.card}>
+                        <h2 className={s.cardTitle}>경력</h2>
+                        <ul className={s.timeline} style={{ listStyle: "none", padding: 0, margin: 0 }}>
+                            {profile.experience.map((e) => (
+                                <li key={e.startDate} className={s.item}>
+                                    <div style={{ fontWeight: 700 }}>{e.role} · {e.org}</div>
+                                    <div className={s.period}>{e.startDate} ~ {e.endDate}</div>
+                                    <div className={s.note}>{e.note}</div>
+                                </li>
+                            ))}
+                        </ul>
+                    </section>
+                ) : null}
+            </div>
+        </section>
+    );
 }
