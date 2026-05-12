@@ -6,7 +6,8 @@ import s from "@/styles/sidebar.module.css";
 const items = [
     { href: "/profile", label: "프로필" },
     { href: "/projects", label: "프로젝트" },
-    { href: "/images", label: "이미지(로그인)" }
+    { href: "/images", label: "이미지(로그인)" },
+    { href: "https://jenkins.euntaek.cc/login?from=%2F", label: "Jenkins", external: true }
 ];
 
 export default function Sidebar() {
@@ -16,9 +17,15 @@ export default function Sidebar() {
             <div className={s.brand}>eun-Blog</div>
             <nav className={s.nav}>
                 {items.map(it => (
-                    <Link key={it.href} href={it.href} className={`${s.link} ${pathname.startsWith(it.href) ? s.active : ""}`}>
-                        {it.label}
-                    </Link>
+                    it.external ? (
+                        <a key={it.href} href={it.href} className={s.link} target="_blank" rel="noopener noreferrer">
+                            {it.label}
+                        </a>
+                    ) : (
+                        <Link key={it.href} href={it.href} className={`${s.link} ${pathname.startsWith(it.href) ? s.active : ""}`}>
+                            {it.label}
+                        </Link>
+                    )
                 ))}
             </nav>
             <div className={s.footer}>
