@@ -7,10 +7,10 @@ import { Profile, Skill } from "@/lib/dataType";
 import { getProfile } from "@/app/api/profile";
 
 const CATEGORY_LABELS: Record<number, string> = {
-    1: "Frontend",
-    2: "Backend",
+    1: "Backend",
+    2: "Frontend",
     3: "Infra",
-    4: "DevOps",
+    4: "Other",
 };
 
 export default function ProfilePage() {
