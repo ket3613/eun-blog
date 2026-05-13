@@ -20,6 +20,18 @@ const CATEGORY_COLORS: Record<number, string> = {
     4: "#f97316",
 };
 
+function calcDuration(start: string, end?: string | null): string {
+    if (!start) return "";
+    const s = new Date(start);
+    const e = end ? new Date(end) : new Date();
+    const months = (e.getFullYear() - s.getFullYear()) * 12 + (e.getMonth() - s.getMonth());
+    const years = Math.floor(months / 12);
+    const rem = months % 12;
+    if (years === 0) return `${rem}개월`;
+    if (rem === 0) return `${years}년`;
+    return `${years}년 ${rem}개월`;
+}
+
 export default function ProfilePage() {
     const [profile, setProfile] = useState<Profile | null>(null);
     const [error, setError] = useState<string | null>(null);
@@ -65,22 +77,6 @@ export default function ProfilePage() {
                     </div>
                 </div>
                 <p style={{ marginTop: 14 }}>{profile.bio}</p>
-                {profile.highlights?.length ? (
-                    <div className={s.badges} style={{ marginTop: 12 }}>
-                        {profile.highlights.map((h, i) => (
-                            <motion.span
-                                key={h}
-                                className={s.badge}
-                                initial={{ opacity: 0, y: 6 }}
-                                animate={{ opacity: 1, y: 0 }}
-                                transition={{ delay: 0.05 * i }}
-                                whileHover={{ y: -2, scale: 1.03 }}
-                            >
-                                {h}
-                            </motion.span>
-                        ))}
-                    </div>
-                ) : null}
                 <div className={s.actions} style={{ marginTop: 16 }}>
                     <a className={`${s.btn} ${s.btnPrimary}`} href={`mailto:${profile.email}`}>이메일</a>
                     <a className={s.btn} href={profile.links} target="_blank" rel="noreferrer">
@@ -94,6 +90,27 @@ export default function ProfilePage() {
 
             {/* Cards grid */}
             <div className={s.cards}>
+                {/* Highlights — 별도 섹션 */}
+                {profile.highlights?.length ? (
+                    <section className={s.card}>
+                        <h2 className={s.cardTitle}>주요 강점</h2>
+                        <div className={s.badges}>
+                            {profile.highlights.map((h, i) => (
+                                <motion.span
+                                    key={h}
+                                    className={s.badge}
+                                    initial={{ opacity: 0, y: 6 }}
+                                    animate={{ opacity: 1, y: 0 }}
+                                    transition={{ delay: 0.05 * i }}
+                                    whileHover={{ y: -2, scale: 1.03 }}
+                                >
+                                    {h}
+                                </motion.span>
+                            ))}
+                        </div>
+                    </section>
+                ) : null}
+
                 {/* Skills */}
                 {profile.skills?.length ? (
                     <section className={s.card}>
@@ -131,8 +148,11 @@ export default function ProfilePage() {
                         <ul className={s.timeline} style={{ listStyle: "none", padding: 0, margin: 0 }}>
                             {profile.experience.map((e) => (
                                 <li key={e.startDate} className={s.item}>
-                                    <div style={{ fontWeight: 700 }}>{e.role} · {e.org}</div>
-                                    <div className={s.period}>{e.startDate} ~ {e.endDate}</div>
+                                    <div className={s.itemHeader}>
+                                        <span style={{ fontWeight: 700 }}>{e.role} · {e.org}</span>
+                                        <span className={s.itemDuration}>{calcDuration(e.startDate, e.endDate)}</span>
+                                    </div>
+                                    <div className={s.period}>{e.startDate} ~ {e.endDate || "현재"}</div>
                                     <div className={s.note}>{e.note}</div>
                                 </li>
                             ))}
