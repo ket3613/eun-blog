@@ -13,6 +13,13 @@ const CATEGORY_LABELS: Record<number, string> = {
     4: "Other",
 };
 
+const CATEGORY_COLORS: Record<number, string> = {
+    1: "#3b82f6",
+    2: "#a855f7",
+    3: "#22c55e",
+    4: "#f97316",
+};
+
 export default function ProfilePage() {
     const [profile, setProfile] = useState<Profile | null>(null);
     const [error, setError] = useState<string | null>(null);
@@ -93,23 +100,27 @@ export default function ProfilePage() {
                         <h2 className={s.cardTitle}>기술스택</h2>
                         {Object.entries(skillsByCategory)
                             .sort(([a], [b]) => Number(a) - Number(b))
-                            .map(([cat, skills]) => (
-                                <div key={cat} className={s.skillGroup}>
-                                    <h3 className={s.skillGroupTitle}>
-                                        {CATEGORY_LABELS[Number(cat)] ?? `Category ${cat}`}
-                                    </h3>
-                                    <div className={s.skillsGrid}>
-                                        {skills.map((sk) => (
-                                            <div className={s.skillRow} key={sk.skillName}>
-                                                <div className={s.skillMeta}>
-                                                    <span>{sk.skillName}</span>
-                                                    <span>{sk.year}년</span>
-                                                </div>
-                                            </div>
-                                        ))}
+                            .map(([cat, skills]) => {
+                                const color = CATEGORY_COLORS[Number(cat)] ?? "#6b7280";
+                                return (
+                                    <div key={cat} className={s.skillGroup}>
+                                        <h3
+                                            className={s.skillGroupTitle}
+                                            style={{ borderLeftColor: color, color }}
+                                        >
+                                            {CATEGORY_LABELS[Number(cat)] ?? `Category ${cat}`}
+                                        </h3>
+                                        <div className={s.skillTags}>
+                                            {skills.map((sk) => (
+                                                <span key={sk.skillName} className={s.skillTag} style={{ borderColor: `${color}33` }}>
+                                                    {sk.skillName}
+                                                    <span className={s.skillTagYear}>{sk.year}년</span>
+                                                </span>
+                                            ))}
+                                        </div>
                                     </div>
-                                </div>
-                            ))}
+                                );
+                            })}
                     </section>
                 ) : null}
 
