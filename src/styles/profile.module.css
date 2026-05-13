@@ -28,14 +28,27 @@
   gap: 16px;
 }
 
+/* 1. 프로필 이미지 glow */
 .avatar {
   position: relative;
   width: 96px;
   height: 96px;
   border-radius: 9999px;
   overflow: hidden;
-  border: 1px solid var(--line);
+  border: 2px solid rgba(59,130,246,0.4);
   background: #0f1115;
+  box-shadow:
+    0 0 0 4px rgba(59,130,246,0.08),
+    0 0 20px rgba(59,130,246,0.25),
+    0 0 40px rgba(168,85,247,0.12);
+  transition: box-shadow 0.3s ease;
+}
+
+.avatar:hover {
+  box-shadow:
+    0 0 0 4px rgba(59,130,246,0.15),
+    0 0 28px rgba(59,130,246,0.4),
+    0 0 60px rgba(168,85,247,0.2);
 }
 
 .name {
@@ -62,7 +75,7 @@
   font-size: 12px;
   border: 1px solid rgba(99, 102, 241, 0.35);
   color: #93c5fd;
-  padding: 8px 10px;
+  padding: 8px 12px;
   border-radius: 999px;
   background: linear-gradient(90deg, rgba(59,130,246,0.08), rgba(168,85,247,0.08));
   backdrop-filter: blur(6px);
@@ -121,7 +134,7 @@
   border-left: 3px solid;
 }
 
-/* Skill tag badges */
+/* 2. 스킬 태그 hover */
 .skillTags {
   display: flex;
   flex-wrap: wrap;
@@ -139,6 +152,13 @@
   border: 1px solid var(--line);
   background: rgba(255,255,255,0.04);
   color: #e2e8f0;
+  transition: background 0.15s ease, transform 0.15s ease;
+  cursor: default;
+}
+
+.skillTag:hover {
+  background: rgba(255,255,255,0.09);
+  transform: translateY(-2px);
 }
 
 .skillTagYear {
@@ -148,17 +168,14 @@
   border-left: 1px solid rgba(255,255,255,0.12);
 }
 
-/* legacy — kept for compatibility */
+/* legacy */
 .skillsGrid {
   display: grid;
   grid-template-columns: repeat(2, minmax(0, 1fr));
   gap: 10px 16px;
 }
 
-.skillRow {
-  display: grid;
-  gap: 6px;
-}
+.skillRow { display: grid; gap: 6px; }
 
 .skillMeta {
   display: flex;
@@ -174,15 +191,9 @@
   overflow: hidden;
 }
 
-.fill {
-  height: 100%;
-  background: #1f6feb;
-}
+.fill { height: 100%; background: #1f6feb; }
 
-.timeline {
-  display: grid;
-  gap: 10px;
-}
+.timeline { display: grid; gap: 10px; }
 
 .item {
   border: 1px solid var(--line);
@@ -190,17 +201,36 @@
   padding: 12px;
 }
 
+/* 3. 경력 헤더 — 회사명 + 재직기간 뱃지 */
+.itemHeader {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 8px;
+  flex-wrap: wrap;
+}
+
+.itemDuration {
+  font-size: 11px;
+  font-weight: 600;
+  color: #93c5fd;
+  background: rgba(59,130,246,0.12);
+  border: 1px solid rgba(59,130,246,0.25);
+  padding: 2px 8px;
+  border-radius: 999px;
+  white-space: nowrap;
+}
+
 .period {
   font-size: 12px;
   color: var(--muted);
-  margin-top: 2px;
+  margin-top: 4px;
 }
 
-.note {
-  margin-top: 6px;
-}
+.note { margin-top: 6px; }
 
 @media (max-width: 640px) {
   .skillsGrid { grid-template-columns: 1fr; }
   .skillTag { font-size: 12px; padding: 5px 10px; }
+  .itemHeader { flex-direction: column; align-items: flex-start; }
 }
