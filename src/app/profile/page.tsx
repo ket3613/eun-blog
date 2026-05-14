@@ -32,6 +32,21 @@ function calcDuration(start: string, end?: string | null): string {
     return `${years}년 ${rem}개월`;
 }
 
+function safeHref(url?: string | null): string {
+    if (!url) return "#";
+    try {
+        const u = new URL(url);
+        return (u.protocol === "https:" || u.protocol === "http:") ? url : "#";
+    } catch {
+        return "#";
+    }
+}
+
+function safeMailto(email?: string | null): string {
+    if (!email) return "#";
+    return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email) ? `mailto:${email}` : "#";
+}
+
 export default function ProfilePage() {
     const [profile, setProfile] = useState<Profile | null>(null);
     const [error, setError] = useState<string | null>(null);
@@ -64,7 +79,6 @@ export default function ProfilePage() {
 
     return (
         <section className={s.section}>
-            {/* Hero */}
             <header className={s.hero}>
                 <div className={s.heroGlow} />
                 <div className={s.row}>
@@ -78,19 +92,19 @@ export default function ProfilePage() {
                 </div>
                 <p style={{ marginTop: 14 }}>{profile.bio}</p>
                 <div className={s.actions} style={{ marginTop: 16 }}>
-                    <a className={`${s.btn} ${s.btnPrimary}`} href={`mailto:${profile.email}`}>이메일</a>
-                    <a className={s.btn} href={profile.links} target="_blank" rel="noreferrer">
-                        {profile.links}
-                    </a>
-                    {profile.resumeUrl && (
-                        <a className={s.btn} href={profile.resumeUrl}>이력서 PDF</a>
+                    <a className={`${s.btn} ${s.btnPrimary}`} href={safeMailto(profile.email)}>이메일</a>
+                    {safeHref(profile.links) !== "#" && (
+                        <a className={s.btn} href={safeHref(profile.links)} target="_blank" rel="noopener noreferrer">
+                            {profile.links}
+                        </a>
+                    )}
+                    {profile.resumeUrl && safeHref(profile.resumeUrl) !== "#" && (
+                        <a className={s.btn} href={safeHref(profile.resumeUrl)}>이력서 PDF</a>
                     )}
                 </div>
             </header>
 
-            {/* Cards grid */}
             <div className={s.cards}>
-                {/* Highlights — 별도 섹션 */}
                 {profile.highlights?.length ? (
                     <section className={s.card}>
                         <h2 className={s.cardTitle}>주요 강점</h2>
@@ -111,7 +125,6 @@ export default function ProfilePage() {
                     </section>
                 ) : null}
 
-                {/* Skills */}
                 {profile.skills?.length ? (
                     <section className={s.card}>
                         <h2 className={s.cardTitle}>기술스택</h2>
@@ -141,7 +154,6 @@ export default function ProfilePage() {
                     </section>
                 ) : null}
 
-                {/* Experience */}
                 {profile.experience?.length ? (
                     <section className={s.card}>
                         <h2 className={s.cardTitle}>경력</h2>
