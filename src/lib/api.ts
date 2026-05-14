@@ -1,7 +1,13 @@
 export async function api<T>(url: string, options?: RequestInit): Promise<T> {
+    const method = options?.method?.toUpperCase() ?? "GET";
+    const hasBody = method !== "GET" && method !== "HEAD";
+
     const res = await fetch(url, {
-        headers: { "Content-Type": "application/json" },
         ...options,
+        headers: {
+            ...(hasBody ? { "Content-Type": "application/json" } : {}),
+            ...options?.headers,
+        },
     });
 
     if (!res.ok) {
