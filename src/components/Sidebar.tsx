@@ -12,6 +12,12 @@ const items = [
 
 export default function Sidebar() {
     const pathname = usePathname();
+
+    async function handleLogout() {
+        await fetch("/api/logout", { method: "POST" });
+        window.location.href = "/";
+    }
+
     return (
         <aside className={s.wrap}>
             <div className={s.brand}>eun-Blog</div>
@@ -29,7 +35,14 @@ export default function Sidebar() {
                 ))}
             </nav>
             <div className={s.footer}>
-                <Link href="/login">로그인</Link> · <a href="/api/logout">로그아웃</a>
+                <Link href="/login">로그인</Link>
+                {" · "}
+                <button
+                    onClick={handleLogout}
+                    style={{ background: "none", border: "none", cursor: "pointer", padding: 0, color: "inherit", font: "inherit" }}
+                >
+                    로그아웃
+                </button>
             </div>
         </aside>
     );
