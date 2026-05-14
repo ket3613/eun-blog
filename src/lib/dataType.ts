@@ -1,8 +1,8 @@
 export type Skill = {
     skillName: string;
     year: number;
-    category : number;
-    imagePath : string;
+    category: number;
+    imagePath: string;
 };
 
 export type Experience = {
@@ -11,7 +11,7 @@ export type Experience = {
     org: string;
     note: string;
     startDate: string;
-    endDate: string;
+    endDate?: string | null;
 };
 
 export type Profile = {
@@ -25,7 +25,7 @@ export type Profile = {
     skills: Skill[];
     highlights: string[];
     experience: Experience[];
-    resumeUrl: string;
+    resumeUrl?: string | null;
 };
 
 export type ApiResponse<T = Profile> = {
@@ -33,4 +33,3 @@ export type ApiResponse<T = Profile> = {
     data: T;
     error: string;
 };
-/* -------------강은택 프로필 받아오는 VO----------------*/
