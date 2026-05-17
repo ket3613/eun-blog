@@ -33,3 +33,13 @@ export type ApiResponse<T = Profile> = {
     data: T;
     error: string;
 };
+
+export type ServerStats = {
+    status: "online" | "offline";
+    uptime_seconds: number;
+    cpu_usage_percent: number;
+    cpu_temp_celsius: number;
+    memory: { used_bytes: number; total_bytes: number };
+    disk:   { used_bytes: number; total_bytes: number };
+    updated_at: string;
+};
