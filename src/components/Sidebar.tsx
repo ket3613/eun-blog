@@ -6,6 +6,7 @@ import s from "@/styles/sidebar.module.css";
 const items = [
     { href: "/profile", label: "프로필" },
     { href: "/projects", label: "프로젝트" },
+    { href: "/server-stats", label: "서버 현황" },
     { href: "/images", label: "이미지(로그인)" },
     { href: "https://jenkins.euntaek.cc/login?from=%2F", label: "Jenkins", external: true }
 ];
