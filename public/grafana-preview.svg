@@ -1,0 +1,116 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="480" height="300" viewBox="0 0 480 300">
+  <!-- Background -->
+  <rect width="480" height="300" fill="#111217"/>
+
+  <!-- Top nav bar -->
+  <rect width="480" height="38" fill="#0b0c0f"/>
+  <!-- Grafana logo circle -->
+  <circle cx="19" cy="19" r="10" fill="#FF6B00" opacity="0.9"/>
+  <text x="34" y="23" font-family="Arial, sans-serif" font-size="12" font-weight="bold" fill="#FF6B00">Grafana</text>
+  <text x="105" y="23" font-family="Arial, sans-serif" font-size="10" fill="#6e7380">Dashboards &gt; PostgreSQL Database</text>
+  <!-- Share/Edit buttons -->
+  <rect x="390" y="8" width="50" height="22" fill="#1F60C4" rx="3"/>
+  <text x="404" y="23" font-family="Arial, sans-serif" font-size="9" fill="white">Share</text>
+  <rect x="446" y="8" width="28" height="22" fill="#22252b" rx="3" stroke="#32363e" stroke-width="0.5"/>
+  <text x="453" y="23" font-family="Arial, sans-serif" font-size="9" fill="#cccccc">Edit</text>
+
+  <!-- Filter bar -->
+  <rect x="0" y="38" width="480" height="28" fill="#161719"/>
+  <rect x="8" y="44" width="90" height="16" fill="#22252b" rx="3"/>
+  <text x="14" y="55" font-family="Arial, sans-serif" font-size="8" fill="#cccccc">datasource: prometheus</text>
+  <rect x="104" y="44" width="60" height="16" fill="#22252b" rx="3"/>
+  <text x="110" y="55" font-family="Arial, sans-serif" font-size="8" fill="#cccccc">Interval: Auto</text>
+  <rect x="170" y="44" width="60" height="16" fill="#22252b" rx="3"/>
+  <text x="176" y="55" font-family="Arial, sans-serif" font-size="8" fill="#cccccc">Namespace</text>
+
+  <!-- Section header -->
+  <rect x="0" y="66" width="480" height="18" fill="#161719"/>
+  <text x="12" y="79" font-family="Arial, sans-serif" font-size="9" fill="#909296">⌄ General Counters, CPU, Memory and File Descriptor Stats</text>
+
+  <!-- Stat panels row -->
+  <!-- Version -->
+  <rect x="8" y="88" width="70" height="44" fill="#1f2128" rx="3"/>
+  <text x="13" y="100" font-family="Arial, sans-serif" font-size="7" fill="#909296">Version</text>
+  <text x="13" y="120" font-family="Arial, sans-serif" font-size="11" font-weight="bold" fill="#d8d9da">16.10.0</text>
+
+  <!-- Start Time -->
+  <rect x="82" y="88" width="70" height="44" fill="#1f2128" rx="3"/>
+  <text x="87" y="100" font-family="Arial, sans-serif" font-size="7" fill="#909296">Start Time</text>
+  <text x="87" y="120" font-family="Arial, sans-serif" font-size="11" font-weight="bold" fill="#d8d9da">N/A</text>
+
+  <!-- Current fetch -->
+  <rect x="156" y="88" width="78" height="44" fill="#1f2128" rx="3"/>
+  <text x="161" y="100" font-family="Arial, sans-serif" font-size="7" fill="#909296">Current fetch data</text>
+  <text x="161" y="120" font-family="Arial, sans-serif" font-size="11" font-weight="bold" fill="#d8d9da">67.4 MB</text>
+
+  <!-- Current insert -->
+  <rect x="238" y="88" width="78" height="44" fill="#1f2128" rx="3"/>
+  <text x="243" y="100" font-family="Arial, sans-serif" font-size="7" fill="#909296">Current insert data</text>
+  <text x="243" y="120" font-family="Arial, sans-serif" font-size="11" font-weight="bold" fill="#d8d9da">0</text>
+
+  <!-- Max Connections -->
+  <rect x="320" y="88" width="70" height="44" fill="#1f2128" rx="3"/>
+  <text x="325" y="100" font-family="Arial, sans-serif" font-size="7" fill="#909296">Max Connections</text>
+  <text x="325" y="120" font-family="Arial, sans-serif" font-size="11" font-weight="bold" fill="#d8d9da">100</text>
+
+  <!-- CPU chart -->
+  <rect x="8" y="136" width="152" height="72" fill="#1f2128" rx="3"/>
+  <text x="13" y="148" font-family="Arial, sans-serif" font-size="7" fill="#909296">Average CPU Usage</text>
+  <!-- CPU line -->
+  <polyline points="18,196 28,188 38,192 48,184 58,188 68,180 78,185 88,177 98,182 108,175 118,180 128,185 138,178 148,183" fill="none" stroke="#73BF69" stroke-width="1.5" stroke-linejoin="round"/>
+  <text x="13" y="204" font-family="Arial, sans-serif" font-size="6" fill="#6e7380">CPU Time  Mean: 1.47s  Last: 1.40s  Max: 1.58s</text>
+
+  <!-- Memory chart -->
+  <rect x="164" y="136" width="152" height="72" fill="#1f2128" rx="3"/>
+  <text x="169" y="148" font-family="Arial, sans-serif" font-size="7" fill="#909296">Average Memory Usage</text>
+  <!-- Memory lines -->
+  <polyline points="174,188 184,178 194,170 204,182 214,174 224,179 234,185 244,173 254,180 264,175 274,182 284,188 294,176 304,180" fill="none" stroke="#73BF69" stroke-width="1.5" stroke-linejoin="round"/>
+  <polyline points="174,200 184,200 194,200 204,200 214,200 224,200 234,200 244,200 254,200 264,200 274,200 284,200 294,200 304,200" fill="none" stroke="#F2CC0C" stroke-width="1" stroke-dasharray="3,2" opacity="0.6"/>
+  <text x="169" y="204" font-family="Arial, sans-serif" font-size="6" fill="#6e7380">Resident Mem  Mean: 480kB  Last: 461kB  Max: 848kB</text>
+
+  <!-- FD chart -->
+  <rect x="320" y="136" width="152" height="72" fill="#1f2128" rx="3"/>
+  <text x="325" y="148" font-family="Arial, sans-serif" font-size="7" fill="#909296">Open File Descriptors</text>
+  <polyline points="330,180 345,176 360,185 375,180 390,175 405,185 420,178 435,182 450,176 462,180" fill="none" stroke="#73BF69" stroke-width="1.5" stroke-linejoin="round"/>
+  <text x="325" y="204" font-family="Arial, sans-serif" font-size="6" fill="#6e7380">Open FD  Mean: 9.50  Last: 10  Max: 10  Min: 8</text>
+
+  <!-- Settings section -->
+  <rect x="0" y="212" width="480" height="18" fill="#161719"/>
+  <text x="12" y="225" font-family="Arial, sans-serif" font-size="9" fill="#909296">⌄ Settings</text>
+
+  <!-- Settings stat panels -->
+  <rect x="8" y="234" width="58" height="40" fill="#1f2128" rx="3"/>
+  <text x="13" y="245" font-family="Arial, sans-serif" font-size="6" fill="#909296">Shared Buffers</text>
+  <text x="13" y="262" font-family="Arial, sans-serif" font-size="10" font-weight="bold" fill="#d8d9da">128 MiB</text>
+
+  <rect x="70" y="234" width="52" height="40" fill="#1f2128" rx="3"/>
+  <text x="75" y="245" font-family="Arial, sans-serif" font-size="6" fill="#909296">Effective Cache</text>
+  <text x="75" y="262" font-family="Arial, sans-serif" font-size="10" font-weight="bold" fill="#d8d9da">4 GiB</text>
+
+  <rect x="126" y="234" width="58" height="40" fill="#1f2128" rx="3"/>
+  <text x="131" y="245" font-family="Arial, sans-serif" font-size="6" fill="#909296">Maintenance...</text>
+  <text x="131" y="262" font-family="Arial, sans-serif" font-size="10" font-weight="bold" fill="#d8d9da">64 MiB</text>
+
+  <rect x="188" y="234" width="52" height="40" fill="#1f2128" rx="3"/>
+  <text x="193" y="245" font-family="Arial, sans-serif" font-size="6" fill="#909296">Work Mem</text>
+  <text x="193" y="262" font-family="Arial, sans-serif" font-size="10" font-weight="bold" fill="#d8d9da">4 MiB</text>
+
+  <rect x="244" y="234" width="58" height="40" fill="#1f2128" rx="3"/>
+  <text x="249" y="245" font-family="Arial, sans-serif" font-size="6" fill="#909296">Max WAL Size</text>
+  <text x="249" y="262" font-family="Arial, sans-serif" font-size="10" font-weight="bold" fill="#d8d9da">1.0 GiB</text>
+
+  <rect x="306" y="234" width="40" height="40" fill="#1f2128" rx="3"/>
+  <text x="311" y="245" font-family="Arial, sans-serif" font-size="6" fill="#909296">Random...</text>
+  <text x="316" y="262" font-family="Arial, sans-serif" font-size="14" font-weight="bold" fill="#d8d9da">4</text>
+
+  <rect x="350" y="234" width="40" height="40" fill="#1f2128" rx="3"/>
+  <text x="355" y="245" font-family="Arial, sans-serif" font-size="6" fill="#909296">Seq...</text>
+  <text x="360" y="262" font-family="Arial, sans-serif" font-size="14" font-weight="bold" fill="#d8d9da">1</text>
+
+  <rect x="394" y="234" width="38" height="40" fill="#1f2128" rx="3"/>
+  <text x="399" y="245" font-family="Arial, sans-serif" font-size="6" fill="#909296">Max...</text>
+  <text x="404" y="262" font-family="Arial, sans-serif" font-size="14" font-weight="bold" fill="#d8d9da">8</text>
+
+  <!-- Bottom label -->
+  <text x="180" y="292" font-family="Arial, sans-serif" font-size="8" fill="#6e7380" text-anchor="middle">Grafana · PostgreSQL Database Dashboard</text>
+</svg>

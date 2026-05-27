@@ -25,12 +25,78 @@
     padding: 10px 12px;
     border: 1px solid transparent;
     border-radius: 10px;
-    color: var(--muted)
+    color: var(--muted);
+    display: flex;
+    align-items: center;
+    gap: 6px
 }
 
 .link:hover {
     border-color: var(--line);
     color: var(--text)
+}
+
+.previewHint {
+    font-size: 12px;
+    opacity: 0.5;
+    transition: opacity 0.2s
+}
+
+.link:hover .previewHint {
+    opacity: 1
+}
+
+/* External link wrapper for hover preview */
+.externalWrap {
+    position: relative
+}
+
+/* Tooltip panel */
+.previewTooltip {
+    position: absolute;
+    left: calc(100% + 12px);
+    top: 0;
+    z-index: 1000;
+    background: var(--panel, #1a1d23);
+    border: 1px solid var(--line, #2a2d35);
+    border-radius: 12px;
+    padding: 10px;
+    width: 360px;
+    box-shadow: 0 8px 32px rgba(0, 0, 0, 0.5);
+
+    /* Hidden by default */
+    opacity: 0;
+    pointer-events: none;
+    transform: translateX(-6px);
+    transition: opacity 0.2s ease, transform 0.2s ease
+}
+
+.externalWrap:hover .previewTooltip {
+    opacity: 1;
+    pointer-events: auto;
+    transform: translateX(0)
+}
+
+.previewLabel {
+    font-size: 11px;
+    font-weight: 600;
+    color: var(--text, #e0e0e0);
+    margin: 0 0 6px 0
+}
+
+.previewImage {
+    width: 100%;
+    height: auto;
+    border-radius: 8px;
+    display: block;
+    border: 1px solid var(--line, #2a2d35)
+}
+
+.previewNote {
+    font-size: 10px;
+    color: var(--muted, #6e7380);
+    margin: 6px 0 0 0;
+    text-align: center
 }
 
 .footer {
@@ -72,5 +138,17 @@
     .footer {
         margin-top: 12px;
         font-size: 11px;
+    }
+
+    /* On mobile: show tooltip below instead of to the right */
+    .previewTooltip {
+        left: 0;
+        top: calc(100% + 8px);
+        width: min(360px, 90vw);
+        transform: translateY(-6px)
+    }
+
+    .externalWrap:hover .previewTooltip {
+        transform: translateY(0)
     }
 }
