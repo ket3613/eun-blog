@@ -6,7 +6,7 @@
   border-right: 1px solid rgba(99, 102, 241, 0.2);
   display: flex;
   flex-direction: column;
-  overflow: hidden;
+  /* overflow: hidden 제거 — 툴팁이 사이드바 밖으로 자유롭게 float */
 }
 
 .brand {
@@ -54,7 +54,7 @@
   gap: 2px;
   padding: 12px;
   flex: 1;
-  overflow-y: auto;
+  /* overflow-y 제거 — 툴팁 clipping 방지 */
 }
 
 .navSection {
@@ -106,38 +106,38 @@
   position: relative;
 }
 
-/* ── 툴팁: top:0 으로 상단 겹침 방지 ── */
+/* ── 아이템 위로 떠오르는 플로팅 이미지 팝업 ── */
 .previewTooltip {
   position: absolute;
-  left: calc(100% + 12px);
-  top: 0;
-  transform: translateX(-10px);
-  z-index: 1000;
+  bottom: calc(100% + 10px);
+  left: 0;
+  z-index: 9999;
+  width: 260px;
   background: linear-gradient(160deg, #1e1b4b, #2d2a6e);
   border: 1px solid rgba(99, 102, 241, 0.35);
-  border-radius: 16px;
-  padding: 14px;
-  width: 360px;
+  border-radius: 14px;
+  padding: 12px;
   box-shadow:
-    0 20px 60px rgba(0, 0, 0, 0.35),
-    0 0 0 1px rgba(255, 255, 255, 0.04) inset;
-  backdrop-filter: blur(12px);
+    0 24px 64px rgba(0, 0, 0, 0.45),
+    0 0 0 1px rgba(255, 255, 255, 0.05) inset;
+  backdrop-filter: blur(14px);
   opacity: 0;
   pointer-events: none;
+  transform: translateY(10px);
   transition: opacity 0.3s ease, transform 0.3s cubic-bezier(0.4, 0, 0.2, 1);
 }
 
 .externalWrap:hover .previewTooltip {
   opacity: 1;
   pointer-events: auto;
-  transform: translateX(0);
+  transform: translateY(0);
 }
 
 .previewLabel {
   font-size: 11px;
   font-weight: 700;
   color: rgba(165, 180, 252, 0.9);
-  margin: 0 0 10px 0;
+  margin: 0 0 8px 0;
   letter-spacing: 0.08em;
   text-transform: uppercase;
 }
@@ -215,14 +215,12 @@
     height: auto;
     border-right: none;
     border-bottom: 1px solid rgba(99, 102, 241, 0.2);
-    overflow: visible;
   }
 
   .nav {
     flex-direction: row;
     flex-wrap: wrap;
     gap: 4px;
-    overflow-y: visible;
   }
 
   .link {
@@ -233,12 +231,14 @@
 
   .previewHint { opacity: 1 !important; }
 
+  /* 모바일: 아래로 표시 */
   .previewTooltip {
-    left: auto;
-    right: 0;
+    bottom: auto;
     top: calc(100% + 8px);
+    left: 0;
+    right: auto;
     transform: translateY(-8px);
-    width: min(360px, 90vw);
+    width: min(260px, 90vw);
   }
 
   .externalWrap:hover .previewTooltip {
