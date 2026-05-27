@@ -4,111 +4,163 @@
     height: 100vh;
     background: var(--panel);
     border-right: 1px solid var(--line);
-    padding: 24px;
+    padding: 28px 20px;
     display: flex;
     flex-direction: column;
-    gap: 24px
+    gap: 20px
 }
 
 .brand {
-    font-weight: 800;
-    font-size: 20px
+    font-weight: 700;
+    font-size: 22px;
+    letter-spacing: -0.5px;
+    color: var(--text);
+    padding: 4px 0
 }
 
 .nav {
     display: flex;
     flex-direction: column;
-    gap: 12px
+    gap: 10px
 }
 
 .link {
-    padding: 10px 12px;
+    padding: 12px 14px;
     border: 1px solid transparent;
-    border-radius: 10px;
+    border-radius: 12px;
     color: var(--muted);
     display: flex;
     align-items: center;
-    gap: 6px
+    justify-content: space-between;
+    font-size: 14px;
+    font-weight: 500;
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    cursor: pointer;
+    position: relative
 }
 
 .link:hover {
     border-color: var(--line);
-    color: var(--text)
+    color: var(--text);
+    background: rgba(255, 255, 255, 0.05);
+    transform: translateX(4px)
 }
 
 .previewHint {
-    font-size: 12px;
-    opacity: 0.5;
-    transition: opacity 0.2s
+    font-size: 14px;
+    opacity: 0;
+    transition: opacity 0.3s ease;
+    will-change: opacity;
+    display: inline-flex;
+    align-items: center
 }
 
 .link:hover .previewHint {
     opacity: 1
 }
 
-/* External link wrapper for hover preview */
 .externalWrap {
     position: relative
 }
 
-/* Tooltip panel */
 .previewTooltip {
     position: absolute;
-    left: calc(100% + 12px);
-    top: 0;
+    left: calc(100% + 16px);
+    top: 50%;
+    transform: translateY(-50%) translateX(-8px);
     z-index: 1000;
     background: var(--panel, #1a1d23);
-    border: 1px solid var(--line, #2a2d35);
-    border-radius: 12px;
-    padding: 10px;
-    width: 360px;
-    box-shadow: 0 8px 32px rgba(0, 0, 0, 0.5);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    border-radius: 16px;
+    padding: 14px;
+    width: 380px;
+    box-shadow: 0 16px 48px rgba(0, 0, 0, 0.3),
+                0 0 1px rgba(255, 255, 255, 0.05) inset;
+    backdrop-filter: blur(8px);
 
-    /* Hidden by default */
     opacity: 0;
     pointer-events: none;
-    transform: translateX(-6px);
-    transition: opacity 0.2s ease, transform 0.2s ease
+    transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1)
 }
 
 .externalWrap:hover .previewTooltip {
     opacity: 1;
     pointer-events: auto;
-    transform: translateX(0)
+    transform: translateY(-50%) translateX(0)
 }
 
 .previewLabel {
-    font-size: 11px;
-    font-weight: 600;
+    font-size: 12px;
+    font-weight: 700;
     color: var(--text, #e0e0e0);
-    margin: 0 0 6px 0
+    margin: 0 0 10px 0;
+    letter-spacing: 0.3px;
+    text-transform: uppercase;
+    opacity: 0.9
 }
 
 .previewImage {
     width: 100%;
     height: auto;
-    border-radius: 8px;
+    border-radius: 12px;
     display: block;
-    border: 1px solid var(--line, #2a2d35)
+    border: 1px solid rgba(255, 255, 255, 0.08);
+    transition: transform 0.3s ease;
+    object-fit: cover
+}
+
+.externalWrap:hover .previewImage {
+    transform: scale(1.02)
 }
 
 .previewNote {
-    font-size: 10px;
+    font-size: 11px;
     color: var(--muted, #6e7380);
-    margin: 6px 0 0 0;
-    text-align: center
+    margin: 10px 0 0 0;
+    text-align: center;
+    font-weight: 500
 }
 
 .footer {
     margin-top: auto;
     font-size: 12px;
-    color: var(--muted)
+    color: var(--muted);
+    padding: 16px 0 0 0;
+    border-top: 1px solid rgba(255, 255, 255, 0.05);
+    transition: color 0.3s ease
+}
+
+.footer:hover {
+    color: var(--text)
+}
+
+.footer a {
+    transition: color 0.3s ease;
+    cursor: pointer
+}
+
+.footer a:hover {
+    color: var(--text)
+}
+
+.footer button {
+    transition: color 0.3s ease;
+    cursor: pointer
+}
+
+.footer button:hover {
+    color: var(--text)
 }
 
 .active {
-    border-color: var(--line);
+    border-color: rgba(255, 255, 255, 0.2);
     color: var(--text);
-    background: #0e1116
+    background: rgba(255, 255, 255, 0.08);
+    font-weight: 600
+}
+
+.active:hover {
+    background: rgba(255, 255, 255, 0.12)
 }
 
 @media (max-width: 768px) {
@@ -119,6 +171,7 @@
         padding: 16px;
         border-right: none;
         border-bottom: 1px solid var(--line);
+        gap: 16px
     }
 
     .brand {
@@ -132,20 +185,27 @@
     }
 
     .link {
-        padding: 8px 10px;
+        padding: 10px 12px;
+        font-size: 13px;
+        flex: 0 1 auto
+    }
+
+    .previewHint {
+        opacity: 1 !important
     }
 
     .footer {
         margin-top: 12px;
         font-size: 11px;
+        padding: 12px 0 0 0
     }
 
-    /* On mobile: show tooltip below instead of to the right */
     .previewTooltip {
-        left: 0;
-        top: calc(100% + 8px);
-        width: min(360px, 90vw);
-        transform: translateY(-6px)
+        left: auto;
+        right: 0;
+        top: calc(100% + 12px);
+        transform: translateY(-8px);
+        width: min(360px, 90vw)
     }
 
     .externalWrap:hover .previewTooltip {
