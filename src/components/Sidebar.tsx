@@ -35,11 +35,11 @@ export default function Sidebar() {
                                 rel="noopener noreferrer"
                             >
                                 {it.label}
-                                <span className={s.previewHint} aria-label="미리보기 가능">🖼</span>
+                                <span className={s.previewHint} aria-label="미리보기 가능">📷</span>
                             </a>
                             {it.preview && (
                                 <div className={s.previewTooltip}>
-                                    <p className={s.previewLabel}>{it.label} 대시보드 예제</p>
+                                    <p className={s.previewLabel}>{it.label} 대시보드</p>
                                     <Image
                                         src={it.preview}
                                         alt={`${it.label} 대시보드 미리보기`}
@@ -48,7 +48,7 @@ export default function Sidebar() {
                                         className={s.previewImage}
                                         unoptimized
                                     />
-                                    <p className={s.previewNote}>※ 외부 접근 제한으로 내부 접속만 가능합니다</p>
+                                    <p className={s.previewNote}>접근 제한으로 내부 접속만 가능</p>
                                 </div>
                             )}
                         </div>
