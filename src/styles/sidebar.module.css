@@ -1,214 +1,247 @@
 .wrap {
-    position: sticky;
-    top: 0;
-    height: 100vh;
-    background: var(--panel);
-    border-right: 1px solid var(--line);
-    padding: 28px 20px;
-    display: flex;
-    flex-direction: column;
-    gap: 20px
+  position: sticky;
+  top: 0;
+  height: 100vh;
+  background: linear-gradient(180deg, #1e1b4b 0%, #312e81 60%, #1e1b4b 100%);
+  border-right: 1px solid rgba(99, 102, 241, 0.2);
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
 }
 
 .brand {
-    font-weight: 700;
-    font-size: 22px;
-    letter-spacing: -0.5px;
-    color: var(--text);
-    padding: 4px 0
+  padding: 24px 20px 18px 20px;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+}
+
+.brandInner {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin-bottom: 4px;
+}
+
+.brandIcon {
+  width: 32px;
+  height: 32px;
+  border-radius: 10px;
+  background: linear-gradient(135deg, #6366f1, #a855f7);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+  font-size: 16px;
+  color: white;
+}
+
+.brandTitle {
+  font-weight: 700;
+  font-size: 16px;
+  letter-spacing: -0.3px;
+  color: white;
+}
+
+.brandSub {
+  font-size: 11px;
+  color: rgba(165, 180, 252, 0.65);
+  margin: 0;
+  padding-left: 42px;
 }
 
 .nav {
-    display: flex;
-    flex-direction: column;
-    gap: 10px
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  padding: 12px;
+  flex: 1;
+  overflow-y: auto;
+}
+
+.navSection {
+  font-size: 10px;
+  font-weight: 600;
+  padding: 8px 8px 4px 8px;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: rgba(165, 180, 252, 0.4);
+  margin: 0;
 }
 
 .link {
-    padding: 12px 14px;
-    border: 1px solid transparent;
-    border-radius: 12px;
-    color: var(--muted);
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    font-size: 14px;
-    font-weight: 500;
-    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-    cursor: pointer;
-    position: relative
+  padding: 10px 12px;
+  border: 1px solid transparent;
+  border-radius: 12px;
+  color: rgba(224, 231, 255, 0.65);
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  font-size: 14px;
+  font-weight: 500;
+  transition: all 0.2s ease;
+  cursor: pointer;
+  position: relative;
+  background: transparent;
 }
 
 .link:hover {
-    border-color: var(--line);
-    color: var(--text);
-    background: rgba(255, 255, 255, 0.05);
-    transform: translateX(4px)
+  background: rgba(255, 255, 255, 0.06);
+  color: #e0e7ff;
+  border-color: rgba(99, 102, 241, 0.2);
 }
 
 .previewHint {
-    font-size: 14px;
-    opacity: 0;
-    transition: opacity 0.3s ease;
-    will-change: opacity;
-    display: inline-flex;
-    align-items: center
+  font-size: 13px;
+  opacity: 0;
+  transition: opacity 0.2s ease;
+  will-change: opacity;
+  display: inline-flex;
+  align-items: center;
 }
 
 .link:hover .previewHint {
-    opacity: 1
+  opacity: 1;
 }
 
 .externalWrap {
-    position: relative
+  position: relative;
 }
 
+/* ── 툴팁: top:0 으로 상단 겹침 방지 ── */
 .previewTooltip {
-    position: absolute;
-    left: calc(100% + 16px);
-    top: 50%;
-    transform: translateY(-50%) translateX(-8px);
-    z-index: 1000;
-    background: var(--panel, #1a1d23);
-    border: 1px solid rgba(255, 255, 255, 0.1);
-    border-radius: 16px;
-    padding: 14px;
-    width: 380px;
-    box-shadow: 0 16px 48px rgba(0, 0, 0, 0.3),
-                0 0 1px rgba(255, 255, 255, 0.05) inset;
-    backdrop-filter: blur(8px);
-
-    opacity: 0;
-    pointer-events: none;
-    transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1)
+  position: absolute;
+  left: calc(100% + 12px);
+  top: 0;
+  transform: translateX(-10px);
+  z-index: 1000;
+  background: linear-gradient(160deg, #1e1b4b, #2d2a6e);
+  border: 1px solid rgba(99, 102, 241, 0.35);
+  border-radius: 16px;
+  padding: 14px;
+  width: 360px;
+  box-shadow:
+    0 20px 60px rgba(0, 0, 0, 0.35),
+    0 0 0 1px rgba(255, 255, 255, 0.04) inset;
+  backdrop-filter: blur(12px);
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 0.3s ease, transform 0.3s cubic-bezier(0.4, 0, 0.2, 1);
 }
 
 .externalWrap:hover .previewTooltip {
-    opacity: 1;
-    pointer-events: auto;
-    transform: translateY(-50%) translateX(0)
+  opacity: 1;
+  pointer-events: auto;
+  transform: translateX(0);
 }
 
 .previewLabel {
-    font-size: 12px;
-    font-weight: 700;
-    color: var(--text, #e0e0e0);
-    margin: 0 0 10px 0;
-    letter-spacing: 0.3px;
-    text-transform: uppercase;
-    opacity: 0.9
+  font-size: 11px;
+  font-weight: 700;
+  color: rgba(165, 180, 252, 0.9);
+  margin: 0 0 10px 0;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
 }
 
 .previewImage {
-    width: 100%;
-    height: auto;
-    border-radius: 12px;
-    display: block;
-    border: 1px solid rgba(255, 255, 255, 0.08);
-    transition: transform 0.3s ease;
-    object-fit: cover
+  width: 100%;
+  height: auto;
+  border-radius: 10px;
+  display: block;
+  border: 1px solid rgba(99, 102, 241, 0.2);
+  transition: transform 0.3s ease;
+  object-fit: cover;
 }
 
 .externalWrap:hover .previewImage {
-    transform: scale(1.02)
+  transform: scale(1.01);
 }
 
 .previewNote {
-    font-size: 11px;
-    color: var(--muted, #6e7380);
-    margin: 10px 0 0 0;
-    text-align: center;
-    font-weight: 500
+  font-size: 11px;
+  color: rgba(165, 180, 252, 0.5);
+  margin: 8px 0 0 0;
+  text-align: center;
+  font-weight: 500;
 }
 
 .footer {
-    margin-top: auto;
-    font-size: 12px;
-    color: var(--muted);
-    padding: 16px 0 0 0;
-    border-top: 1px solid rgba(255, 255, 255, 0.05);
-    transition: color 0.3s ease
+  padding: 14px 16px;
+  border-top: 1px solid rgba(255, 255, 255, 0.06);
 }
 
-.footer:hover {
-    color: var(--text)
+.footerCard {
+  background: rgba(99, 102, 241, 0.15);
+  border: 1px solid rgba(99, 102, 241, 0.25);
+  border-radius: 12px;
+  padding: 10px 14px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 14px;
+  font-size: 12px;
+  color: rgba(165, 180, 252, 0.7);
 }
 
-.footer a {
-    transition: color 0.3s ease;
-    cursor: pointer
+.footerCard a,
+.footerCard button {
+  transition: color 0.2s ease;
+  cursor: pointer;
+  background: none;
+  border: none;
+  padding: 0;
+  font: inherit;
+  color: inherit;
 }
 
-.footer a:hover {
-    color: var(--text)
-}
-
-.footer button {
-    transition: color 0.3s ease;
-    cursor: pointer
-}
-
-.footer button:hover {
-    color: var(--text)
+.footerCard a:hover,
+.footerCard button:hover {
+  color: #a5b4fc;
 }
 
 .active {
-    border-color: rgba(255, 255, 255, 0.2);
-    color: var(--text);
-    background: rgba(255, 255, 255, 0.08);
-    font-weight: 600
+  background: linear-gradient(135deg, rgba(99, 102, 241, 0.4), rgba(139, 92, 246, 0.3)) !important;
+  border-color: rgba(99, 102, 241, 0.45) !important;
+  color: #e0e7ff !important;
+  font-weight: 600;
 }
 
 .active:hover {
-    background: rgba(255, 255, 255, 0.12)
+  background: linear-gradient(135deg, rgba(99, 102, 241, 0.5), rgba(139, 92, 246, 0.4)) !important;
 }
 
 @media (max-width: 768px) {
-    .wrap {
-        position: static;
-        top: auto;
-        height: auto;
-        padding: 16px;
-        border-right: none;
-        border-bottom: 1px solid var(--line);
-        gap: 16px
-    }
+  .wrap {
+    position: static;
+    height: auto;
+    border-right: none;
+    border-bottom: 1px solid rgba(99, 102, 241, 0.2);
+    overflow: visible;
+  }
 
-    .brand {
-        font-size: 18px;
-    }
+  .nav {
+    flex-direction: row;
+    flex-wrap: wrap;
+    gap: 4px;
+    overflow-y: visible;
+  }
 
-    .nav {
-        flex-direction: row;
-        flex-wrap: wrap;
-        gap: 8px;
-    }
+  .link {
+    padding: 8px 12px;
+    font-size: 13px;
+    flex: 0 1 auto;
+  }
 
-    .link {
-        padding: 10px 12px;
-        font-size: 13px;
-        flex: 0 1 auto
-    }
+  .previewHint { opacity: 1 !important; }
 
-    .previewHint {
-        opacity: 1 !important
-    }
+  .previewTooltip {
+    left: auto;
+    right: 0;
+    top: calc(100% + 8px);
+    transform: translateY(-8px);
+    width: min(360px, 90vw);
+  }
 
-    .footer {
-        margin-top: 12px;
-        font-size: 11px;
-        padding: 12px 0 0 0
-    }
-
-    .previewTooltip {
-        left: auto;
-        right: 0;
-        top: calc(100% + 12px);
-        transform: translateY(-8px);
-        width: min(360px, 90vw)
-    }
-
-    .externalWrap:hover .previewTooltip {
-        transform: translateY(0)
-    }
+  .externalWrap:hover .previewTooltip {
+    transform: translateY(0);
+  }
 }

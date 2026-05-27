@@ -1,4 +1,4 @@
-/* Projects page — modern, clean, animated grid */
+/* Projects page — light indigo theme (hist_idt style) */
 .section {
   display: grid;
   gap: 24px;
@@ -6,10 +6,11 @@
 
 .hero {
   position: relative;
-  padding: 24px;
+  padding: 28px;
   border: 1px solid var(--line);
-  border-radius: 16px;
-  background: linear-gradient(180deg, rgba(255,255,255,0.02), rgba(255,255,255,0.0));
+  border-radius: 20px;
+  background: white;
+  box-shadow: var(--shadow-md);
   overflow: hidden;
 }
 
@@ -17,8 +18,8 @@
   position: absolute;
   inset: -40% -20% auto -20%;
   height: 160px;
-  background: radial-gradient(60% 60% at 50% 50%, rgba(99,102,241,0.18), rgba(14,165,233,0.10) 50%, transparent 70%);
-  filter: blur(22px);
+  background: radial-gradient(60% 60% at 50% 50%, rgba(99,102,241,0.1), rgba(14,165,233,0.06) 50%, transparent 70%);
+  filter: blur(24px);
   pointer-events: none;
 }
 
@@ -26,32 +27,44 @@
   font-size: 22px;
   font-weight: 800;
   margin: 0;
+  color: var(--text);
 }
 
 .subtitle {
   margin: 8px 0 0 0;
   color: var(--muted);
+  font-size: 14px;
 }
 
 .filters {
   display: flex;
   gap: 8px;
   flex-wrap: wrap;
-  margin-top: 14px;
+  margin-top: 16px;
 }
 
 .chip {
-    color: white;
+  color: var(--text);
   font-size: 12px;
   border: 1px solid var(--line);
-  padding: 8px 10px;
+  padding: 6px 14px;
   border-radius: 999px;
-  background: rgba(255,255,255,0.02);
+  background: var(--bg);
+  font-weight: 500;
+  transition: all 0.2s ease;
+  cursor: pointer;
+}
+
+.chip:hover {
+  border-color: rgba(99,102,241,0.4);
+  color: var(--primary);
 }
 
 .chipActive {
-  border-color: rgba(99,102,241,0.55);
-  background: linear-gradient(90deg, rgba(99,102,241,0.16), rgba(14,165,233,0.12));
+  border-color: rgba(99,102,241,0.5);
+  background: linear-gradient(90deg, rgba(99,102,241,0.1), rgba(14,165,233,0.07));
+  color: var(--primary);
+  font-weight: 600;
 }
 
 .grid {
@@ -61,9 +74,16 @@
 
 .card {
   border: 1px solid var(--line);
-  border-radius: 14px;
-  padding: 14px;
-  background: rgba(255,255,255,0.02);
+  border-radius: 16px;
+  padding: 18px;
+  background: white;
+  box-shadow: var(--shadow-sm);
+  transition: box-shadow 0.2s ease, transform 0.2s ease;
+}
+
+.card:hover {
+  box-shadow: var(--shadow-md);
+  transform: translateY(-2px);
 }
 
 .header {
@@ -80,13 +100,14 @@
   border-radius: 12px;
   overflow: hidden;
   border: 1px solid var(--line);
-  background: #0f1115;
+  background: var(--bg);
 }
 
 .name {
   font-size: 16px;
   font-weight: 700;
   margin: 0 0 4px 0;
+  color: var(--text);
 }
 
 .meta {
@@ -97,8 +118,10 @@
 }
 
 .summary {
-  margin: 10px 0 10px 0;
+  margin: 10px 0;
   color: var(--muted);
+  font-size: 14px;
+  line-height: 1.6;
 }
 
 .tags {
@@ -110,12 +133,15 @@
 .tag {
   font-size: 12px;
   border: 1px solid var(--line);
-  padding: 4px 6px;
+  padding: 4px 8px;
   border-radius: 8px;
+  background: var(--bg);
+  color: var(--muted);
+  font-weight: 500;
 }
 
 .actions {
-  margin-top: 10px;
+  margin-top: 12px;
   display: flex;
   gap: 8px;
 }
@@ -126,27 +152,34 @@
   gap: 6px;
   font-size: 12px;
   border: 1px solid var(--line);
-  padding: 8px 10px;
+  padding: 8px 12px;
   border-radius: 10px;
+  color: var(--text);
+  background: var(--bg);
+  transition: all 0.2s ease;
+  font-weight: 500;
 }
 
+.link:hover {
+  border-color: rgba(99,102,241,0.4);
+  color: var(--primary);
+  background: rgba(99,102,241,0.05);
+}
 
 @media (max-width: 768px) {
   .section { gap: 16px; }
-  .hero { padding: 16px; }
+  .hero { padding: 18px; }
   .title { font-size: 20px; }
-  .subtitle { font-size: 14px; }
+  .subtitle { font-size: 13px; }
   .filters { gap: 6px; }
-  .chip { padding: 6px 8px; font-size: 11px; }
-
-  .card { padding: 12px; }
+  .chip { padding: 5px 10px; font-size: 11px; }
+  .card { padding: 14px; }
   .header { grid-template-columns: 48px 1fr; gap: 10px; }
   .thumb { width: 48px; height: 48px; border-radius: 10px; }
   .name { font-size: 15px; }
   .meta { font-size: 11px; }
-  .summary { font-size: 14px; }
-  .tags { gap: 4px; }
-  .tag { font-size: 11px; padding: 3px 5px; }
+  .summary { font-size: 13px; }
+  .tag { font-size: 11px; padding: 3px 6px; }
   .actions { gap: 6px; flex-wrap: wrap; }
-  .link { padding: 6px 8px; font-size: 11px; }
+  .link { padding: 6px 10px; font-size: 11px; }
 }
