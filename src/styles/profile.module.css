@@ -1,4 +1,4 @@
-/* Profile page modern clean design */
+/* Profile page — light indigo theme (hist_idt style) */
 .section {
   display: grid;
   gap: 24px;
@@ -6,10 +6,11 @@
 
 .hero {
   position: relative;
-  padding: 24px;
+  padding: 28px;
   border: 1px solid var(--line);
-  border-radius: 16px;
-  background: linear-gradient(180deg, rgba(255,255,255,0.02), rgba(255,255,255,0.0));
+  border-radius: 20px;
+  background: white;
+  box-shadow: var(--shadow-md);
   overflow: hidden;
 }
 
@@ -17,8 +18,8 @@
   position: absolute;
   inset: -40% -20% auto -20%;
   height: 180px;
-  background: radial-gradient(60% 60% at 50% 50%, rgba(59,130,246,0.18), rgba(168,85,247,0.08) 50%, transparent 70%);
-  filter: blur(20px);
+  background: radial-gradient(60% 60% at 50% 50%, rgba(99,102,241,0.1), rgba(139,92,246,0.06) 50%, transparent 70%);
+  filter: blur(24px);
   pointer-events: none;
 }
 
@@ -28,38 +29,37 @@
   gap: 16px;
 }
 
-/* 1. 프로필 이미지 glow */
 .avatar {
   position: relative;
   width: 96px;
   height: 96px;
   border-radius: 9999px;
   overflow: hidden;
-  border: 2px solid rgba(59,130,246,0.4);
-  background: #0f1115;
+  border: 2px solid rgba(99,102,241,0.3);
+  background: #f0f4ff;
   box-shadow:
-    0 0 0 4px rgba(59,130,246,0.08),
-    0 0 20px rgba(59,130,246,0.25),
-    0 0 40px rgba(168,85,247,0.12);
+    0 0 0 4px rgba(99,102,241,0.08),
+    0 4px 20px rgba(99,102,241,0.2);
   transition: box-shadow 0.3s ease;
 }
 
 .avatar:hover {
   box-shadow:
-    0 0 0 4px rgba(59,130,246,0.15),
-    0 0 28px rgba(59,130,246,0.4),
-    0 0 60px rgba(168,85,247,0.2);
+    0 0 0 4px rgba(99,102,241,0.15),
+    0 8px 30px rgba(99,102,241,0.35);
 }
 
 .name {
   font-size: 24px;
   font-weight: 800;
   margin: 0;
+  color: var(--text);
 }
 
 .title {
   margin: 6px 0 0 0;
   color: var(--muted);
+  font-size: 14px;
 }
 
 .badges {
@@ -73,12 +73,12 @@
   align-items: center;
   gap: 8px;
   font-size: 12px;
-  border: 1px solid rgba(99, 102, 241, 0.35);
-  color: #93c5fd;
-  padding: 8px 12px;
+  border: 1px solid rgba(99,102,241,0.25);
+  color: var(--primary);
+  padding: 6px 12px;
   border-radius: 999px;
-  background: linear-gradient(90deg, rgba(59,130,246,0.08), rgba(168,85,247,0.08));
-  backdrop-filter: blur(6px);
+  background: rgba(99,102,241,0.07);
+  font-weight: 500;
 }
 
 .actions {
@@ -89,13 +89,28 @@
 
 .btn {
   border: 1px solid var(--line);
-  padding: 10px 12px;
+  padding: 10px 14px;
   border-radius: 10px;
+  font-size: 14px;
+  background: white;
+  color: var(--text);
+  transition: all 0.2s ease;
+  cursor: pointer;
+}
+
+.btn:hover {
+  border-color: var(--primary);
+  color: var(--primary);
 }
 
 .btnPrimary {
-  border: 1px solid rgba(59,130,246,0.5);
-  background: linear-gradient(180deg, rgba(59,130,246,0.2), rgba(59,130,246,0.08));
+  border: 1px solid rgba(99,102,241,0.4);
+  background: linear-gradient(135deg, rgba(99,102,241,0.12), rgba(139,92,246,0.08));
+  color: var(--primary);
+}
+
+.btnPrimary:hover {
+  background: linear-gradient(135deg, rgba(99,102,241,0.2), rgba(139,92,246,0.15));
 }
 
 .cards {
@@ -105,15 +120,17 @@
 
 .card {
   border: 1px solid var(--line);
-  border-radius: 14px;
-  padding: 16px;
-  background: rgba(255,255,255,0.02);
+  border-radius: 16px;
+  padding: 20px;
+  background: white;
+  box-shadow: var(--shadow-sm);
 }
 
 .cardTitle {
   font-size: 16px;
   font-weight: 700;
   margin: 0 0 16px 0;
+  color: var(--text);
 }
 
 /* Category group */
@@ -126,15 +143,15 @@
 }
 
 .skillGroupTitle {
-  font-size: 15px;
+  font-size: 14px;
   font-weight: 700;
   letter-spacing: 0.02em;
   margin: 0 0 12px 0;
   padding: 4px 0 4px 12px;
-  border-left: 3px solid;
+  border-left: 3px solid var(--primary);
+  color: var(--text);
 }
 
-/* 2. 스킬 태그 hover */
 .skillTags {
   display: flex;
   flex-wrap: wrap;
@@ -150,22 +167,24 @@
   padding: 6px 12px;
   border-radius: 8px;
   border: 1px solid var(--line);
-  background: rgba(255,255,255,0.04);
-  color: #e2e8f0;
-  transition: background 0.15s ease, transform 0.15s ease;
+  background: var(--bg);
+  color: var(--text);
+  transition: all 0.15s ease;
   cursor: default;
 }
 
 .skillTag:hover {
-  background: rgba(255,255,255,0.09);
+  background: rgba(99,102,241,0.08);
+  border-color: rgba(99,102,241,0.3);
   transform: translateY(-2px);
+  box-shadow: var(--shadow-sm);
 }
 
 .skillTagYear {
   font-size: 11px;
   color: var(--muted);
   padding-left: 8px;
-  border-left: 1px solid rgba(255,255,255,0.12);
+  border-left: 1px solid var(--line);
 }
 
 /* legacy */
@@ -189,19 +208,29 @@
   border: 1px solid var(--line);
   border-radius: 999px;
   overflow: hidden;
+  background: var(--bg);
 }
 
-.fill { height: 100%; background: #1f6feb; }
+.fill {
+  height: 100%;
+  background: linear-gradient(90deg, var(--primary), var(--secondary));
+}
 
 .timeline { display: grid; gap: 10px; }
 
 .item {
   border: 1px solid var(--line);
   border-radius: 12px;
-  padding: 12px;
+  padding: 14px 16px;
+  background: white;
+  box-shadow: var(--shadow-sm);
+  transition: box-shadow 0.2s ease;
 }
 
-/* 3. 경력 헤더 — 회사명 + 재직기간 뱃지 */
+.item:hover {
+  box-shadow: var(--shadow-md);
+}
+
 .itemHeader {
   display: flex;
   align-items: center;
@@ -213,10 +242,10 @@
 .itemDuration {
   font-size: 11px;
   font-weight: 600;
-  color: #93c5fd;
-  background: rgba(59,130,246,0.12);
-  border: 1px solid rgba(59,130,246,0.25);
-  padding: 2px 8px;
+  color: var(--primary);
+  background: rgba(99,102,241,0.1);
+  border: 1px solid rgba(99,102,241,0.2);
+  padding: 2px 10px;
   border-radius: 999px;
   white-space: nowrap;
 }
@@ -227,7 +256,11 @@
   margin-top: 4px;
 }
 
-.note { margin-top: 6px; }
+.note {
+  margin-top: 6px;
+  color: var(--text);
+  font-size: 14px;
+}
 
 @media (max-width: 640px) {
   .skillsGrid { grid-template-columns: 1fr; }

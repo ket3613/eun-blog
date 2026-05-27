@@ -23,8 +23,15 @@ export default function Sidebar() {
 
     return (
         <aside className={s.wrap}>
-            <div className={s.brand}>eun-Blog</div>
+            <div className={s.brand}>
+                <div className={s.brandInner}>
+                    <div className={s.brandIcon}>✦</div>
+                    <span className={s.brandTitle}>eun-Blog</span>
+                </div>
+                <p className={s.brandSub}>개인 포트폴리오</p>
+            </div>
             <nav className={s.nav}>
+                <p className={s.navSection}>메뉴</p>
                 {items.map(it => (
                     it.external ? (
                         <div key={it.href} className={s.externalWrap}>
@@ -60,14 +67,16 @@ export default function Sidebar() {
                 ))}
             </nav>
             <div className={s.footer}>
-                <Link href="/login">로그인</Link>
-                {" · "}
-                <button
-                    onClick={handleLogout}
-                    style={{ background: "none", border: "none", cursor: "pointer", padding: 0, color: "inherit", font: "inherit" }}
-                >
-                    로그아웃
-                </button>
+                <div className={s.footerCard}>
+                    <Link href="/login">로그인</Link>
+                    {" · "}
+                    <button
+                        onClick={handleLogout}
+                        style={{ background: "none", border: "none", cursor: "pointer", padding: 0, color: "inherit", font: "inherit" }}
+                    >
+                        로그아웃
+                    </button>
+                </div>
             </div>
         </aside>
     );
