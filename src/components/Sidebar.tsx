@@ -1,5 +1,6 @@
 "use client";
 import Link from "next/link";
+import Image from "next/image";
 import { usePathname } from "next/navigation";
 import s from "@/styles/sidebar.module.css";
 
@@ -8,8 +9,8 @@ const items = [
     { href: "/projects", label: "프로젝트" },
     { href: "/server-stats", label: "서버 현황" },
     { href: "/images", label: "이미지(로그인)" },
-    { href: "https://grafana.euntaek.cc", label: "Grafana", external: true },
-    { href: "https://jenkins.euntaek.cc/login?from=%2F", label: "Jenkins", external: true }
+    { href: "https://grafana.euntaek.cc", label: "Grafana", external: true, preview: "/grafana-preview.svg" },
+    { href: "https://jenkins.euntaek.cc/login?from=%2F", label: "Jenkins", external: true, preview: "/jenkins-preview.svg" }
 ];
 
 export default function Sidebar() {
@@ -26,9 +27,31 @@ export default function Sidebar() {
             <nav className={s.nav}>
                 {items.map(it => (
                     it.external ? (
-                        <a key={it.href} href={it.href} className={s.link} target="_blank" rel="noopener noreferrer">
-                            {it.label}
-                        </a>
+                        <div key={it.href} className={s.externalWrap}>
+                            <a
+                                href={it.href}
+                                className={s.link}
+                                target="_blank"
+                                rel="noopener noreferrer"
+                            >
+                                {it.label}
+                                <span className={s.previewHint} aria-label="미리보기 가능">🖼</span>
+                            </a>
+                            {it.preview && (
+                                <div className={s.previewTooltip}>
+                                    <p className={s.previewLabel}>{it.label} 대시보드 예제</p>
+                                    <Image
+                                        src={it.preview}
+                                        alt={`${it.label} 대시보드 미리보기`}
+                                        width={360}
+                                        height={225}
+                                        className={s.previewImage}
+                                        unoptimized
+                                    />
+                                    <p className={s.previewNote}>※ 외부 접근 제한으로 내부 접속만 가능합니다</p>
+                                </div>
+                            )}
+                        </div>
                     ) : (
                         <Link key={it.href} href={it.href} className={`${s.link} ${pathname.startsWith(it.href) ? s.active : ""}`}>
                             {it.label}

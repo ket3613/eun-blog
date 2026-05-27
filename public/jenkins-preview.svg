@@ -1,0 +1,103 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="480" height="300" viewBox="0 0 480 300">
+  <!-- White background -->
+  <rect width="480" height="300" fill="#fafafa"/>
+
+  <!-- Top nav bar -->
+  <rect width="480" height="44" fill="#3b3b3b"/>
+  <!-- Jenkins logo background -->
+  <rect x="8" y="6" width="32" height="32" fill="#cc3b20" rx="4"/>
+  <!-- J letter -->
+  <text x="17" y="28" font-family="Georgia, serif" font-size="18" font-weight="bold" fill="white">J</text>
+  <text x="46" y="28" font-family="Arial, sans-serif" font-size="16" font-weight="bold" fill="white">Jenkins</text>
+  <!-- Top right icons -->
+  <circle cx="408" cy="22" r="8" fill="none" stroke="#888" stroke-width="1.5"/>
+  <text x="404" y="26" font-family="Arial, sans-serif" font-size="10" fill="#aaa">🔍</text>
+  <circle cx="432" cy="22" r="8" fill="none" stroke="#888" stroke-width="1.5"/>
+  <text x="428" y="26" font-family="Arial, sans-serif" font-size="10" fill="#aaa">⚙</text>
+  <circle cx="456" cy="22" r="8" fill="none" stroke="#888" stroke-width="1.5"/>
+  <text x="452" y="26" font-family="Arial, sans-serif" font-size="10" fill="#aaa">☰</text>
+
+  <!-- Left sidebar -->
+  <rect x="0" y="44" width="138" height="256" fill="#f5f5f5" stroke="#e0e0e0" stroke-width="0.5"/>
+
+  <!-- Left menu items -->
+  <text x="14" y="70" font-family="Arial, sans-serif" font-size="10" fill="#333">+ 새로운 Item</text>
+  <line x1="8" y1="78" x2="130" y2="78" stroke="#e8e8e8" stroke-width="0.5"/>
+  <text x="14" y="96" font-family="Arial, sans-serif" font-size="10" fill="#333">☷ 빌드 기록</text>
+  <line x1="8" y1="104" x2="130" y2="104" stroke="#e8e8e8" stroke-width="0.5"/>
+
+  <!-- 빌드 대기 section -->
+  <text x="14" y="122" font-family="Arial, sans-serif" font-size="9" font-weight="bold" fill="#444">빌드 대기 목록  ∨</text>
+  <line x1="8" y1="130" x2="130" y2="130" stroke="#e8e8e8" stroke-width="0.5"/>
+  <text x="14" y="148" font-family="Arial, sans-serif" font-size="8" fill="#888">빌드 대기 항목이</text>
+  <text x="14" y="160" font-family="Arial, sans-serif" font-size="8" fill="#888">없습니다.</text>
+  <line x1="8" y1="168" x2="130" y2="168" stroke="#e8e8e8" stroke-width="0.5"/>
+
+  <!-- 빌드 실행 상태 -->
+  <text x="14" y="184" font-family="Arial, sans-serif" font-size="9" font-weight="bold" fill="#444">빌드 실행 상태  0/2  ∨</text>
+
+  <!-- Main content area -->
+  <rect x="138" y="44" width="342" height="256" fill="white"/>
+
+  <!-- Top-right: 상세 내용 입력 button -->
+  <rect x="350" y="52" width="120" height="24" fill="white" rx="4" stroke="#d0d0d0" stroke-width="1"/>
+  <text x="380" y="68" font-family="Arial, sans-serif" font-size="9" fill="#555">✏ 상세 내용 입력</text>
+
+  <!-- Tab bar: All + -->
+  <rect x="148" y="84" width="34" height="24" fill="white" rx="12" stroke="#d0d0d0" stroke-width="1"/>
+  <text x="158" y="100" font-family="Arial, sans-serif" font-size="10" fill="#333">All</text>
+  <rect x="186" y="84" width="24" height="24" fill="white" rx="12" stroke="#d0d0d0" stroke-width="1"/>
+  <text x="194" y="100" font-family="Arial, sans-serif" font-size="10" fill="#333">+</text>
+
+  <!-- Table -->
+  <rect x="148" y="116" width="322" height="20" fill="#f0f0f0" rx="2"/>
+  <text x="158" y="129" font-family="Arial, sans-serif" font-size="8" fill="#555">S</text>
+  <text x="175" y="129" font-family="Arial, sans-serif" font-size="8" fill="#555">W</text>
+  <text x="196" y="129" font-family="Arial, sans-serif" font-size="8" fill="#333" font-weight="bold">Name ↓</text>
+  <text x="258" y="129" font-family="Arial, sans-serif" font-size="8" fill="#555">최근 성공</text>
+  <text x="320" y="129" font-family="Arial, sans-serif" font-size="8" fill="#555">최근 실패</text>
+  <text x="392" y="129" font-family="Arial, sans-serif" font-size="8" fill="#555">최근 소요 시간</text>
+
+  <!-- Row 1: eun-api -->
+  <rect x="148" y="136" width="322" height="30" fill="white"/>
+  <!-- S: green check -->
+  <circle cx="161" cy="151" r="8" fill="#2e7d32"/>
+  <text x="157" y="155" font-family="Arial, sans-serif" font-size="9" fill="white">✓</text>
+  <!-- W: sun icon -->
+  <circle cx="178" cy="151" r="6" fill="#FFA726" opacity="0.85"/>
+  <text x="175" y="155" font-family="Arial, sans-serif" font-size="7" fill="white">☀</text>
+  <!-- Name -->
+  <text x="196" y="155" font-family="Arial, sans-serif" font-size="10" fill="#1565C0" text-decoration="underline">eun-api</text>
+  <!-- Recent success -->
+  <text x="258" y="155" font-family="Arial, sans-serif" font-size="8" fill="#555">10 days </text>
+  <text x="295" y="155" font-family="Arial, sans-serif" font-size="8" fill="#1565C0">#107</text>
+  <!-- Recent fail -->
+  <text x="320" y="155" font-family="Arial, sans-serif" font-size="8" fill="#555">6 mo 4 days </text>
+  <text x="364" y="155" font-family="Arial, sans-serif" font-size="8" fill="#1565C0">#90</text>
+  <!-- Duration -->
+  <text x="410" y="155" font-family="Arial, sans-serif" font-size="8" fill="#555">36 sec</text>
+  <line x1="148" y1="166" x2="470" y2="166" stroke="#eeeeee" stroke-width="1"/>
+
+  <!-- Row 2: eun-blog -->
+  <rect x="148" y="166" width="322" height="30" fill="white"/>
+  <!-- S: green check -->
+  <circle cx="161" cy="181" r="8" fill="#2e7d32"/>
+  <text x="157" y="185" font-family="Arial, sans-serif" font-size="9" fill="white">✓</text>
+  <!-- W: sun icon -->
+  <circle cx="178" cy="181" r="6" fill="#FFA726" opacity="0.85"/>
+  <text x="175" y="185" font-family="Arial, sans-serif" font-size="7" fill="white">☀</text>
+  <!-- Name -->
+  <text x="196" y="185" font-family="Arial, sans-serif" font-size="10" fill="#1565C0" text-decoration="underline">eun-blog</text>
+  <!-- Recent success -->
+  <text x="258" y="185" font-family="Arial, sans-serif" font-size="8" fill="#555">10 days </text>
+  <text x="295" y="185" font-family="Arial, sans-serif" font-size="8" fill="#1565C0">#64</text>
+  <!-- Recent fail -->
+  <text x="320" y="185" font-family="Arial, sans-serif" font-size="8" fill="#555">5 mo 26 days </text>
+  <text x="368" y="185" font-family="Arial, sans-serif" font-size="8" fill="#1565C0">#52</text>
+  <!-- Duration -->
+  <text x="410" y="185" font-family="Arial, sans-serif" font-size="8" fill="#555">55 sec</text>
+  <line x1="148" y1="196" x2="470" y2="196" stroke="#eeeeee" stroke-width="1"/>
+
+  <!-- Bottom label -->
+  <text x="300" y="290" font-family="Arial, sans-serif" font-size="8" fill="#aaa" text-anchor="middle">Jenkins · CI/CD Pipeline Dashboard</text>
+</svg>
