@@ -1,4 +1,4 @@
-/* Projects page — light indigo theme (hist_idt style) */
+/* Projects page — light indigo theme */
 .section {
   display: grid;
   gap: 24px;
@@ -83,7 +83,6 @@
 
 .card:hover {
   box-shadow: var(--shadow-md);
-  transform: translateY(-2px);
 }
 
 .header {
@@ -118,9 +117,38 @@
 }
 
 .summary {
-  margin: 10px 0;
+  margin: 10px 0 8px 0;
   color: var(--muted);
   font-size: 14px;
+  line-height: 1.6;
+}
+
+/* ── 내 역할 강조 블록 ── */
+.myRole {
+  font-size: 13px;
+  padding: 8px 12px;
+  border-radius: 8px;
+  margin-bottom: 10px;
+  background: linear-gradient(135deg, rgba(99,102,241,0.07), rgba(139,92,246,0.04));
+  border-left: 3px solid #6366f1;
+  color: #374151;
+  line-height: 1.65;
+}
+
+.myRoleLabel {
+  display: block;
+  font-size: 10px;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  color: #6366f1;
+  margin-bottom: 3px;
+}
+
+.description {
+  margin: 0 0 10px 0;
+  color: var(--muted);
+  font-size: 13px;
   line-height: 1.6;
 }
 
@@ -170,16 +198,12 @@
   .section { gap: 16px; }
   .hero { padding: 18px; }
   .title { font-size: 20px; }
-  .subtitle { font-size: 13px; }
   .filters { gap: 6px; }
   .chip { padding: 5px 10px; font-size: 11px; }
   .card { padding: 14px; }
   .header { grid-template-columns: 48px 1fr; gap: 10px; }
   .thumb { width: 48px; height: 48px; border-radius: 10px; }
   .name { font-size: 15px; }
-  .meta { font-size: 11px; }
-  .summary { font-size: 13px; }
   .tag { font-size: 11px; padding: 3px 6px; }
-  .actions { gap: 6px; flex-wrap: wrap; }
-  .link { padding: 6px 10px; font-size: 11px; }
+  .myRole { font-size: 12px; }
 }

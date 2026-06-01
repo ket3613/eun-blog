@@ -3,6 +3,8 @@ export type Skill = {
     year: number;
     category: number;
     imagePath: string;
+    level?: string;   // 실무 / 사이드 / 학습
+    usedIn?: string;  // 쉼표 구분 프로젝트명
 };
 
 export type Experience = {
@@ -12,6 +14,7 @@ export type Experience = {
     note: string;
     startDate: string;
     endDate?: string | null;
+    stack?: string;  // 쉼표 구분 기술명
 };
 
 export type Profile = {

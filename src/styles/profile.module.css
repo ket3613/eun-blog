@@ -1,4 +1,4 @@
-/* Profile page — light indigo theme (hist_idt style) */
+/* Profile page — light indigo theme */
 .section {
   display: grid;
   gap: 24px;
@@ -41,6 +41,7 @@
     0 0 0 4px rgba(99,102,241,0.08),
     0 4px 20px rgba(99,102,241,0.2);
   transition: box-shadow 0.3s ease;
+  flex-shrink: 0;
 }
 
 .avatar:hover {
@@ -60,6 +61,19 @@
   margin: 6px 0 0 0;
   color: var(--muted);
   font-size: 14px;
+}
+
+/* ── 핵심 한줄 요약 ── */
+.heroSummaryLine {
+  margin-top: 14px;
+  padding: 10px 16px;
+  background: linear-gradient(135deg, rgba(99,102,241,0.08), rgba(139,92,246,0.05));
+  border: 1px solid rgba(99,102,241,0.2);
+  border-radius: 10px;
+  font-size: 13px;
+  font-weight: 500;
+  color: #3730a3;
+  line-height: 1.6;
 }
 
 .badges {
@@ -133,7 +147,21 @@
   color: var(--text);
 }
 
-/* Category group */
+/* ── 스킬 레벨 범례 ── */
+.skillLegend {
+  display: flex;
+  gap: 8px;
+  flex-wrap: wrap;
+  margin-bottom: 16px;
+}
+
+.legendItem {
+  font-size: 11px;
+  font-weight: 600;
+  padding: 3px 10px;
+  border-radius: 999px;
+}
+
 .skillGroup {
   margin-bottom: 20px;
 }
@@ -158,10 +186,11 @@
   gap: 8px;
 }
 
+/* ── 스킬 태그 (툴팁 포함) ── */
 .skillTag {
   display: inline-flex;
   align-items: center;
-  gap: 8px;
+  gap: 6px;
   font-size: 13px;
   font-weight: 500;
   padding: 6px 12px;
@@ -171,51 +200,76 @@
   color: var(--text);
   transition: all 0.15s ease;
   cursor: default;
+  position: relative;
 }
 
 .skillTag:hover {
-  background: rgba(99,102,241,0.08);
+  background: rgba(99,102,241,0.06);
   border-color: rgba(99,102,241,0.3);
   transform: translateY(-2px);
   box-shadow: var(--shadow-sm);
 }
 
+/* ── 레벨 뱃지 ── */
+.skillLevelBadge {
+  font-size: 10px;
+  font-weight: 700;
+  padding: 1px 6px;
+  border-radius: 4px;
+  color: white;
+  flex-shrink: 0;
+}
+
+.badge_실무 { background: #6366f1; }
+.badge_사이드 { background: #8b5cf6; }
+.badge_학습 { background: #94a3b8; }
+
 .skillTagYear {
   font-size: 11px;
   color: var(--muted);
-  padding-left: 8px;
+  padding-left: 6px;
   border-left: 1px solid var(--line);
 }
 
-/* legacy */
-.skillsGrid {
-  display: grid;
-  grid-template-columns: repeat(2, minmax(0, 1fr));
-  gap: 10px 16px;
+/* ── 프로젝트 연결 툴팁 ── */
+.skillTooltip {
+  display: none;
+  position: absolute;
+  bottom: calc(100% + 8px);
+  left: 0;
+  z-index: 100;
+  min-width: 160px;
+  background: #1e1b4b;
+  border: 1px solid rgba(99,102,241,0.3);
+  border-radius: 10px;
+  padding: 10px 12px;
+  box-shadow: 0 8px 24px rgba(0,0,0,0.25);
+  flex-direction: column;
+  gap: 4px;
 }
 
-.skillRow { display: grid; gap: 6px; }
-
-.skillMeta {
+.skillTag:hover .skillTooltip {
   display: flex;
-  justify-content: space-between;
+}
+
+.skillTooltipTitle {
+  font-size: 10px;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  color: rgba(165,180,252,0.7);
+  margin-bottom: 4px;
+  white-space: nowrap;
+}
+
+.skillTooltipItem {
   font-size: 12px;
-  color: var(--muted);
+  color: #e0e7ff;
+  white-space: nowrap;
+  line-height: 1.5;
 }
 
-.bar {
-  height: 8px;
-  border: 1px solid var(--line);
-  border-radius: 999px;
-  overflow: hidden;
-  background: var(--bg);
-}
-
-.fill {
-  height: 100%;
-  background: linear-gradient(90deg, var(--primary), var(--secondary));
-}
-
+/* ── 경력 ── */
 .timeline { display: grid; gap: 10px; }
 
 .item {
@@ -262,8 +316,26 @@
   font-size: 14px;
 }
 
+/* ── 경력 기술 태그 ── */
+.expStack {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 5px;
+  margin-top: 10px;
+}
+
+.expStackTag {
+  font-size: 11px;
+  font-weight: 500;
+  padding: 2px 8px;
+  border-radius: 5px;
+  background: rgba(99,102,241,0.08);
+  border: 1px solid rgba(99,102,241,0.2);
+  color: #4338ca;
+}
+
 @media (max-width: 640px) {
-  .skillsGrid { grid-template-columns: 1fr; }
   .skillTag { font-size: 12px; padding: 5px 10px; }
   .itemHeader { flex-direction: column; align-items: flex-start; }
+  .skillTooltip { left: auto; right: 0; }
 }

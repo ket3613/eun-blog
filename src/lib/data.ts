@@ -5,12 +5,11 @@ export const profile = {
   position: "Backend Engineer",
   bio: "Java/Spring, AWS, ERP, API 서버 운영",
   email: "ket3613@naver.com",
-  avatar: "/file.svg", // 프로필 이미지 경로 (임시 더미)
+  avatar: "/file.svg",
   role: "Admin",
   links: [
     { label: "GitHub", href: "https://github.com/ket3613" },
   ],
-  // 기술 스택과 숙련도 목록
   skills: [
     { name: "Java", years: 6 },
     { name: "Spring/Spring Boot", years: 5 },
@@ -18,20 +17,13 @@ export const profile = {
     { name: "AWS", years: 4 },
     { name: "Docker", years: 4 },
     { name: "React", years: 3 },
-    { name: "test1", years: 4 },
-    { name: "test2", years: 4 },
-    { name: "test3", years: 3 },
-    { name: "test4", years: 4 },
-    { name: "test5", years: 3 }
   ],
-  // 주요 강점
   highlights: ["API 설계", "대용량 트래픽 운영", "모니터링/알림", "ERP 커스텀"],
-  // 경력 사항
   experience: [
     { period: "2022–2025", role: "Backend Eng.", org: "Hanjin Information Systems", note: "ERP·API 서버 운영, 성능개선" },
     { period: "2019–2022", role: "Backend Eng.", org: "WideTNS", note: "J2EE·Oracle 기반 시스템" }
   ],
-  resumeUrl: "/resume.pdf" // 이력서 PDF 경로 (없으면 버튼 숨김)
+  resumeUrl: "/resume.pdf"
 };
 
 // 프로젝트 타입 정의
@@ -41,9 +33,9 @@ export type Project = {
   summary: string;
   description: string | null;
   stack: Stack[];
-  year?: string; // API sends string "2023"
+  year?: string;
   image?: string;
-  // Keeping these as optional for compatibility or future use
+  myRole?: string;  // 내 역할/기여 설명
   url?: string;
   repoUrl?: string;
 };
@@ -62,19 +54,20 @@ export const projects: Project[] = [
     name: "ORACLE ERP 기내식 운영",
     summary: "항공 기내식 ERP 주문 최적화 및 운영",
     description: "",
+    myRole: "ERP 커스터마이징, 주문 최적화 로직 개발, 운영 장애 대응",
     stack: [
       { stackName: "Oracle ERP", category: "2", idNumber: "5" },
       { stackName: "OracleDB", category: "2", idNumber: "6" }
     ],
     year: "2023",
     image: "/OracleDB.svg",
-    repoUrl: "#"
   },
   {
     id: "p2",
     name: "ORACLE ERP 홈페이지",
     summary: "ERP 접속 홈페이지 관리",
     description: "",
+    myRole: "Spring Boot 백엔드 전담, Okta SSO 연동, AWS 배포 환경 구성",
     stack: [
       { stackName: "SpringBoot", category: "1", idNumber: "1" },
       { stackName: "Java", category: "1", idNumber: "1" },
@@ -86,22 +79,19 @@ export const projects: Project[] = [
     ],
     year: "2025",
     image: "/SpringBoot.svg",
-    repoUrl: "#"
   },
   {
     id: "p3",
     name: "IFMOR",
     summary: "기내식 API 서버 운영 및 개발",
     description: "",
+    myRole: "REST API 설계·개발, OracleERP 연동, Datadog 모니터링 구성, APIGee 게이트웨이 운영",
     stack: [
       { stackName: "SpringBoot", category: "1", idNumber: "1" },
       { stackName: "Java", category: "2", idNumber: "1" },
       { stackName: "AWS", category: "3", idNumber: "1" },
       { stackName: "OracleDB", category: "2", idNumber: "6" },
       { stackName: "APIGee", category: "4", idNumber: "7" },
-      { stackName: "JSP", category: "1", idNumber: "1" },
-      { stackName: "jQuery", category: "1", idNumber: "2" },
-      { stackName: "swagger", category: "1", idNumber: "1" },
       { stackName: "Datadog", category: "4", idNumber: "5" }
     ],
     year: "2023",
@@ -112,69 +102,60 @@ export const projects: Project[] = [
     name: "IFSF",
     summary: "기내운영 FeedBack 공유 사이트",
     description: "",
+    myRole: "백엔드 API 개발, 피드백 처리 로직 설계, AWS 운영",
     stack: [
       { stackName: "SpringBoot", category: "1", idNumber: "1" },
       { stackName: "Java", category: "2", idNumber: "1" },
       { stackName: "AWS", category: "3", idNumber: "1" },
       { stackName: "OracleDB", category: "2", idNumber: "6" },
-      { stackName: "APIGee", category: "4", idNumber: "7" },
-      { stackName: "JSP", category: "1", idNumber: "1" },
-      { stackName: "jQuery", category: "1", idNumber: "2" },
-      { stackName: "swagger", category: "1", idNumber: "1" },
       { stackName: "Datadog", category: "4", idNumber: "5" }
     ],
     year: "2023",
     image: "/SpringBoot.svg",
-    repoUrl: "#"
   },
   {
     id: "p5",
     name: "CBS",
     summary: "기내 하기물품 관리 시스템",
     description: "",
+    myRole: "물품 관리 API 개발, 조회/등록/수정 CRUD 전담 구현",
     stack: [
       { stackName: "SpringBoot", category: "1", idNumber: "1" },
       { stackName: "Java", category: "2", idNumber: "1" },
       { stackName: "OracleDB", category: "2", idNumber: "6" },
-      { stackName: "JSP", category: "1", idNumber: "1" },
-      { stackName: "jQuery", category: "1", idNumber: "2" },
       { stackName: "Datadog", category: "4", idNumber: "5" }
     ],
     year: "2023",
     image: "/SpringBoot.svg",
-    repoUrl: "#"
   },
   {
     id: "p6",
     name: "MPMD",
     summary: "MMS 문자과금 시스템",
     description: "",
+    myRole: "RabbitMQ 기반 과금 메시지 처리, Grafana 대시보드 구성, Shell 배치 운영",
     stack: [
       { stackName: "SpringBoot", category: "1", idNumber: "1" },
       { stackName: "Java", category: "2", idNumber: "1" },
       { stackName: "OracleDB", category: "2", idNumber: "6" },
       { stackName: "RabbitMQ", category: "2", idNumber: "8" },
       { stackName: "Shell Script", category: "4", idNumber: "8" },
-      { stackName: "Linux", category: "3", idNumber: "4" },
       { stackName: "Grafana", category: "4", idNumber: "4" }
     ],
     year: "2022",
     image: "/SpringBoot.svg",
-    repoUrl: "#"
   },
   {
     id: "p7",
     name: "SPOP",
-    summary: "과금 관련 웹페이지 ",
+    summary: "과금 관련 웹페이지",
     description: "",
+    myRole: "과금 데이터 조회 페이지 개발, Shell 스크립트 배치 연동",
     stack: [
       { stackName: "SpringBoot", category: "1", idNumber: "1" },
       { stackName: "Java", category: "2", idNumber: "1" },
       { stackName: "OracleDB", category: "2", idNumber: "6" },
-      { stackName: "JSP", category: "1", idNumber: "1" },
-      { stackName: "jQuery", category: "1", idNumber: "2" },
       { stackName: "Shell Script", category: "4", idNumber: "8" },
-      { stackName: "Linux", category: "3", idNumber: "4" },
       { stackName: "Grafana", category: "4", idNumber: "4" }
     ],
   },
@@ -183,6 +164,7 @@ export const projects: Project[] = [
     name: "CoinTrading",
     summary: "코인 매매 프로그램 (개인프로젝트)",
     description: "여러 사이트에대한 정보를 조합해서 매매 및 매도 자동 프로그램",
+    myRole: "전체 설계 및 구현, FastAPI 서버 구성, docker-compose 배포",
     stack: [
       { stackName: "Python", category: "2", idNumber: "3" },
       { stackName: "FastAPI", category: "2", idNumber: "4" },
@@ -190,31 +172,26 @@ export const projects: Project[] = [
     ],
     year: "2024",
     image: "/Python.svg",
-    repoUrl: "#"
   },
   {
     id: "p9",
     name: "eun-blog",
     summary: "개인 홈페이지구성(개인프로젝트)",
     description: "cloudflare 도메인 구성으로 서브도메인 생성으로 API,jenkins,docker-compose 사용한 서버구성",
+    myRole: "프론트(Next.js) 전담 설계, Jenkins CI/CD 파이프라인 구축, Grafana 대시보드 연동, 라즈베리파이 서버 직접 운영",
     stack: [
       { stackName: "React", category: "1", idNumber: "4" },
       { stackName: "Next.js", category: "1", idNumber: "3" },
-      { stackName: "Vercel", category: "1", idNumber: "1" },
       { stackName: "Cloudflare", category: "3", idNumber: "3" },
       { stackName: "docker-compose", category: "4", idNumber: "3" },
       { stackName: "SpringBoot", category: "2", idNumber: "2" },
       { stackName: "Java", category: "2", idNumber: "1" },
       { stackName: "PostgreSQL", category: "2", idNumber: "7" },
       { stackName: "JenKins", category: "4", idNumber: "1" },
-      { stackName: "GitHub", category: "4", idNumber: "2" },
-      { stackName: "Raspberry pi 5", category: "1", idNumber: "1" },
-      { stackName: "swagger", category: "1", idNumber: "1" },
       { stackName: "Raspberry_pi_5", category: "3", idNumber: "5" }
     ],
     year: "2025",
     image: "/Raspberry_pi_5.svg",
-    repoUrl: "#"
   }
 ];
 
