@@ -6,24 +6,11 @@ import { useEffect, useState } from "react";
 import { Profile, Skill } from "@/lib/dataType";
 import { getProfile } from "@/app/api/profile";
 
-const CATEGORY_LABELS: Record<number, string> = {
-    1: "Backend",
-    2: "Frontend",
-    3: "Infra",
-    4: "Other",
-};
-
 const CATEGORY_COLORS: Record<number, string> = {
     1: "#3b82f6",
     2: "#a855f7",
     3: "#22c55e",
     4: "#f97316",
-};
-
-const LEVEL_LABELS: Record<string, string> = {
-    "실무": "실무",
-    "사이드": "사이드",
-    "학습": "학습",
 };
 
 function calcDuration(start: string, end?: string | null): string {
@@ -58,10 +45,10 @@ function SkillTag({ sk }: { sk: Skill }) {
     const projects = sk.usedIn ? sk.usedIn.split(",").map(p => p.trim()).filter(Boolean) : [];
 
     return (
-        <span className={`${s.skillTag} ${s[`skillLevel_${level}`] ?? ""}`}>
+        <span className={`${s.skillTag}`}>
             {sk.skillName}
             <span className={`${s.skillLevelBadge} ${s[`badge_${level}`] ?? s.badge_학습}`}>
-                {LEVEL_LABELS[level] ?? level}
+                {level}
             </span>
             <span className={s.skillTagYear}>{sk.year}년</span>
             {projects.length > 0 && (
@@ -89,17 +76,8 @@ export default function ProfilePage() {
             });
     }, []);
 
-    if (error) {
-        return <div className={s.container}>{error}</div>;
-    }
-
-    if (!profile) {
-        return (
-            <div className={s.container}>
-                프로필을 불러오는 중입니다...
-            </div>
-        );
-    }
+    if (error) return <div className={s.container}>{error}</div>;
+    if (!profile) return <div className={s.container}>프로필을 불러오는 중입니다...</div>;
 
     const skillsByCategory = profile.skills?.reduce<Record<number, Skill[]>>((acc, sk) => {
         (acc[sk.category] ??= []).push(sk);
@@ -123,9 +101,7 @@ export default function ProfilePage() {
                 </div>
 
                 {heroSummary && (
-                    <div className={s.heroSummaryLine}>
-                        {heroSummary}
-                    </div>
+                    <div className={s.heroSummaryLine}>{heroSummary}</div>
                 )}
 
                 <p style={{ marginTop: 14 }}>{profile.bio}</p>
@@ -155,13 +131,12 @@ export default function ProfilePage() {
                             .sort(([a], [b]) => Number(a) - Number(b))
                             .map(([cat, skills]) => {
                                 const color = CATEGORY_COLORS[Number(cat)] ?? "#6b7280";
+                                // API에서 categoryName이 오면 그걸 사용, 없으면 첫 번째 스킬 기준
+                                const label = skills[0]?.categoryName ?? `Category ${cat}`;
                                 return (
                                     <div key={cat} className={s.skillGroup}>
-                                        <h3
-                                            className={s.skillGroupTitle}
-                                            style={{ borderLeftColor: color, color }}
-                                        >
-                                            {CATEGORY_LABELS[Number(cat)] ?? `Category ${cat}`}
+                                        <h3 className={s.skillGroupTitle} style={{ borderLeftColor: color, color }}>
+                                            {label}
                                         </h3>
                                         <div className={s.skillTags}>
                                             {skills.map((sk) => (
