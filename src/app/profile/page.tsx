@@ -20,6 +20,12 @@ const CATEGORY_COLORS: Record<number, string> = {
     4: "#f97316",
 };
 
+const LEVEL_LABELS: Record<string, string> = {
+    "실무": "실무",
+    "사이드": "사이드",
+    "학습": "학습",
+};
+
 function calcDuration(start: string, end?: string | null): string {
     if (!start) return "";
     const s = new Date(start);
@@ -45,6 +51,29 @@ function safeHref(url?: string | null): string {
 function safeMailto(email?: string | null): string {
     if (!email) return "#";
     return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email) ? `mailto:${email}` : "#";
+}
+
+function SkillTag({ sk }: { sk: Skill }) {
+    const level = sk.level ?? "학습";
+    const projects = sk.usedIn ? sk.usedIn.split(",").map(p => p.trim()).filter(Boolean) : [];
+
+    return (
+        <span className={`${s.skillTag} ${s[`skillLevel_${level}`] ?? ""}`}>
+            {sk.skillName}
+            <span className={`${s.skillLevelBadge} ${s[`badge_${level}`] ?? s.badge_학습}`}>
+                {LEVEL_LABELS[level] ?? level}
+            </span>
+            <span className={s.skillTagYear}>{sk.year}년</span>
+            {projects.length > 0 && (
+                <span className={s.skillTooltip}>
+                    <span className={s.skillTooltipTitle}>사용한 프로젝트</span>
+                    {projects.map(p => (
+                        <span key={p} className={s.skillTooltipItem}>📦 {p}</span>
+                    ))}
+                </span>
+            )}
+        </span>
+    );
 }
 
 export default function ProfilePage() {
@@ -77,6 +106,8 @@ export default function ProfilePage() {
         return acc;
     }, {}) ?? {};
 
+    const heroSummary = profile.highlights?.join(" · ");
+
     return (
         <section className={s.section}>
             <header className={s.hero}>
@@ -90,6 +121,13 @@ export default function ProfilePage() {
                         <p className={s.title}>{profile.title}</p>
                     </div>
                 </div>
+
+                {heroSummary && (
+                    <div className={s.heroSummaryLine}>
+                        {heroSummary}
+                    </div>
+                )}
+
                 <p style={{ marginTop: 14 }}>{profile.bio}</p>
                 <div className={s.actions} style={{ marginTop: 16 }}>
                     <a className={`${s.btn} ${s.btnPrimary}`} href={safeMailto(profile.email)}>이메일</a>
@@ -105,29 +143,14 @@ export default function ProfilePage() {
             </header>
 
             <div className={s.cards}>
-                {profile.highlights?.length ? (
-                    <section className={s.card}>
-                        <h2 className={s.cardTitle}>주요 강점</h2>
-                        <div className={s.badges}>
-                            {profile.highlights.map((h, i) => (
-                                <motion.span
-                                    key={h}
-                                    className={s.badge}
-                                    initial={{ opacity: 0, y: 6 }}
-                                    animate={{ opacity: 1, y: 0 }}
-                                    transition={{ delay: 0.05 * i }}
-                                    whileHover={{ y: -2, scale: 1.03 }}
-                                >
-                                    {h}
-                                </motion.span>
-                            ))}
-                        </div>
-                    </section>
-                ) : null}
-
                 {profile.skills?.length ? (
                     <section className={s.card}>
                         <h2 className={s.cardTitle}>기술스택</h2>
+                        <div className={s.skillLegend}>
+                            <span className={`${s.legendItem} ${s.badge_실무}`}>실무</span>
+                            <span className={`${s.legendItem} ${s.badge_사이드}`}>사이드</span>
+                            <span className={`${s.legendItem} ${s.badge_학습}`}>학습</span>
+                        </div>
                         {Object.entries(skillsByCategory)
                             .sort(([a], [b]) => Number(a) - Number(b))
                             .map(([cat, skills]) => {
@@ -142,10 +165,7 @@ export default function ProfilePage() {
                                         </h3>
                                         <div className={s.skillTags}>
                                             {skills.map((sk) => (
-                                                <span key={sk.skillName} className={s.skillTag} style={{ borderColor: `${color}33` }}>
-                                                    {sk.skillName}
-                                                    <span className={s.skillTagYear}>{sk.year}년</span>
-                                                </span>
+                                                <SkillTag key={sk.skillName} sk={sk} />
                                             ))}
                                         </div>
                                     </div>
@@ -166,6 +186,13 @@ export default function ProfilePage() {
                                     </div>
                                     <div className={s.period}>{e.startDate} ~ {e.endDate || "현재"}</div>
                                     <div className={s.note}>{e.note}</div>
+                                    {e.stack && (
+                                        <div className={s.expStack}>
+                                            {e.stack.split(",").map(t => t.trim()).filter(Boolean).map(t => (
+                                                <span key={t} className={s.expStackTag}>{t}</span>
+                                            ))}
+                                        </div>
+                                    )}
                                 </li>
                             ))}
                         </ul>

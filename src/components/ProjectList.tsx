@@ -41,7 +41,7 @@ export default function ProjectList({ initialProjects }: ProjectListProps) {
                             key={ch}
                             className={`${s.chip} ${filter === ch ? s.chipActive : ""}`}
                             onClick={() => setFilter(ch)}
-                            whileHover={{ scale: 1.5}}
+                            whileHover={{ scale: 1.05 }}
                             whileTap={{ scale: 1 }}
                             transition={{ type: "spring", stiffness: 500, damping: 20 }}
                         >
@@ -76,7 +76,15 @@ export default function ProjectList({ initialProjects }: ProjectListProps) {
                         </div>
 
                         <p className={s.summary}>{p.summary}</p>
-                        <p className={s.description}>{p.description}</p>
+
+                        {p.myRole && (
+                            <div className={s.myRole}>
+                                <strong className={s.myRoleLabel}>내 역할</strong>
+                                {p.myRole}
+                            </div>
+                        )}
+
+                        {p.description && <p className={s.description}>{p.description}</p>}
 
                         <div className={s.tags}>
                             {p.stack.map(tag => (
