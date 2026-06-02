@@ -4,6 +4,7 @@ import { useMemo, useState } from "react";
 import Image from "next/image";
 import { motion } from "framer-motion";
 import { Project } from "@/lib/data";
+import { API_BASE } from "@/lib/config";
 import s from "@/styles/projects.module.css";
 
 interface ProjectListProps {
@@ -91,6 +92,19 @@ export default function ProjectList({ initialProjects }: ProjectListProps) {
                                 <span key={tag.stackName} className={s.tag}>{tag.stackName}</span>
                             ))}
                         </div>
+
+                        {p.pdfName && (
+                            <div className={s.actions}>
+                                <a
+                                    className={s.link}
+                                    href={`${API_BASE}/api/projects/${p.id}/pdf`}
+                                    target="_blank"
+                                    rel="noopener noreferrer"
+                                >
+                                    📄 PDF 내려받기
+                                </a>
+                            </div>
+                        )}
                     </motion.article>
                 ))}
             </div>
