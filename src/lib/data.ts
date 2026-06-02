@@ -25,7 +25,6 @@ export const profile = {
   resumeUrl: "/resume.pdf"
 };
 
-// projects.id는 API에서 SERIAL 정수로 내려옴
 export type Project = {
   id: number | string;
   name: string;
@@ -35,6 +34,8 @@ export type Project = {
   year?: string;
   image?: string;
   myRole?: string;
+  pdfPath?: string | null;   // 서버 저장 경로 (UUID.pdf)
+  pdfName?: string | null;   // 원본 파일명
   url?: string;
   repoUrl?: string;
 };
@@ -45,7 +46,7 @@ export type Stack = {
   categoryName?: string;
 };
 
-// 인증이 필요한 보호된 이미지 목록
+// 인증이 필요한 보호된 이미지 목록 (레거시 - 미사용)
 export const protectedImages = [
   { id: "img1", alt: "프로젝트 대시보드", src: "/file.svg" },
   { id: "img2", alt: "시스템 아키텍처", src: "/file.svg" }
