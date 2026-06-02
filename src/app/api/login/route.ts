@@ -19,7 +19,7 @@ export async function POST(req: Request) {
         });
 
         const data = await res.json();
-        if (!res.ok || data.status !== "ok") {
+        if (!data.success) {
             return NextResponse.json({ ok: false, error: "invalid" }, { status: 401 });
         }
     } catch {
