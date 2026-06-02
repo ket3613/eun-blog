@@ -1,23 +1,51 @@
 "use client";
 import Link from "next/link";
 import Image from "next/image";
-import { usePathname } from "next/navigation";
+import { useState, useEffect } from "react";
+import { usePathname, useRouter } from "next/navigation";
+import LoginModal from "@/components/LoginModal";
 import s from "@/styles/sidebar.module.css";
 
 const items = [
     { href: "/profile", label: "프로필" },
     { href: "/projects", label: "프로젝트" },
     { href: "/server-stats", label: "서버 현황" },
-    { href: "/manage", label: "프로젝트 관리(로그인)" },
     { href: "https://grafana.euntaek.cc", label: "Grafana", external: true, preview: "/grafana-preview.svg" },
     { href: "https://jenkins.euntaek.cc/login?from=%2F", label: "Jenkins", external: true, preview: "/jenkins-preview.svg" }
 ];
 
 export default function Sidebar() {
     const pathname = usePathname();
+    const router = useRouter();
+    const [showLogin, setShowLogin] = useState(false);
+    const [loggedIn, setLoggedIn] = useState(false);
+
+    async function refreshSession() {
+        try {
+            const res = await fetch("/api/session");
+            const data = await res.json();
+            setLoggedIn(!!data.loggedIn);
+        } catch {
+            setLoggedIn(false);
+        }
+    }
+
+    useEffect(() => {
+        refreshSession();
+    }, [pathname]);
+
+    function handleManageClick(e: React.MouseEvent) {
+        e.preventDefault();
+        if (loggedIn) {
+            router.push("/manage");
+        } else {
+            setShowLogin(true);
+        }
+    }
 
     async function handleLogout() {
         await fetch("/api/logout", { method: "POST" });
+        setLoggedIn(false);
         window.location.href = "/";
     }
 
@@ -65,19 +93,39 @@ export default function Sidebar() {
                         </Link>
                     )
                 ))}
+                {/* 프로젝트 관리 - 로그인 필요 */}
+                <a
+                    href="/manage"
+                    onClick={handleManageClick}
+                    className={`${s.link} ${pathname.startsWith("/manage") ? s.active : ""}`}
+                >
+                    프로젝트 관리{!loggedIn && " 🔒"}
+                </a>
             </nav>
             <div className={s.footer}>
                 <div className={s.footerCard}>
-                    <Link href="/login">로그인</Link>
-                    {" · "}
-                    <button
-                        onClick={handleLogout}
-                        style={{ background: "none", border: "none", cursor: "pointer", padding: 0, color: "inherit", font: "inherit" }}
-                    >
-                        로그아웃
-                    </button>
+                    {loggedIn ? (
+                        <button
+                            onClick={handleLogout}
+                            style={{ background: "none", border: "none", cursor: "pointer", padding: 0, color: "inherit", font: "inherit" }}
+                        >
+                            로그아웃
+                        </button>
+                    ) : (
+                        <span style={{ color: "#9aa0a6" }}>비로그인 상태</span>
+                    )}
                 </div>
             </div>
+            {showLogin && (
+                <LoginModal
+                    onClose={() => setShowLogin(false)}
+                    onSuccess={() => {
+                        setShowLogin(false);
+                        setLoggedIn(true);
+                        router.push("/manage");
+                    }}
+                />
+            )}
         </aside>
     );
 }
