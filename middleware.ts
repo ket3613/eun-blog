@@ -14,8 +14,6 @@ export async function middleware(req: NextRequest) {
 
 export const config = {
   matcher: [
-    "/images/:path*",
-    "/tech/new",
-    "/tech/:path*/edit",
+    "/manage/:path*",
   ],
 };

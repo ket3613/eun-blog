@@ -8,7 +8,7 @@ const items = [
     { href: "/profile", label: "프로필" },
     { href: "/projects", label: "프로젝트" },
     { href: "/server-stats", label: "서버 현황" },
-    { href: "/images", label: "이미지(로그인)" },
+    { href: "/manage", label: "프로젝트 관리(로그인)" },
     { href: "https://grafana.euntaek.cc", label: "Grafana", external: true, preview: "/grafana-preview.svg" },
     { href: "https://jenkins.euntaek.cc/login?from=%2F", label: "Jenkins", external: true, preview: "/jenkins-preview.svg" }
 ];
