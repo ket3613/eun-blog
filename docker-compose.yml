@@ -1,10 +1,10 @@
 services:
   app:
     build:
-      context: .              # Dockerfile 있는 폴더
-      dockerfile: Dockerfile  # 이름이 Dockerfile이면 생략 가능
+      context: .
+      dockerfile: Dockerfile
       args:
-        NEXT_PUBLIC_API_BASE_URL: "https://api.euntaek.cc"   # ← 여기 하드코딩
+        NEXT_PUBLIC_API_BASE_URL: "https://api.euntaek.cc"
     image: eun-blog:latest
     container_name: eun-blog
     ports:
@@ -12,5 +12,5 @@ services:
     restart: always
     environment:
       - TZ=Asia/Seoul
-      - AUTH_SECRET=${AUTH_SECRET}
-      - ADMIN_TOKEN=${ADMIN_TOKEN}
+      - AUTH_SECRET=80e89781a8d7d15505e8410fce4b0c7cb7ef4dc48605b3819bb94af90d9277e2
+      - ADMIN_TOKEN=change-me-secret
