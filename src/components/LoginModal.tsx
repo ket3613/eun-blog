@@ -1,5 +1,6 @@
 "use client";
-import { useState } from "react";
+import { useState, useEffect } from "react";
+import { createPortal } from "react-dom";
 
 interface Props {
     onClose: () => void;
@@ -11,6 +12,25 @@ export default function LoginModal({ onClose, onSuccess }: Props) {
     const [pass, setPass] = useState("");
     const [err, setErr] = useState("");
     const [loading, setLoading] = useState(false);
+    const [mounted, setMounted] = useState(false);
+
+    useEffect(() => {
+        setMounted(true);
+        // 모달 열릴 때 배경 스크롤 잠금
+        const prev = document.body.style.overflow;
+        document.body.style.overflow = "hidden";
+
+        // ESC 키로 닫기
+        const onKey = (e: KeyboardEvent) => {
+            if (e.key === "Escape") onClose();
+        };
+        window.addEventListener("keydown", onKey);
+
+        return () => {
+            document.body.style.overflow = prev;
+            window.removeEventListener("keydown", onKey);
+        };
+    }, [onClose]);
 
     async function onSubmit(e: React.FormEvent) {
         e.preventDefault();
@@ -34,12 +54,15 @@ export default function LoginModal({ onClose, onSuccess }: Props) {
         }
     }
 
-    return (
+    if (!mounted) return null;
+
+    return createPortal(
         <div
             onClick={onClose}
             style={{
-                position: "fixed", inset: 0, background: "rgba(0,0,0,0.55)",
-                display: "flex", alignItems: "center", justifyContent: "center", zIndex: 1000,
+                position: "fixed", inset: 0, background: "rgba(0,0,0,0.6)",
+                display: "flex", alignItems: "center", justifyContent: "center",
+                zIndex: 99999, backdropFilter: "blur(2px)",
             }}
         >
             <div
@@ -47,7 +70,7 @@ export default function LoginModal({ onClose, onSuccess }: Props) {
                 style={{
                     width: "100%", maxWidth: 360, background: "#0e1116",
                     border: "1px solid #1f232b", borderRadius: 14, padding: 24,
-                    boxShadow: "0 12px 40px rgba(0,0,0,0.4)",
+                    boxShadow: "0 12px 40px rgba(0,0,0,0.5)",
                 }}
             >
                 <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", marginBottom: 16 }}>
@@ -83,6 +106,7 @@ export default function LoginModal({ onClose, onSuccess }: Props) {
                     {err && <p style={{ color: "#ef4444", margin: 0, fontSize: 13 }}>{err}</p>}
                 </form>
             </div>
-        </div>
+        </div>,
+        document.body
     );
 }
