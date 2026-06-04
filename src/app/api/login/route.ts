@@ -11,10 +11,19 @@ export async function POST(req: Request) {
         return NextResponse.json({ ok: false, error: "invalid" }, { status: 401 });
     }
 
+    const adminToken = process.env.ADMIN_TOKEN;
+    if (!adminToken) {
+        console.error("[login] ADMIN_TOKEN is not configured");
+        return NextResponse.json({ ok: false, error: "server error" }, { status: 500 });
+    }
+
     try {
         const res = await fetch(`${API_BASE}/api/users/login`, {
             method: "POST",
-            headers: { "Content-Type": "application/json" },
+            headers: {
+                "Content-Type": "application/json",
+                "X-Admin-Token": adminToken,
+            },
             body: JSON.stringify({ userName: user, password: pass }),
         });
 
