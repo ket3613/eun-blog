@@ -22,18 +22,19 @@ export async function POST(req: Request) {
         if (!data.success) {
             return NextResponse.json({ ok: false, error: "invalid" }, { status: 401 });
         }
-    } catch {
+
+        const token = await createToken({ user });
+        const response = NextResponse.json({ ok: true });
+        (await cookies()).set("session", token, {
+            httpOnly: true,
+            secure: process.env.NODE_ENV === "production",
+            sameSite: "strict",
+            path: "/",
+            maxAge: 60 * 60,
+        });
+        return response;
+    } catch (e) {
+        console.error("[login] error:", e);
         return NextResponse.json({ ok: false, error: "server error" }, { status: 500 });
     }
-
-    const token = await createToken({ user });
-    const response = NextResponse.json({ ok: true });
-    (await cookies()).set("session", token, {
-        httpOnly: true,
-        secure: process.env.NODE_ENV === "production",
-        sameSite: "strict",
-        path: "/",
-        maxAge: 60 * 60,
-    });
-    return response;
 }
