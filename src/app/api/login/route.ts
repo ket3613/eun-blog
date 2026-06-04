@@ -3,6 +3,8 @@ import { cookies } from "next/headers";
 import { createToken } from "@/lib/auth";
 import { API_BASE } from "@/lib/config";
 
+const ADMIN_TOKEN = process.env.ADMIN_TOKEN ?? "change-me-secret";
+
 export async function POST(req: Request) {
     const body = await req.json().catch(() => ({}));
     const { user, pass } = body as { user?: string; pass?: string };
@@ -11,18 +13,12 @@ export async function POST(req: Request) {
         return NextResponse.json({ ok: false, error: "invalid" }, { status: 401 });
     }
 
-    const adminToken = process.env.ADMIN_TOKEN;
-    if (!adminToken) {
-        console.error("[login] ADMIN_TOKEN is not configured");
-        return NextResponse.json({ ok: false, error: "server error" }, { status: 500 });
-    }
-
     try {
         const res = await fetch(`${API_BASE}/api/users/login`, {
             method: "POST",
             headers: {
                 "Content-Type": "application/json",
-                "X-Admin-Token": adminToken,
+                "X-Admin-Token": ADMIN_TOKEN,
             },
             body: JSON.stringify({ userName: user, password: pass }),
         });
