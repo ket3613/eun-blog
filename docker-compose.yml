@@ -12,4 +12,5 @@ services:
     restart: always
     environment:
       - TZ=Asia/Seoul
-    # env_file: .env   ← 요 줄(또는 비슷한 줄)이 있다면 반드시 삭제
+      - AUTH_SECRET=${AUTH_SECRET}
+      - ADMIN_TOKEN=${ADMIN_TOKEN}
