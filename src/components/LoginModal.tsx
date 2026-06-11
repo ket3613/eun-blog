@@ -88,12 +88,12 @@ export default function LoginModal({ onClose, onSuccess }: Props) {
                 </p>
                 <form onSubmit={onSubmit} style={{ display: "grid", gap: 12 }}>
                     <input
-                        required autoFocus placeholder="아이디"
+                        required autoFocus name="username" autoComplete="username" placeholder="아이디"
                         value={user} onChange={e => setUser(e.target.value)}
                         style={{ padding: "10px 12px", borderRadius: 10, border: "1px solid #1f232b", background: "#151922", color: "white" }}
                     />
                     <input
-                        required type="password" placeholder="비밀번호"
+                        required type="password" name="password" autoComplete="current-password" placeholder="비밀번호"
                         value={pass} onChange={e => setPass(e.target.value)}
                         style={{ padding: "10px 12px", borderRadius: 10, border: "1px solid #1f232b", background: "#151922", color: "white" }}
                     />

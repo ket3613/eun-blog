@@ -36,6 +36,8 @@ export default function LoginPage() {
             <form onSubmit={onSubmit} style={{ display: "grid", gap: 12 }}>
                 <input
                     required
+                    name="username"
+                    autoComplete="username"
                     placeholder="아이디"
                     value={user}
                     onChange={e => setUser(e.target.value)}
@@ -44,6 +46,8 @@ export default function LoginPage() {
                 <input
                     required
                     type="password"
+                    name="password"
+                    autoComplete="current-password"
                     placeholder="비밀번호"
                     value={pass}
                     onChange={e => setPass(e.target.value)}
