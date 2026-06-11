@@ -65,7 +65,13 @@ export default function ProjectList({ initialProjects }: ProjectListProps) {
                     >
                         <div className={s.header}>
                             <div className={s.thumb}>
-                                <Image src={p.image || "/file.svg"} alt={`${p.name} thumbnail`} fill sizes="64px" />
+                                <Image
+                                    src={p.imagePath ? `/api/projects/${p.id}/image` : (p.image || "/file.svg")}
+                                    alt={`${p.name} thumbnail`}
+                                    fill
+                                    sizes="64px"
+                                    unoptimized={!!p.imagePath}
+                                />
                             </div>
                             <div>
                                 <h2 className={s.name}>{p.name}</h2>

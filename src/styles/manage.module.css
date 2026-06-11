@@ -52,6 +52,56 @@
 }
 .hint { font-size: 11px; font-weight: 400; color: var(--muted); }
 
+/* 기술 스택 선택 칩 */
+.stackPicker { display: flex; flex-wrap: wrap; gap: 8px; }
+.stackChip {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 6px 12px;
+  border-radius: 999px;
+  border: 1px solid var(--line);
+  background: white;
+  font-size: 12px;
+  font-weight: 600;
+  color: var(--text);
+  cursor: pointer;
+  transition: all 0.15s ease;
+}
+.stackChip:hover { border-color: var(--primary); color: var(--primary); }
+.stackChipActive {
+  border-color: rgba(99,102,241,0.5);
+  background: rgba(99,102,241,0.12);
+  color: var(--primary);
+}
+.stackChipAdd { border-style: dashed; color: var(--muted); }
+.chipCat { font-size: 10px; font-weight: 700; opacity: 0.6; }
+
+.newStackRow { display: flex; gap: 8px; align-items: stretch; }
+.newStackRow input { flex: 1; }
+.select {
+  border: 1px solid var(--line);
+  border-radius: 8px;
+  padding: 9px 12px;
+  font-size: 13px;
+  background: var(--bg);
+  color: var(--text);
+  font-family: inherit;
+}
+.select:focus { outline: none; border-color: var(--primary); background: white; }
+
+/* 이미지 미리보기 */
+.imagePreviewRow { display: flex; align-items: center; gap: 12px; margin-top: 4px; }
+.imagePreview {
+  width: 64px;
+  height: 64px;
+  border-radius: 10px;
+  border: 1px solid var(--line);
+  object-fit: cover;
+  background: var(--bg);
+}
+.fileMeta { font-size: 12px; font-weight: 400; color: var(--muted); }
+
 .actions { display: flex; gap: 8px; margin-top: 4px; }
 
 .btn, .btnPrimary, .btnDanger {

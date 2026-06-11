@@ -36,6 +36,8 @@ export type Project = {
   myRole?: string;
   pdfPath?: string | null;   // 서버 저장 경로 (UUID.pdf)
   pdfName?: string | null;   // 원본 파일명
+  imagePath?: string | null; // 서버 저장 경로 (UUID.확장자)
+  imageName?: string | null; // 원본 파일명
   url?: string;
   repoUrl?: string;
 };

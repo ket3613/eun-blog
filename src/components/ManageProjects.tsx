@@ -1,13 +1,16 @@
 "use client";
 
-import { useState } from "react";
+import { useMemo, useState } from "react";
 import { useRouter } from "next/navigation";
+import Image from "next/image";
 import { Project } from "@/lib/data";
 import s from "@/styles/manage.module.css";
 
 interface Props {
     initialProjects: Project[];
 }
+
+type StackItem = { stackName: string; category: number };
 
 const EMPTY_FORM = {
     name: "",
@@ -16,27 +19,14 @@ const EMPTY_FORM = {
     myRole: "",
     year: "",
     image: "",
-    stackText: "",
 };
 
-// "SpringBoot:1" 형식 텍스트 → stack 배열
-function parseStack(text: string) {
-    return text
-        .split("\n")
-        .map((line) => line.trim())
-        .filter(Boolean)
-        .map((line) => {
-            const [name, cat] = line.split(":").map((x) => x.trim());
-            return { stackName: name, category: Number(cat) || 4 };
-        });
-}
-
-// stack 배열 → 텍스트
-function stackToText(stack: Project["stack"]) {
-    return (stack ?? [])
-        .map((t) => `${t.stackName}:${t.category}`)
-        .join("\n");
-}
+const CATEGORY_LABELS: Record<number, string> = {
+    1: "Backend",
+    2: "Frontend",
+    3: "Infra",
+    4: "Other",
+};
 
 export default function ManageProjects({ initialProjects }: Props) {
     const router = useRouter();
@@ -46,10 +36,85 @@ export default function ManageProjects({ initialProjects }: Props) {
     const [msg, setMsg] = useState<string | null>(null);
     const [pdfFile, setPdfFile] = useState<File | null>(null);
 
+    // 기술 스택: 기존 스택 선택 + 직접 입력
+    const [selectedStacks, setSelectedStacks] = useState<StackItem[]>([]);
+    const [showNewStack, setShowNewStack] = useState(false);
+    const [newStackName, setNewStackName] = useState("");
+    const [newStackCategory, setNewStackCategory] = useState(1);
+
+    // 이미지: 파일 첨부
+    const [imageFile, setImageFile] = useState<File | null>(null);
+    const [imagePreview, setImagePreview] = useState<string | null>(null);
+
+    // 기존 프로젝트들에서 스택 수집 (이름 기준 중복 제거)
+    const knownStacks = useMemo<StackItem[]>(() => {
+        const map = new Map<string, StackItem>();
+        initialProjects.forEach((p) =>
+            (p.stack ?? []).forEach((t) => {
+                if (!map.has(t.stackName)) {
+                    map.set(t.stackName, { stackName: t.stackName, category: Number(t.category) || 4 });
+                }
+            })
+        );
+        return Array.from(map.values()).sort(
+            (a, b) => a.category - b.category || a.stackName.localeCompare(b.stackName)
+        );
+    }, [initialProjects]);
+
+    // 선택됐지만 기존 목록에 없는 스택(직접 입력분)도 칩으로 함께 표시
+    const allStacks = useMemo<StackItem[]>(() => {
+        const extra = selectedStacks.filter(
+            (sel) => !knownStacks.some((k) => k.stackName === sel.stackName)
+        );
+        return [...knownStacks, ...extra];
+    }, [knownStacks, selectedStacks]);
+
+    const editingProject = editingId != null
+        ? initialProjects.find((p) => p.id === editingId)
+        : undefined;
+
+    function isSelected(name: string) {
+        return selectedStacks.some((t) => t.stackName === name);
+    }
+
+    function toggleStack(item: StackItem) {
+        setSelectedStacks((prev) =>
+            prev.some((t) => t.stackName === item.stackName)
+                ? prev.filter((t) => t.stackName !== item.stackName)
+                : [...prev, item]
+        );
+    }
+
+    function addNewStack() {
+        const name = newStackName.trim();
+        if (!name) return;
+        if (!isSelected(name)) {
+            const existing = knownStacks.find((k) => k.stackName === name);
+            setSelectedStacks((prev) => [
+                ...prev,
+                existing ?? { stackName: name, category: newStackCategory },
+            ]);
+        }
+        setNewStackName("");
+    }
+
+    function handleImageChange(file: File | null) {
+        setImageFile(file);
+        setImagePreview((old) => {
+            if (old) URL.revokeObjectURL(old);
+            return file ? URL.createObjectURL(file) : null;
+        });
+    }
+
     function resetForm() {
         setForm(EMPTY_FORM);
         setEditingId(null);
         setPdfFile(null);
+        setSelectedStacks([]);
+        setShowNewStack(false);
+        setNewStackName("");
+        setNewStackCategory(1);
+        handleImageChange(null);
     }
 
     function startEdit(p: Project) {
@@ -61,9 +126,12 @@ export default function ManageProjects({ initialProjects }: Props) {
             myRole: p.myRole ?? "",
             year: p.year ?? "",
             image: p.image ?? "",
-            stackText: stackToText(p.stack),
         });
+        setSelectedStacks(
+            (p.stack ?? []).map((t) => ({ stackName: t.stackName, category: Number(t.category) || 4 }))
+        );
         setPdfFile(null);
+        handleImageChange(null);
         window.scrollTo({ top: 0, behavior: "smooth" });
     }
 
@@ -79,7 +147,7 @@ export default function ManageProjects({ initialProjects }: Props) {
                 myRole: form.myRole,
                 year: form.year,
                 image: form.image,
-                stack: parseStack(form.stackText),
+                stack: selectedStacks,
             };
 
             const url = editingId
@@ -97,6 +165,17 @@ export default function ManageProjects({ initialProjects }: Props) {
 
             // 신규 등록 시 반환된 id, 수정이면 기존 id
             const projectId = editingId ?? json.data;
+
+            // 이미지가 선택되었으면 업로드
+            if (imageFile && projectId != null) {
+                const fd = new FormData();
+                fd.append("file", imageFile);
+                const up = await fetch(`/api/manage/projects/${projectId}/image`, {
+                    method: "POST",
+                    body: fd,
+                });
+                if (!up.ok) throw new Error(`이미지 업로드 실패 (${up.status})`);
+            }
 
             // PDF가 선택되었으면 업로드
             if (pdfFile && projectId != null) {
@@ -136,11 +215,17 @@ export default function ManageProjects({ initialProjects }: Props) {
         }
     }
 
+    // 수정 중일 때 현재 저장된 이미지 표시
+    const currentImageSrc = imagePreview
+        ?? (editingProject?.imagePath
+            ? `/api/projects/${editingProject.id}/image`
+            : editingProject?.image || null);
+
     return (
         <section className={s.wrap}>
             <header className={s.head}>
                 <h1 className={s.title}>프로젝트 관리</h1>
-                <p className={s.sub}>프로젝트를 등록·수정·삭제하고 PDF를 첨부할 수 있습니다.</p>
+                <p className={s.sub}>프로젝트를 등록·수정·삭제하고 이미지·PDF를 첨부할 수 있습니다.</p>
             </header>
 
             {msg && <div className={s.msg}>{msg}</div>}
@@ -174,20 +259,84 @@ export default function ManageProjects({ initialProjects }: Props) {
                     <textarea rows={2} value={form.myRole} onChange={(e) => setForm({ ...form, myRole: e.target.value })} placeholder="REST API 설계, 배포 자동화 등" />
                 </label>
 
-                <label className={s.field}>
-                    <span>이미지 경로</span>
-                    <input value={form.image} onChange={(e) => setForm({ ...form, image: e.target.value })} placeholder="/SpringBoot.svg" />
-                </label>
+                <div className={s.field}>
+                    <span>기술 스택 (클릭해서 선택)</span>
+                    <div className={s.stackPicker}>
+                        {allStacks.map((t) => (
+                            <button
+                                type="button"
+                                key={t.stackName}
+                                className={`${s.stackChip} ${isSelected(t.stackName) ? s.stackChipActive : ""}`}
+                                onClick={() => toggleStack(t)}
+                            >
+                                {t.stackName}
+                                <span className={s.chipCat}>{CATEGORY_LABELS[t.category] ?? "Other"}</span>
+                            </button>
+                        ))}
+                        <button
+                            type="button"
+                            className={`${s.stackChip} ${s.stackChipAdd}`}
+                            onClick={() => setShowNewStack((v) => !v)}
+                        >
+                            {showNewStack ? "− 닫기" : "+ 직접 입력"}
+                        </button>
+                    </div>
+                    {showNewStack && (
+                        <div className={s.newStackRow}>
+                            <input
+                                value={newStackName}
+                                onChange={(e) => setNewStackName(e.target.value)}
+                                onKeyDown={(e) => {
+                                    if (e.key === "Enter") {
+                                        e.preventDefault();
+                                        addNewStack();
+                                    }
+                                }}
+                                placeholder="새 스택 이름 (예: Kafka)"
+                            />
+                            <select
+                                className={s.select}
+                                value={newStackCategory}
+                                onChange={(e) => setNewStackCategory(Number(e.target.value))}
+                            >
+                                {Object.entries(CATEGORY_LABELS).map(([v, label]) => (
+                                    <option key={v} value={v}>{label}</option>
+                                ))}
+                            </select>
+                            <button type="button" className={s.btn} onClick={addNewStack}>추가</button>
+                        </div>
+                    )}
+                    <small className={s.hint}>
+                        {selectedStacks.length > 0
+                            ? `선택됨: ${selectedStacks.map((t) => t.stackName).join(", ")}`
+                            : "선택된 스택이 없습니다."}
+                    </small>
+                </div>
 
                 <label className={s.field}>
-                    <span>기술 스택 (한 줄에 하나, 형식: 이름:카테고리번호)</span>
-                    <textarea
-                        rows={5}
-                        value={form.stackText}
-                        onChange={(e) => setForm({ ...form, stackText: e.target.value })}
-                        placeholder={"SpringBoot:1\nJava:1\nReact:2\nAWS:3\nDatadog:4"}
+                    <span>이미지 첨부 (선택)</span>
+                    <input
+                        type="file"
+                        accept="image/png,image/jpeg,image/gif,image/webp"
+                        onChange={(e) => handleImageChange(e.target.files?.[0] ?? null)}
                     />
-                    <small className={s.hint}>1:Backend 2:Frontend 3:Infra 4:Other</small>
+                    {currentImageSrc && (
+                        <div className={s.imagePreviewRow}>
+                            <Image
+                                src={currentImageSrc}
+                                alt="프로젝트 이미지 미리보기"
+                                width={64}
+                                height={64}
+                                className={s.imagePreview}
+                                unoptimized
+                            />
+                            <span className={s.fileMeta}>
+                                {imageFile
+                                    ? `새 이미지: ${imageFile.name}`
+                                    : `현재 이미지${editingProject?.imageName ? `: ${editingProject.imageName}` : ""}`}
+                            </span>
+                        </div>
+                    )}
                 </label>
 
                 <label className={s.field}>
@@ -215,6 +364,7 @@ export default function ManageProjects({ initialProjects }: Props) {
                         <div className={s.rowInfo}>
                             <div className={s.rowName}>
                                 {p.name}
+                                {p.imagePath && <span className={s.pdfBadge}>🖼️ 이미지</span>}
                                 {p.pdfName && <span className={s.pdfBadge}>📎 PDF</span>}
                             </div>
                             <div className={s.rowMeta}>
