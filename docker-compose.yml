@@ -13,4 +13,4 @@ services:
     environment:
       - TZ=Asia/Seoul
       - AUTH_SECRET=80e89781a8d7d15505e8410fce4b0c7cb7ef4dc48605b3819bb94af90d9277e2
-      - ADMIN_TOKEN=change-me-secret
+      - ADMIN_TOKEN=9f5238056f0416fdcdf2c8389cfa47883f7ccc8faa9f120c

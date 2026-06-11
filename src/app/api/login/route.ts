@@ -2,8 +2,7 @@ import { NextResponse } from "next/server";
 import { cookies } from "next/headers";
 import { createToken } from "@/lib/auth";
 import { API_BASE } from "@/lib/config";
-
-const ADMIN_TOKEN = process.env.ADMIN_TOKEN ?? "change-me-secret";
+import { ADMIN_TOKEN } from "@/lib/adminAuth";
 
 export async function POST(req: Request) {
     const body = await req.json().catch(() => ({}));

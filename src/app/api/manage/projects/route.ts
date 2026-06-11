@@ -1,15 +1,6 @@
 import { NextRequest, NextResponse } from "next/server";
-import { cookies } from "next/headers";
-import { verifyToken } from "@/lib/auth";
 import { API_BASE } from "@/lib/config";
-
-const ADMIN_TOKEN = process.env.ADMIN_TOKEN ?? "change-me-secret";
-
-async function requireAuth() {
-    const token = (await cookies()).get("session")?.value;
-    const valid = token ? await verifyToken(token) : null;
-    return !!valid;
-}
+import { ADMIN_TOKEN, requireAuth } from "@/lib/adminAuth";
 
 // 프로젝트 생성
 export async function POST(req: NextRequest) {
