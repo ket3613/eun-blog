@@ -1,6 +1,6 @@
 import { NextRequest, NextResponse } from "next/server";
 import { API_BASE } from "@/lib/config";
-import { ADMIN_TOKEN, requireAuth } from "@/lib/adminAuth";
+import { getAdminToken, requireAuth } from "@/lib/adminAuth";
 
 // 프로젝트 생성
 export async function POST(req: NextRequest) {
@@ -10,7 +10,7 @@ export async function POST(req: NextRequest) {
     const body = await req.text();
     const res = await fetch(`${API_BASE}/api/projects`, {
         method: "POST",
-        headers: { "Content-Type": "application/json", "X-Admin-Token": ADMIN_TOKEN },
+        headers: { "Content-Type": "application/json", "X-Admin-Token": getAdminToken() },
         body,
     });
     const json = await res.json();

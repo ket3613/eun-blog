@@ -1,6 +1,6 @@
 import { NextRequest, NextResponse } from "next/server";
 import { API_BASE } from "@/lib/config";
-import { ADMIN_TOKEN, requireAuth, isValidId } from "@/lib/adminAuth";
+import { getAdminToken, requireAuth, isValidId } from "@/lib/adminAuth";
 
 // PDF 업로드 (multipart 그대로 프록시)
 export async function POST(req: NextRequest, { params }: { params: Promise<{ id: string }> }) {
@@ -15,7 +15,7 @@ export async function POST(req: NextRequest, { params }: { params: Promise<{ id:
 
     const res = await fetch(`${API_BASE}/api/projects/${id}/pdf`, {
         method: "POST",
-        headers: { "X-Admin-Token": ADMIN_TOKEN },
+        headers: { "X-Admin-Token": getAdminToken() },
         body: formData,
     });
     const json = await res.json();

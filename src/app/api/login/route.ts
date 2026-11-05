@@ -2,7 +2,7 @@ import { NextResponse } from "next/server";
 import { cookies } from "next/headers";
 import { createToken } from "@/lib/auth";
 import { API_BASE } from "@/lib/config";
-import { ADMIN_TOKEN } from "@/lib/adminAuth";
+import { getAdminToken } from "@/lib/adminAuth";
 
 export async function POST(req: Request) {
     const body = await req.json().catch(() => ({}));
@@ -17,7 +17,7 @@ export async function POST(req: Request) {
             method: "POST",
             headers: {
                 "Content-Type": "application/json",
-                "X-Admin-Token": ADMIN_TOKEN,
+                "X-Admin-Token": getAdminToken(),
             },
             body: JSON.stringify({ userName: user, password: pass }),
         });

@@ -12,5 +12,7 @@ services:
     restart: always
     environment:
       - TZ=Asia/Seoul
-      - AUTH_SECRET=80e89781a8d7d15505e8410fce4b0c7cb7ef4dc48605b3819bb94af90d9277e2
-      - ADMIN_TOKEN=9f5238056f0416fdcdf2c8389cfa47883f7ccc8faa9f120c
+      # 비밀값은 compose 파일과 같은 디렉터리의 .env 에서 주입 (git에 커밋 금지)
+      # 값이 없으면 기동을 중단해 빈 시크릿으로 실행되는 것을 막는다.
+      - AUTH_SECRET=${AUTH_SECRET:?AUTH_SECRET is not set in .env}
+      - ADMIN_TOKEN=${ADMIN_TOKEN:?ADMIN_TOKEN is not set in .env}

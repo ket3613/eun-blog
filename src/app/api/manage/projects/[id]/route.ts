@@ -1,6 +1,6 @@
 import { NextRequest, NextResponse } from "next/server";
 import { API_BASE } from "@/lib/config";
-import { ADMIN_TOKEN, requireAuth, isValidId } from "@/lib/adminAuth";
+import { getAdminToken, requireAuth, isValidId } from "@/lib/adminAuth";
 
 // 프로젝트 수정
 export async function PUT(req: NextRequest, { params }: { params: Promise<{ id: string }> }) {
@@ -14,7 +14,7 @@ export async function PUT(req: NextRequest, { params }: { params: Promise<{ id: 
     const body = await req.text();
     const res = await fetch(`${API_BASE}/api/projects/${id}`, {
         method: "PUT",
-        headers: { "Content-Type": "application/json", "X-Admin-Token": ADMIN_TOKEN },
+        headers: { "Content-Type": "application/json", "X-Admin-Token": getAdminToken() },
         body,
     });
     const json = await res.json();
@@ -32,7 +32,7 @@ export async function DELETE(_req: NextRequest, { params }: { params: Promise<{ 
     }
     const res = await fetch(`${API_BASE}/api/projects/${id}`, {
         method: "DELETE",
-        headers: { "X-Admin-Token": ADMIN_TOKEN },
+        headers: { "X-Admin-Token": getAdminToken() },
     });
     const json = await res.json();
     return NextResponse.json(json, { status: res.status });
