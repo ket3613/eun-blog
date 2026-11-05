@@ -57,9 +57,12 @@ ENV NEXT_PUBLIC_API_BASE_URL=${NEXT_PUBLIC_API_BASE_URL}
 
 # Standalone 빌드 결과만 복사
 # - standalone 디렉토리 안에 server.js, node_modules 포함됨
-COPY --from=builder /app/.next/standalone ./
-COPY --from=builder /app/.next/static ./.next/static
-COPY --from=builder /app/public ./public
+# root 가 아닌 기본 node 사용자로 실행 (컨테이너 탈취 시 피해 범위 축소)
+# .next/cache(이미지 최적화 캐시)에 쓸 수 있도록 소유권을 node 로 지정
+COPY --from=builder --chown=node:node /app/.next/standalone ./
+COPY --from=builder --chown=node:node /app/.next/static ./.next/static
+COPY --from=builder --chown=node:node /app/public ./public
+USER node
 
 # 외부 노출 포트
 EXPOSE 8082

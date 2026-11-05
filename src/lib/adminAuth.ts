@@ -1,3 +1,4 @@
+import "server-only";
 import { cookies } from "next/headers";
 import { verifyToken } from "@/lib/auth";
 
@@ -18,5 +19,5 @@ export async function requireAuth(): Promise<boolean> {
 
 // 프로젝트 id가 숫자(SERIAL PK)인지 검증 - 경로 주입 차단
 export function isValidId(id: string): boolean {
-    return /^\d+$/.test(id);
+    return /^\d{1,12}$/.test(id);
 }
