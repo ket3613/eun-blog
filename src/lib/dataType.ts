@@ -47,3 +47,24 @@ export type ServerStats = {
     disk:   { used_bytes: number; total_bytes: number };
     updated_at: string;
 };
+
+export type Stack = {
+    stackName: string;
+    category: number | string;
+    categoryName?: string;
+};
+
+export type Project = {
+    id: number | string;
+    name: string;
+    summary: string;
+    description: string | null;
+    stack: Stack[];
+    year?: string;
+    image?: string;
+    myRole?: string;
+    pdfPath?: string | null; // 서버 저장 경로 (UUID.pdf)
+    pdfName?: string | null; // 원본 파일명
+    url?: string;
+    repoUrl?: string;
+};

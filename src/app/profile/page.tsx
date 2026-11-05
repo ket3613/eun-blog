@@ -1,10 +1,15 @@
-"use client";
+import type { Metadata } from "next";
 import Image from "next/image";
-import { motion } from "framer-motion";
 import s from "@/styles/profile.module.css";
-import { useEffect, useState } from "react";
-import { Profile, Skill } from "@/lib/dataType";
-import { getProfile } from "@/app/api/profile";
+import type { Profile, Skill } from "@/lib/dataType";
+import { getProfile } from "@/lib/backend";
+
+export const dynamic = "force-dynamic";
+
+export const metadata: Metadata = {
+    title: "프로필",
+    description: "백엔드 엔지니어 강은택의 기술 스택과 경력",
+};
 
 const CATEGORY_COLORS: Record<number, string> = {
     1: "#3b82f6",
@@ -45,7 +50,7 @@ function SkillTag({ sk }: { sk: Skill }) {
     const projects = sk.usedIn ? sk.usedIn.split(",").map(p => p.trim()).filter(Boolean) : [];
 
     return (
-        <span className={`${s.skillTag}`}>
+        <span className={s.skillTag} tabIndex={projects.length > 0 ? 0 : undefined}>
             {sk.skillName}
             <span className={`${s.skillLevelBadge} ${s[`badge_${level}`] ?? s.badge_학습}`}>
                 {level}
@@ -63,21 +68,18 @@ function SkillTag({ sk }: { sk: Skill }) {
     );
 }
 
-export default function ProfilePage() {
-    const [profile, setProfile] = useState<Profile | null>(null);
-    const [error, setError] = useState<string | null>(null);
-
-    useEffect(() => {
-        getProfile("강은택")
-            .then(setProfile)
-            .catch((err) => {
-                console.error(err);
-                setError("프로필을 불러오지 못했습니다.");
-            });
-    }, []);
-
-    if (error) return <div className={s.container}>{error}</div>;
-    if (!profile) return <div className={s.container}>프로필을 불러오는 중입니다...</div>;
+export default async function ProfilePage() {
+    let profile: Profile;
+    try {
+        profile = await getProfile("강은택");
+    } catch (err) {
+        console.error("[profile]", err);
+        return (
+            <div className={s.container} role="alert">
+                프로필을 불러오지 못했습니다. 잠시 후 다시 시도해 주세요.
+            </div>
+        );
+    }
 
     const skillsByCategory = profile.skills?.reduce<Record<number, Skill[]>>((acc, sk) => {
         (acc[sk.category] ??= []).push(sk);
@@ -92,7 +94,7 @@ export default function ProfilePage() {
                 <div className={s.heroGlow} />
                 <div className={s.row}>
                     <div className={s.avatar}>
-                        <Image src="/my_image.jpeg" alt={`${profile.name} avatar`} fill sizes="360px" />
+                        <Image src="/my_image.jpeg" alt={`${profile.name} 프로필 사진`} fill sizes="(max-width: 640px) 96px, 140px" priority />
                     </div>
                     <div>
                         <h1 className={s.name}>{profile.name}</h1>
@@ -154,7 +156,7 @@ export default function ProfilePage() {
                         <h2 className={s.cardTitle}>경력</h2>
                         <ul className={s.timeline} style={{ listStyle: "none", padding: 0, margin: 0 }}>
                             {profile.experience.map((e) => (
-                                <li key={e.startDate} className={s.item}>
+                                <li key={`${e.org}-${e.startDate}`} className={s.item}>
                                     <div className={s.itemHeader}>
                                         <span style={{ fontWeight: 700 }}>{e.role} · {e.org}</span>
                                         <span className={s.itemDuration}>{calcDuration(e.startDate, e.endDate)}</span>
