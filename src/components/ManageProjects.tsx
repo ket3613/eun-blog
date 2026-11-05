@@ -2,7 +2,7 @@
 
 import { useState } from "react";
 import { useRouter } from "next/navigation";
-import { Project } from "@/lib/data";
+import type { Project } from "@/lib/dataType";
 import s from "@/styles/manage.module.css";
 
 interface Props {
@@ -92,8 +92,8 @@ export default function ManageProjects({ initialProjects }: Props) {
                 headers: { "Content-Type": "application/json" },
                 body: JSON.stringify(payload),
             });
-            if (!res.ok) throw new Error(`저장 실패 (${res.status})`);
-            const json = await res.json();
+            const json = await res.json().catch(() => ({}));
+            if (!res.ok) throw new Error(`저장 실패 (${res.status})${json?.error ? `: ${json.error}` : ""}`);
 
             // 신규 등록 시 반환된 id, 수정이면 기존 id
             const projectId = editingId ?? json.data;
@@ -106,7 +106,10 @@ export default function ManageProjects({ initialProjects }: Props) {
                     method: "POST",
                     body: fd,
                 });
-                if (!up.ok) throw new Error(`PDF 업로드 실패 (${up.status})`);
+                if (!up.ok) {
+                    const upJson = await up.json().catch(() => ({}));
+                    throw new Error(`PDF 업로드 실패 (${up.status})${upJson?.error ? `: ${upJson.error}` : ""}`);
+                }
             }
 
             setMsg(editingId ? "수정되었습니다." : "등록되었습니다.");
@@ -143,7 +146,7 @@ export default function ManageProjects({ initialProjects }: Props) {
                 <p className={s.sub}>프로젝트를 등록·수정·삭제하고 PDF를 첨부할 수 있습니다.</p>
             </header>
 
-            {msg && <div className={s.msg}>{msg}</div>}
+            {msg && <div className={s.msg} role="status">{msg}</div>}
 
             {/* 등록/수정 폼 */}
             <form className={s.form} onSubmit={handleSubmit}>
@@ -192,7 +195,20 @@ export default function ManageProjects({ initialProjects }: Props) {
 
                 <label className={s.field}>
                     <span>PDF 첨부 (선택)</span>
-                    <input type="file" accept="application/pdf" onChange={(e) => setPdfFile(e.target.files?.[0] ?? null)} />
+                    <input
+                        type="file"
+                        accept="application/pdf"
+                        onChange={(e) => {
+                            const f = e.target.files?.[0] ?? null;
+                            if (f && f.size > 20 * 1024 * 1024) {
+                                setMsg("PDF는 최대 20MB까지 첨부할 수 있습니다.");
+                                e.target.value = "";
+                                setPdfFile(null);
+                                return;
+                            }
+                            setPdfFile(f);
+                        }}
+                    />
                 </label>
 
                 <div className={s.actions}>
@@ -215,15 +231,15 @@ export default function ManageProjects({ initialProjects }: Props) {
                         <div className={s.rowInfo}>
                             <div className={s.rowName}>
                                 {p.name}
-                                {p.pdfName && <span className={s.pdfBadge}>📎 PDF</span>}
+                                {p.pdfName && <span className={s.pdfBadge}><span aria-hidden="true">📎</span> PDF</span>}
                             </div>
                             <div className={s.rowMeta}>
                                 {p.year} · {p.stack?.length ?? 0}개 스택
                             </div>
                         </div>
                         <div className={s.rowActions}>
-                            <button className={s.btn} onClick={() => startEdit(p)} disabled={busy}>수정</button>
-                            <button className={s.btnDanger} onClick={() => handleDelete(p.id)} disabled={busy}>삭제</button>
+                            <button type="button" className={s.btn} onClick={() => startEdit(p)} disabled={busy} aria-label={`${p.name} 수정`}>수정</button>
+                            <button type="button" className={s.btnDanger} onClick={() => handleDelete(p.id)} disabled={busy} aria-label={`${p.name} 삭제`}>삭제</button>
                         </div>
                     </div>
                 ))}

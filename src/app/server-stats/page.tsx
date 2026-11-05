@@ -1,8 +1,8 @@
 "use client";
 
 import { useEffect, useState, useCallback } from "react";
-import { ServerStats } from "@/lib/dataType";
-import { getServerStats } from "@/app/api/server-stats";
+import type { ServerStats } from "@/lib/dataType";
+import { getServerStats } from "@/lib/backend";
 import s from "@/styles/server-stats.module.css";
 
 const REFRESH_SEC = 30;
@@ -56,6 +56,7 @@ export default function ServerStatsPage() {
 
     useEffect(() => {
         const tick = setInterval(() => {
+            if (document.hidden) return; // 백그라운드 탭에서는 갱신 중지
             setCountdown((c) => {
                 if (c <= 1) { load(); return REFRESH_SEC; }
                 return c - 1;
@@ -79,8 +80,8 @@ export default function ServerStatsPage() {
                         <h1 className={s.heroTitle}>서버 현황</h1>
                         <p className={s.heroSub}>Raspberry Pi 5 · 실시간 모니터링</p>
                     </div>
-                    <div className={`${s.statusBadge} ${error ? s.offline : online ? s.online : s.offline}`}>
-                        <span className={s.dot} />
+                    <div className={`${s.statusBadge} ${error ? s.offline : online ? s.online : s.offline}`} role="status" aria-live="polite">
+                        <span className={s.dot} aria-hidden="true" />
                         {error ? "연결 오류" : online ? "온라인" : "오프라인"}
                     </div>
                 </div>
@@ -93,11 +94,8 @@ export default function ServerStatsPage() {
                 )}
 
                 <div className={s.refreshRow}>
-                    {countdown}초 후 자동 갱신
-                    <button
-                        onClick={load}
-                        style={{ background: "none", border: "none", cursor: "pointer", color: "inherit", font: "inherit", textDecoration: "underline" }}
-                    >
+                    <span aria-hidden="true">{countdown}초 후 자동 갱신</span>
+                    <button type="button" onClick={load} className={s.refreshButton}>
                         지금 새로고침
                     </button>
                 </div>
@@ -106,7 +104,7 @@ export default function ServerStatsPage() {
             {/* Offline */}
             {(error || (!stats && !error)) && (
                 <div className={s.offlineCard}>
-                    <span style={{ fontSize: 32 }}>🖥️</span>
+                    <span style={{ fontSize: 32 }} aria-hidden="true">🖥️</span>
                     <span>{error ? "Prometheus에 연결할 수 없습니다." : "데이터를 불러오는 중..."}</span>
                 </div>
             )}
@@ -121,7 +119,7 @@ export default function ServerStatsPage() {
                             {stats.cpu_usage_percent.toFixed(1)}
                             <span className={s.statUnit}>%</span>
                         </p>
-                        <div className={s.barWrap}>
+                        <div className={s.barWrap} role="progressbar" aria-valuemin={0} aria-valuemax={100} aria-valuenow={cpuPct}>
                             <div className={`${s.barFill} ${s[barColor(cpuPct)]}`} style={{ width: `${cpuPct}%` }} />
                         </div>
                     </div>
@@ -145,7 +143,7 @@ export default function ServerStatsPage() {
                             <span>{memPct}% 사용 중</span>
                             <span>{formatBytes(stats.memory.used_bytes)} / {formatBytes(stats.memory.total_bytes)}</span>
                         </div>
-                        <div className={s.barWrap}>
+                        <div className={s.barWrap} role="progressbar" aria-valuemin={0} aria-valuemax={100} aria-valuenow={memPct}>
                             <div className={`${s.barFill} ${s[barColor(memPct)]}`} style={{ width: `${memPct}%` }} />
                         </div>
                     </div>
@@ -157,7 +155,7 @@ export default function ServerStatsPage() {
                             <span>{diskPct}% 사용 중</span>
                             <span>{formatBytes(stats.disk.used_bytes)} / {formatBytes(stats.disk.total_bytes)}</span>
                         </div>
-                        <div className={s.barWrap}>
+                        <div className={s.barWrap} role="progressbar" aria-valuemin={0} aria-valuemax={100} aria-valuenow={diskPct}>
                             <div className={`${s.barFill} ${s[barColor(diskPct)]}`} style={{ width: `${diskPct}%` }} />
                         </div>
                     </div>

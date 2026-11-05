@@ -248,7 +248,8 @@
   gap: 4px;
 }
 
-.skillTag:hover .skillTooltip {
+.skillTag:hover .skillTooltip,
+.skillTag:focus-visible .skillTooltip {
   display: flex;
 }
 
@@ -338,4 +339,14 @@
   .skillTag { font-size: 12px; padding: 5px 10px; }
   .itemHeader { flex-direction: column; align-items: flex-start; }
   .skillTooltip { left: auto; right: 0; }
+}
+
+/* ── 로딩/에러 상태 ── */
+.container {
+  padding: 32px;
+  background: var(--surface);
+  border: 1px solid var(--line);
+  border-radius: 16px;
+  color: var(--muted);
+  box-shadow: var(--shadow-sm);
 }

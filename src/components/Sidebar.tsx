@@ -20,18 +20,13 @@ export default function Sidebar() {
     const [showLogin, setShowLogin] = useState(false);
     const [loggedIn, setLoggedIn] = useState(false);
 
-    async function refreshSession() {
-        try {
-            const res = await fetch("/api/session");
-            const data = await res.json();
-            setLoggedIn(!!data.loggedIn);
-        } catch {
-            setLoggedIn(false);
-        }
-    }
-
     useEffect(() => {
-        refreshSession();
+        let alive = true;
+        fetch("/api/session", { cache: "no-store" })
+            .then((res) => res.json())
+            .then((data) => alive && setLoggedIn(!!data.loggedIn))
+            .catch(() => alive && setLoggedIn(false));
+        return () => { alive = false; };
     }, [pathname]);
 
     function handleManageClick(e: React.MouseEvent) {
@@ -44,7 +39,7 @@ export default function Sidebar() {
     }
 
     async function handleLogout() {
-        await fetch("/api/logout", { method: "POST" });
+        await fetch("/api/logout", { method: "POST" }).catch(() => undefined);
         setLoggedIn(false);
         window.location.href = "/";
     }
@@ -53,12 +48,12 @@ export default function Sidebar() {
         <aside className={s.wrap}>
             <div className={s.brand}>
                 <div className={s.brandInner}>
-                    <div className={s.brandIcon}>✦</div>
+                    <div className={s.brandIcon} aria-hidden="true">✦</div>
                     <span className={s.brandTitle}>eun-Blog</span>
                 </div>
                 <p className={s.brandSub}>개인 포트폴리오</p>
             </div>
-            <nav className={s.nav}>
+            <nav className={s.nav} aria-label="주요 메뉴">
                 <p className={s.navSection}>메뉴</p>
                 {items.map(it => (
                     it.external ? (
@@ -70,7 +65,8 @@ export default function Sidebar() {
                                 rel="noopener noreferrer"
                             >
                                 {it.label}
-                                <span className={s.previewHint} aria-label="미리보기 가능">📷</span>
+                                <span className={s.previewHint} aria-hidden="true">📷</span>
+                                <span className="sr-only">(새 창)</span>
                             </a>
                             {it.preview && (
                                 <div className={s.previewTooltip}>
@@ -88,7 +84,12 @@ export default function Sidebar() {
                             )}
                         </div>
                     ) : (
-                        <Link key={it.href} href={it.href} className={`${s.link} ${pathname.startsWith(it.href) ? s.active : ""}`}>
+                        <Link
+                            key={it.href}
+                            href={it.href}
+                            aria-current={pathname.startsWith(it.href) ? "page" : undefined}
+                            className={`${s.link} ${pathname.startsWith(it.href) ? s.active : ""}`}
+                        >
                             {it.label}
                         </Link>
                     )
@@ -97,22 +98,21 @@ export default function Sidebar() {
                 <a
                     href="/manage"
                     onClick={handleManageClick}
+                    aria-current={pathname.startsWith("/manage") ? "page" : undefined}
                     className={`${s.link} ${pathname.startsWith("/manage") ? s.active : ""}`}
                 >
-                    프로젝트 관리{!loggedIn && " 🔒"}
+                    프로젝트 관리
+                    {!loggedIn && <span aria-label="로그인 필요"> 🔒</span>}
                 </a>
             </nav>
             <div className={s.footer}>
                 <div className={s.footerCard}>
                     {loggedIn ? (
-                        <button
-                            onClick={handleLogout}
-                            style={{ background: "none", border: "none", cursor: "pointer", padding: 0, color: "inherit", font: "inherit" }}
-                        >
+                        <button type="button" onClick={handleLogout} className={s.footerButton}>
                             로그아웃
                         </button>
                     ) : (
-                        <span style={{ color: "#9aa0a6" }}>비로그인 상태</span>
+                        <span className={s.footerMuted}>비로그인 상태</span>
                     )}
                 </div>
             </div>

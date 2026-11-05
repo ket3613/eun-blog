@@ -1,6 +1,8 @@
 "use client";
-import { useState, useEffect } from "react";
+import { useEffect, useId, useRef } from "react";
 import { createPortal } from "react-dom";
+import LoginForm from "@/components/LoginForm";
+import s from "@/styles/auth.module.css";
 
 interface Props {
     onClose: () => void;
@@ -8,105 +10,52 @@ interface Props {
 }
 
 export default function LoginModal({ onClose, onSuccess }: Props) {
-    const [user, setUser] = useState("");
-    const [pass, setPass] = useState("");
-    const [err, setErr] = useState("");
-    const [loading, setLoading] = useState(false);
-    const [mounted, setMounted] = useState(false);
+    const titleId = useId();
+    const dialogRef = useRef<HTMLDivElement>(null);
 
     useEffect(() => {
-        setMounted(true);
-        // 모달 열릴 때 배경 스크롤 잠금
-        const prev = document.body.style.overflow;
+        const prevOverflow = document.body.style.overflow;
+        const prevFocus = document.activeElement as HTMLElement | null;
         document.body.style.overflow = "hidden";
 
-        // ESC 키로 닫기
         const onKey = (e: KeyboardEvent) => {
             if (e.key === "Escape") onClose();
+            // 포커스가 모달 밖으로 나가지 않도록 Tab 순환
+            if (e.key === "Tab" && dialogRef.current) {
+                const f = dialogRef.current.querySelectorAll<HTMLElement>("button, input, [href], [tabindex]:not([tabindex='-1'])");
+                if (!f.length) return;
+                const first = f[0], last = f[f.length - 1];
+                if (e.shiftKey && document.activeElement === first) { e.preventDefault(); last.focus(); }
+                else if (!e.shiftKey && document.activeElement === last) { e.preventDefault(); first.focus(); }
+            }
         };
         window.addEventListener("keydown", onKey);
-
         return () => {
-            document.body.style.overflow = prev;
+            document.body.style.overflow = prevOverflow;
             window.removeEventListener("keydown", onKey);
+            prevFocus?.focus?.();
         };
     }, [onClose]);
 
-    async function onSubmit(e: React.FormEvent) {
-        e.preventDefault();
-        setErr("");
-        setLoading(true);
-        try {
-            const res = await fetch("/api/login", {
-                method: "POST",
-                headers: { "Content-Type": "application/json" },
-                body: JSON.stringify({ user, pass }),
-            });
-            if (res.ok) {
-                onSuccess();
-            } else {
-                setErr("아이디 또는 비밀번호가 올바르지 않습니다.");
-            }
-        } catch {
-            setErr("서버 연결 오류가 발생했습니다.");
-        } finally {
-            setLoading(false);
-        }
-    }
-
-    if (!mounted) return null;
-
+    // 클라이언트에서 열릴 때만 렌더링되므로 document 를 바로 사용해도 안전
     return createPortal(
-        <div
-            onClick={onClose}
-            style={{
-                position: "fixed", inset: 0, background: "rgba(0,0,0,0.6)",
-                display: "flex", alignItems: "center", justifyContent: "center",
-                zIndex: 99999, backdropFilter: "blur(2px)",
-            }}
-        >
+        <div className={s.overlay} onClick={onClose}>
             <div
-                onClick={e => e.stopPropagation()}
-                style={{
-                    width: "100%", maxWidth: 360, background: "#0e1116",
-                    border: "1px solid #1f232b", borderRadius: 14, padding: 24,
-                    boxShadow: "0 12px 40px rgba(0,0,0,0.5)",
-                }}
+                ref={dialogRef}
+                className={s.card}
+                role="dialog"
+                aria-modal="true"
+                aria-labelledby={titleId}
+                onClick={(e) => e.stopPropagation()}
             >
-                <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", marginBottom: 16 }}>
-                    <h2 style={{ fontSize: 18, fontWeight: 700, color: "white", margin: 0 }}>로그인</h2>
-                    <button
-                        onClick={onClose}
-                        style={{ background: "none", border: "none", color: "#9aa0a6", fontSize: 20, cursor: "pointer", lineHeight: 1 }}
-                        aria-label="닫기"
-                    >
-                        ×
-                    </button>
+                <div className={s.head}>
+                    <h2 id={titleId} className={s.title}>로그인</h2>
+                    <button type="button" className={s.close} onClick={onClose} aria-label="닫기">×</button>
                 </div>
-                <p style={{ color: "#9aa0a6", fontSize: 13, marginTop: 0, marginBottom: 16 }}>
-                    프로젝트 관리는 로그인이 필요합니다.
-                </p>
-                <form onSubmit={onSubmit} style={{ display: "grid", gap: 12 }}>
-                    <input
-                        required autoFocus name="username" autoComplete="username" placeholder="아이디"
-                        value={user} onChange={e => setUser(e.target.value)}
-                        style={{ padding: "10px 12px", borderRadius: 10, border: "1px solid #1f232b", background: "#151922", color: "white" }}
-                    />
-                    <input
-                        required type="password" name="password" autoComplete="current-password" placeholder="비밀번호"
-                        value={pass} onChange={e => setPass(e.target.value)}
-                        style={{ padding: "10px 12px", borderRadius: 10, border: "1px solid #1f232b", background: "#151922", color: "white" }}
-                    />
-                    <button
-                        type="submit" disabled={loading}
-                        style={{ padding: "10px 12px", borderRadius: 10, border: "1px solid #2a3140", background: "#1d2330", color: "white", cursor: "pointer", opacity: loading ? 0.6 : 1 }}
-                    >
-                        {loading ? "로그인 중..." : "로그인"}
-                    </button>
-                    {err && <p style={{ color: "#ef4444", margin: 0, fontSize: 13 }}>{err}</p>}
-                </form>
+                <p className={s.sub}>프로젝트 관리는 로그인이 필요합니다.</p>
+                <LoginForm autoFocus onSuccess={onSuccess} />
             </div>
         </div>,
-        document.body
+        document.body,
     );
 }
