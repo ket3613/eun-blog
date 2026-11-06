@@ -245,3 +245,17 @@
     transform: translateY(0);
   }
 }
+
+.footerButton {
+  width: 100%;
+  background: none;
+  border: none;
+  padding: 0;
+  color: inherit;
+  font: inherit;
+  cursor: pointer;
+}
+
+.footerMuted {
+  color: #9aa0a6;
+}

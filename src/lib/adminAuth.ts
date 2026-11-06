@@ -1,8 +1,14 @@
+import "server-only";
 import { cookies } from "next/headers";
 import { verifyToken } from "@/lib/auth";
 
 // Next.js → Spring 호출 시 사용하는 관리자 토큰 (백엔드와 동일해야 함)
-export const ADMIN_TOKEN = process.env.ADMIN_TOKEN ?? "9f5238056f0416fdcdf2c8389cfa47883f7ccc8faa9f120c";
+// 소스에 기본값을 두지 않는다. 환경변수 누락 시 요청 시점에 실패시킨다.
+export function getAdminToken(): string {
+    const token = process.env.ADMIN_TOKEN;
+    if (!token) throw new Error("ADMIN_TOKEN environment variable is not set");
+    return token;
+}
 
 // 세션 쿠키 검증
 export async function requireAuth(): Promise<boolean> {
@@ -13,5 +19,5 @@ export async function requireAuth(): Promise<boolean> {
 
 // 프로젝트 id가 숫자(SERIAL PK)인지 검증 - 경로 주입 차단
 export function isValidId(id: string): boolean {
-    return /^\d+$/.test(id);
+    return /^\d{1,12}$/.test(id);
 }

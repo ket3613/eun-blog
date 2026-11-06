@@ -207,3 +207,14 @@
   .tag { font-size: 11px; padding: 3px 6px; }
   .myRole { font-size: 12px; }
 }
+
+/* ── 빈 목록 / 오류 상태 ── */
+.empty {
+  margin-top: 16px;
+  padding: 40px 24px;
+  text-align: center;
+  color: var(--muted);
+  background: var(--surface);
+  border: 1px dashed var(--line);
+  border-radius: 16px;
+}

@@ -2,16 +2,18 @@
 
 import { useMemo, useState } from "react";
 import Image from "next/image";
-import { motion } from "framer-motion";
-import { Project } from "@/lib/data";
-import { API_BASE } from "@/lib/config";
+import { motion, useReducedMotion } from "framer-motion";
+import type { Project } from "@/lib/dataType";
+import { projectPdfUrl } from "@/lib/backend";
 import s from "@/styles/projects.module.css";
 
 interface ProjectListProps {
     initialProjects: Project[];
+    failed?: boolean;
 }
 
-export default function ProjectList({ initialProjects }: ProjectListProps) {
+export default function ProjectList({ initialProjects, failed = false }: ProjectListProps) {
+    const reduceMotion = useReducedMotion();
     const [filter, setFilter] = useState<string>("ALL");
 
     const stacks = useMemo(() => {
@@ -36,10 +38,12 @@ export default function ProjectList({ initialProjects }: ProjectListProps) {
                 <div className={s.glow} />
                 <h1 className={s.title}>프로젝트</h1>
                 <p className={s.subtitle}>운영/백엔드 중심의 실전 프로젝트 모음</p>
-                <div className={s.filters}>
+                <div className={s.filters} role="group" aria-label="기술 스택 필터">
                     {stacks.map(ch => (
                         <motion.button
                             key={ch}
+                            type="button"
+                            aria-pressed={filter === ch}
                             className={`${s.chip} ${filter === ch ? s.chipActive : ""}`}
                             onClick={() => setFilter(ch)}
                             whileHover={{ scale: 1.05 }}
@@ -52,20 +56,26 @@ export default function ProjectList({ initialProjects }: ProjectListProps) {
                 </div>
             </header>
 
+            {(failed || filteredProjects.length === 0) && (
+                <div className={s.empty} role={failed ? "alert" : "status"}>
+                    {failed ? "프로젝트를 불러오지 못했습니다. 잠시 후 다시 시도해 주세요." : "등록된 프로젝트가 없습니다."}
+                </div>
+            )}
+
             {/* Grid */}
             <div className={s.grid}>
                 {filteredProjects.map((p, i) => (
                     <motion.article
                         key={p.id}
                         className={s.card}
-                        initial={{ opacity: 0, y: 8 }}
+                        initial={reduceMotion ? false : { opacity: 0, y: 8 }}
                         animate={{ opacity: 1, y: 0 }}
-                        transition={{ delay: i * 0.05 }}
-                        whileHover={{ y: -2 }}
+                        transition={{ delay: Math.min(i, 10) * 0.05 }}
+                        whileHover={reduceMotion ? undefined : { y: -2 }}
                     >
                         <div className={s.header}>
                             <div className={s.thumb}>
-                                <Image src={p.image || "/file.svg"} alt={`${p.name} thumbnail`} fill sizes="64px" />
+                                <Image src={p.image || "/file.svg"} alt="" fill sizes="64px" />
                             </div>
                             <div>
                                 <h2 className={s.name}>{p.name}</h2>
@@ -97,11 +107,11 @@ export default function ProjectList({ initialProjects }: ProjectListProps) {
                             <div className={s.actions}>
                                 <a
                                     className={s.link}
-                                    href={`${API_BASE}/api/projects/${p.id}/pdf`}
+                                    href={projectPdfUrl(p.id)}
                                     target="_blank"
                                     rel="noopener noreferrer"
                                 >
-                                    📄 PDF 내려받기
+                                    <span aria-hidden="true">📄</span> PDF 내려받기
                                 </a>
                             </div>
                         )}

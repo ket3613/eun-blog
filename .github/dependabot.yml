@@ -1,0 +1,27 @@
+version: 2
+updates:
+  - package-ecosystem: npm
+    directory: /
+    schedule:
+      interval: weekly
+      day: monday
+      timezone: Asia/Seoul
+    open-pull-requests-limit: 5
+    groups:
+      # next / react 는 함께 올려야 호환되므로 묶어서 PR 생성
+      next-react:
+        patterns: ["next", "eslint-config-next", "react", "react-dom", "@types/react", "@types/react-dom"]
+      minor-and-patch:
+        update-types: ["minor", "patch"]
+    ignore:
+      # 메이저 업그레이드는 수동 검토
+      - dependency-name: "*"
+        update-types: ["version-update:semver-major"]
+  - package-ecosystem: docker
+    directory: /
+    schedule:
+      interval: monthly
+  - package-ecosystem: github-actions
+    directory: /
+    schedule:
+      interval: monthly
