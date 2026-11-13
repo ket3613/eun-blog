@@ -68,7 +68,7 @@ export default function LoginForm({ onSuccess, autoFocus = false }: { onSuccess:
                 />
             </label>
             <button type="submit" className={s.submit} disabled={loading}>
-                {loading ? "로그인 중..." : "로그인"}
+                {loading ? "로그인하는 중" : "로그인"}
             </button>
             {err && (
                 <p id={errId} className={s.error} role="alert">

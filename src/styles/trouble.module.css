@@ -1,0 +1,95 @@
+/* 트러블슈팅: 증상 → 원인 → 조치 → 배운 점 */
+.list {
+  display: grid;
+  gap: 16px;
+}
+
+.item {
+  padding: 20px 22px 8px;
+  border: 1px solid var(--line);
+  border-radius: 10px;
+  background: var(--surface);
+}
+
+.title {
+  font-size: 17px;
+  font-weight: 700;
+  line-height: 1.5;
+  letter-spacing: -0.01em;
+}
+
+.project {
+  margin-top: 2px;
+  font-size: 13.5px;
+}
+
+.steps { margin-top: 12px; }
+
+/* 왼쪽 세로선이 단계를 잇는다 */
+.step {
+  position: relative;
+  display: grid;
+  grid-template-columns: 64px minmax(0, 1fr);
+  gap: 2px 14px;
+  padding: 0 0 14px 20px;
+}
+.step::before {
+  content: "";
+  position: absolute;
+  left: 3px;
+  top: 0.95em;
+  bottom: -0.95em;
+  width: 1px;
+  background: var(--line-strong);
+}
+.step:last-child::before { display: none; }
+.step::after {
+  content: "";
+  position: absolute;
+  left: 0;
+  top: 0.62em;
+  width: 7px;
+  height: 7px;
+  border-radius: 50%;
+  border: 1px solid var(--line-strong);
+  background: var(--surface);
+}
+
+.step dt {
+  font-size: 14px;
+  font-weight: 600;
+  color: var(--muted);
+  line-height: 1.85;
+}
+.step dd { max-width: 66ch; }
+
+.stepFix::after {
+  border-color: var(--add);
+  background: var(--add);
+}
+.stepFix dt { color: var(--add); }
+
+.stepLesson dd { color: var(--muted); }
+
+.trace {
+  display: grid;
+  gap: 4px;
+  counter-reset: trace;
+}
+.trace li {
+  position: relative;
+  padding-left: 22px;
+  counter-increment: trace;
+}
+.trace li::before {
+  content: counter(trace) ".";
+  position: absolute;
+  left: 0;
+  color: var(--muted);
+  font-variant-numeric: tabular-nums;
+}
+
+@media (max-width: 640px) {
+  .item { padding: 18px 18px 6px; }
+  .step { grid-template-columns: minmax(0, 1fr); }
+}

@@ -1,58 +1,84 @@
+/* 색상·글꼴 토큰. 페이지별 스타일은 src/styles/*.module.css */
 :root {
-  --bg: #f0f4ff;
-  --panel: #1e1b4b;
-  --surface: #ffffff;
-  --text: #1e1b4b;
-  --muted: #6b7280;
-  --line: #dde5f8;
-  --primary: #6366f1;
-  --primary-dark: #4338ca;
-  --secondary: #8b5cf6;
-  --accent: #f97316;
-  --success: #10b981;
-  --warning: #f59e0b;
-  --danger: #ef4444;
-  --shadow-sm: 0 1px 3px rgba(99,102,241,0.08), 0 1px 2px rgba(0,0,0,0.04);
-  --shadow-md: 0 4px 16px rgba(99,102,241,0.10), 0 1px 4px rgba(0,0,0,0.05);
-  --shadow-lg: 0 8px 32px rgba(99,102,241,0.14), 0 2px 8px rgba(0,0,0,0.06);
+  --bg: #f6f7f9;            /* 바탕 */
+  --surface: #ffffff;       /* 면 */
+  --ink: #17212b;           /* 본문 */
+  --muted: #5b6875;         /* 보조 텍스트 */
+  --line: #dde2e8;          /* 구분선 */
+  --line-strong: #c5ccd5;
+  --brand: #0c5c72;         /* 링크, 현재 위치 */
+  --brand-ink: #08424f;
+  --brand-tint: #e6f0f3;
+  /* 전환 전/후를 나타낼 때만 쓰는 색 */
+  --add: #1a7f52;
+  --add-tint: #e7f4ec;
+  --del: #a8433f;
+  --del-tint: #f7eae9;
+  --warn: #8a6100;
+  --warn-tint: #fbf3df;
+
+  --font-sans: var(--font-plex-kr), 'Apple SD Gothic Neo', 'Malgun Gothic', system-ui, sans-serif;
+  --font-code: var(--font-plex-mono), ui-monospace, 'SFMono-Regular', Menlo, monospace;
+
+  --page-width: 1080px;
+  --gutter: 24px;
 }
 
-* { box-sizing: border-box }
+* { box-sizing: border-box; }
 
-html, body {
-  height: 100%;
+html {
   scroll-behavior: smooth;
+  -webkit-text-size-adjust: 100%;
 }
 
 body {
   margin: 0;
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
   background: var(--bg);
-  color: var(--text);
-  font-family: var(--font-inter), ui-sans-serif, system-ui, -apple-system, 'Segoe UI', 'Apple SD Gothic Neo', 'Malgun Gothic', Roboto, sans-serif;
+  color: var(--ink);
+  font-family: var(--font-sans);
+  font-size: 16px;
+  line-height: 1.7;
   word-break: keep-all;
+  overflow-wrap: anywhere;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
 }
 
-a {
-  color: inherit;
-  text-decoration: none;
+h1, h2, h3, h4, p, ul, ol, dl, dd, figure { margin: 0; }
+ul, ol { padding: 0; list-style: none; }
+
+a { color: inherit; text-decoration: none; }
+
+button, input, textarea { font: inherit; color: inherit; }
+
+.page {
+  width: 100%;
+  max-width: var(--page-width);
+  margin: 0 auto;
+  padding: 0 var(--gutter);
 }
 
-/* Custom scrollbar */
-::-webkit-scrollbar { width: 4px; height: 4px; }
-::-webkit-scrollbar-track { background: transparent; }
-::-webkit-scrollbar-thumb { background: #c7d2fe; border-radius: 4px; }
-::-webkit-scrollbar-thumb:hover { background: #a5b4fc; }
+main { flex: 1; padding-bottom: 96px; }
+main:focus { outline: none; }
+
+/* 본문 안의 링크 */
+.text-link {
+  color: var(--brand);
+  text-decoration: underline;
+  text-decoration-color: color-mix(in srgb, var(--brand) 35%, transparent);
+  text-underline-offset: 3px;
+}
+.text-link:hover { text-decoration-color: var(--brand); }
 
 /* ── 접근성 ── */
 :focus-visible {
-  outline: 2px solid var(--primary);
+  outline: 2px solid var(--brand);
   outline-offset: 2px;
-  border-radius: 4px;
+  border-radius: 3px;
 }
-
-main:focus { outline: none; }
 
 .sr-only {
   position: absolute;
@@ -71,14 +97,19 @@ main:focus { outline: none; }
   top: -100px;
   left: 16px;
   z-index: 2000;
-  padding: 10px 16px;
-  border-radius: 10px;
-  background: var(--panel);
+  padding: 8px 14px;
+  border-radius: 6px;
+  background: var(--ink);
   color: #fff;
   font-weight: 600;
 }
+.skip-link:focus { top: 12px; }
 
-.skip-link:focus { top: 16px; }
+@media (max-width: 640px) {
+  :root { --gutter: 18px; }
+  body { font-size: 15px; }
+  main { padding-bottom: 64px; }
+}
 
 @media (prefers-reduced-motion: reduce) {
   html { scroll-behavior: auto; }

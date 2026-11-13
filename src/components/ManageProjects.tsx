@@ -123,7 +123,7 @@ export default function ManageProjects({ initialProjects }: Props) {
     }
 
     async function handleDelete(id: number | string) {
-        if (!confirm("정말 삭제하시겠습니까?")) return;
+        if (!confirm("이 프로젝트와 연결된 한 일, 수치, 첨부 PDF가 함께 삭제됩니다. 삭제할까요?")) return;
         setBusy(true);
         setMsg(null);
         try {
@@ -140,10 +140,13 @@ export default function ManageProjects({ initialProjects }: Props) {
     }
 
     return (
-        <section className={s.wrap}>
+        <section className={`page ${s.wrap}`}>
             <header className={s.head}>
                 <h1 className={s.title}>프로젝트 관리</h1>
-                <p className={s.sub}>프로젝트를 등록·수정·삭제하고 PDF를 첨부할 수 있습니다.</p>
+                <p className={s.sub}>
+                    프로젝트의 기본 정보와 기술 스택을 등록·수정·삭제하고 PDF를 첨부합니다.
+                    한 일, 수치, 트러블슈팅은 DB에서 직접 관리합니다.
+                </p>
             </header>
 
             {msg && <div className={s.msg} role="status">{msg}</div>}
@@ -190,7 +193,7 @@ export default function ManageProjects({ initialProjects }: Props) {
                         onChange={(e) => setForm({ ...form, stackText: e.target.value })}
                         placeholder={"SpringBoot:1\nJava:1\nReact:2\nAWS:3\nDatadog:4"}
                     />
-                    <small className={s.hint}>1:Backend 2:Frontend 3:Infra 4:Other</small>
+                    <small className={s.hint}>1 백엔드, 2 프론트엔드, 3 클라우드·인프라, 4 기타</small>
                 </label>
 
                 <label className={s.field}>
@@ -213,7 +216,7 @@ export default function ManageProjects({ initialProjects }: Props) {
 
                 <div className={s.actions}>
                     <button type="submit" className={s.btnPrimary} disabled={busy}>
-                        {busy ? "처리 중..." : editingId ? "수정 저장" : "등록"}
+                        {busy ? "저장하는 중" : editingId ? "수정 내용 저장" : "프로젝트 등록"}
                     </button>
                     {editingId && (
                         <button type="button" className={s.btn} onClick={resetForm} disabled={busy}>
@@ -231,10 +234,10 @@ export default function ManageProjects({ initialProjects }: Props) {
                         <div className={s.rowInfo}>
                             <div className={s.rowName}>
                                 {p.name}
-                                {p.pdfName && <span className={s.pdfBadge}><span aria-hidden="true">📎</span> PDF</span>}
+                                {p.pdfName && <span className={s.pdfBadge}>PDF 첨부됨</span>}
                             </div>
                             <div className={s.rowMeta}>
-                                {p.year} · {p.stack?.length ?? 0}개 스택
+                                {p.period ?? p.year ?? "기간 미입력"}, 기술 {p.stack?.length ?? 0}개
                             </div>
                         </div>
                         <div className={s.rowActions}>
