@@ -1,6 +1,6 @@
 import type { NextConfig } from 'next';
 
-const API_BASE = process.env.NEXT_PUBLIC_API_BASE_URL ?? 'https://api.euntaek.cc';
+const API_BASE = process.env.NEXT_PUBLIC_API_BASE_URL ?? 'https://api.taeklab.cc';
 const isDev = process.env.NODE_ENV !== 'production';
 
 // 'unsafe-eval' 은 개발 모드(React Fast Refresh)에서만 필요하므로 운영 빌드에서는 제외한다.
