@@ -1,7 +1,7 @@
 import { NextResponse } from "next/server";
 import { cookies } from "next/headers";
 import { createToken } from "@/lib/auth";
-import { API_BASE } from "@/lib/config";
+import { apiBase } from "@/lib/config";
 import { getAdminToken } from "@/lib/adminAuth";
 import { clientIp, hit, reset } from "@/lib/server/rateLimit";
 
@@ -27,7 +27,7 @@ export async function POST(req: Request) {
     if (byUser.limited) return tooMany(byUser.retryAfter);
 
     try {
-        const res = await fetch(`${API_BASE}/api/users/login`, {
+        const res = await fetch(`${apiBase()}/api/users/login`, {
             method: "POST",
             headers: { "Content-Type": "application/json", "X-Admin-Token": getAdminToken() },
             body: JSON.stringify({ userName: user, password: pass }),
