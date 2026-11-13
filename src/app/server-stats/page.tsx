@@ -4,6 +4,7 @@ import { useEffect, useState, useCallback } from "react";
 import type { ServerStats } from "@/lib/dataType";
 import { getServerStats } from "@/lib/backend";
 import s from "@/styles/server-stats.module.css";
+import c from "@/styles/page.module.css";
 
 const REFRESH_SEC = 30;
 
@@ -70,97 +71,101 @@ export default function ServerStatsPage() {
     const memPct  = stats ? pct(stats.memory.used_bytes, stats.memory.total_bytes) : 0;
     const diskPct = stats ? pct(stats.disk.used_bytes, stats.disk.total_bytes) : 0;
 
+    const tempState = stats ? tempColor(stats.cpu_temp_celsius) : "green";
+    const state = error ? "error" : !stats ? "loading" : online ? "online" : "offline";
+    const stateLabel = { error: "연결 오류", loading: "확인 중", online: "온라인", offline: "오프라인" }[state];
+
     return (
-        <section className={s.section}>
-            {/* Hero */}
-            <header className={s.hero}>
-                <div className={s.heroGlow} />
-                <div className={s.heroRow}>
-                    <div>
-                        <h1 className={s.heroTitle}>서버 현황</h1>
-                        <p className={s.heroSub}>Raspberry Pi 5 · 실시간 모니터링</p>
-                    </div>
-                    <div className={`${s.statusBadge} ${error ? s.offline : online ? s.online : s.offline}`} role="status" aria-live="polite">
+        <div className="page">
+            <header className={c.head}>
+                <h1 className={c.h1}>서버 현황</h1>
+                <p className={c.lead}>
+                    이 사이트가 돌아가는 라즈베리파이 5의 상태입니다. node_exporter 지표를 Prometheus에서 읽어 {REFRESH_SEC}초마다 갱신합니다.
+                </p>
+                <div className={s.statusRow}>
+                    <p className={`${s.status} ${s[`status_${state}`]}`} role="status" aria-live="polite">
                         <span className={s.dot} aria-hidden="true" />
-                        {error ? "연결 오류" : online ? "온라인" : "오프라인"}
-                    </div>
-                </div>
-
-                {stats && online && (
-                    <div className={s.uptimeRow}>
-                        <span>업타임</span>
-                        <span className={s.uptimeValue}>{formatUptime(stats.uptime_seconds)}</span>
-                    </div>
-                )}
-
-                <div className={s.refreshRow}>
-                    <span aria-hidden="true">{countdown}초 후 자동 갱신</span>
-                    <button type="button" onClick={load} className={s.refreshButton}>
-                        지금 새로고침
-                    </button>
+                        {stateLabel}
+                    </p>
+                    {stats && online && <p className={s.uptime}>가동 시간 {formatUptime(stats.uptime_seconds)}</p>}
+                    <p className={s.refresh}>
+                        <span aria-hidden="true">{countdown}초 후 갱신</span>
+                        <button type="button" onClick={load} className={s.refreshButton}>지금 새로고침</button>
+                    </p>
                 </div>
             </header>
 
-            {/* Offline */}
-            {(error || (!stats && !error)) && (
-                <div className={s.offlineCard}>
-                    <span style={{ fontSize: 32 }} aria-hidden="true">🖥️</span>
-                    <span>{error ? "Prometheus에 연결할 수 없습니다." : "데이터를 불러오는 중..."}</span>
-                </div>
+            {state === "error" && (
+                <p className={c.empty} role="alert">
+                    서버 상태를 가져오지 못했습니다. API 서버나 Prometheus가 응답하지 않습니다. {REFRESH_SEC}초마다 다시 시도합니다.
+                </p>
+            )}
+            {state === "offline" && (
+                <p className={c.empty}>Prometheus가 지표를 주지 않아 수치를 표시할 수 없습니다.</p>
             )}
 
-            {/* Stats Grid */}
             {stats && online && (
-                <div className={s.grid}>
-                    {/* CPU 사용률 */}
-                    <div className={s.card}>
-                        <p className={s.cardLabel}>CPU 사용률</p>
-                        <p className={s.statValue}>
-                            {stats.cpu_usage_percent.toFixed(1)}
-                            <span className={s.statUnit}>%</span>
-                        </p>
-                        <div className={s.barWrap} role="progressbar" aria-valuemin={0} aria-valuemax={100} aria-valuenow={cpuPct}>
-                            <div className={`${s.barFill} ${s[barColor(cpuPct)]}`} style={{ width: `${cpuPct}%` }} />
-                        </div>
+                <dl className={s.grid}>
+                    <div className={s.meter}>
+                        <dt>CPU 사용률</dt>
+                        <dd>
+                            <p className={s.value}>{stats.cpu_usage_percent.toFixed(1)}<span>%</span></p>
+                            <div className={s.bar} role="progressbar" aria-label="CPU 사용률" aria-valuemin={0} aria-valuemax={100} aria-valuenow={cpuPct}>
+                                <div className={`${s.barFill} ${s[barColor(cpuPct)]}`} style={{ width: `${cpuPct}%` }} />
+                            </div>
+                        </dd>
                     </div>
 
-                    {/* CPU 온도 */}
-                    <div className={s.card}>
-                        <p className={s.cardLabel}>CPU 온도</p>
-                        <p className={s.statValue} style={{ color: tempColor(stats.cpu_temp_celsius) === "red" ? "#f87171" : tempColor(stats.cpu_temp_celsius) === "yellow" ? "#facc15" : "#4ade80" }}>
-                            {stats.cpu_temp_celsius.toFixed(1)}
-                            <span className={s.statUnit}>°C</span>
-                        </p>
-                        <p className={s.statSub}>
-                            {stats.cpu_temp_celsius < 60 ? "정상 온도" : stats.cpu_temp_celsius < 75 ? "주의 필요" : "과열 경고"}
-                        </p>
+                    <div className={s.meter}>
+                        <dt>CPU 온도</dt>
+                        <dd>
+                            <p className={s.value}>{stats.cpu_temp_celsius.toFixed(1)}<span>°C</span></p>
+                            <p className={`${s.sub} ${s[`text_${tempState}`]}`}>
+                                {tempState === "green" ? "정상 범위" : tempState === "yellow" ? "높은 편 (60°C 이상)" : "과열 (75°C 이상)"}
+                            </p>
+                        </dd>
                     </div>
 
-                    {/* 메모리 */}
-                    <div className={`${s.card} ${s.cardFull}`}>
-                        <p className={s.cardLabel}>메모리</p>
-                        <div className={s.detailRow}>
-                            <span>{memPct}% 사용 중</span>
-                            <span>{formatBytes(stats.memory.used_bytes)} / {formatBytes(stats.memory.total_bytes)}</span>
-                        </div>
-                        <div className={s.barWrap} role="progressbar" aria-valuemin={0} aria-valuemax={100} aria-valuenow={memPct}>
-                            <div className={`${s.barFill} ${s[barColor(memPct)]}`} style={{ width: `${memPct}%` }} />
-                        </div>
+                    <div className={s.meter}>
+                        <dt>메모리</dt>
+                        <dd>
+                            <p className={s.value}>{memPct}<span>%</span></p>
+                            <div className={s.bar} role="progressbar" aria-label="메모리 사용률" aria-valuemin={0} aria-valuemax={100} aria-valuenow={memPct}>
+                                <div className={`${s.barFill} ${s[barColor(memPct)]}`} style={{ width: `${memPct}%` }} />
+                            </div>
+                            <p className={s.sub}>{formatBytes(stats.memory.used_bytes)} / {formatBytes(stats.memory.total_bytes)}</p>
+                        </dd>
                     </div>
 
-                    {/* 디스크 */}
-                    <div className={`${s.card} ${s.cardFull}`}>
-                        <p className={s.cardLabel}>디스크 (/)</p>
-                        <div className={s.detailRow}>
-                            <span>{diskPct}% 사용 중</span>
-                            <span>{formatBytes(stats.disk.used_bytes)} / {formatBytes(stats.disk.total_bytes)}</span>
-                        </div>
-                        <div className={s.barWrap} role="progressbar" aria-valuemin={0} aria-valuemax={100} aria-valuenow={diskPct}>
-                            <div className={`${s.barFill} ${s[barColor(diskPct)]}`} style={{ width: `${diskPct}%` }} />
-                        </div>
+                    <div className={s.meter}>
+                        <dt>디스크 (/)</dt>
+                        <dd>
+                            <p className={s.value}>{diskPct}<span>%</span></p>
+                            <div className={s.bar} role="progressbar" aria-label="디스크 사용률" aria-valuemin={0} aria-valuemax={100} aria-valuenow={diskPct}>
+                                <div className={`${s.barFill} ${s[barColor(diskPct)]}`} style={{ width: `${diskPct}%` }} />
+                            </div>
+                            <p className={s.sub}>{formatBytes(stats.disk.used_bytes)} / {formatBytes(stats.disk.total_bytes)}</p>
+                        </dd>
                     </div>
-                </div>
+                </dl>
             )}
-        </section>
+
+            <section className={c.section} aria-labelledby="tools-title" style={{ marginTop: 48 }}>
+                <div>
+                    <h2 id="tools-title" className={c.sectionTitle}>운영 도구</h2>
+                    <p className={c.sectionNote}>접근이 제한되어 있어 로그인 화면까지만 열립니다.</p>
+                </div>
+                <ul className={s.tools}>
+                    <li>
+                        <a className="text-link" href="https://grafana.euntaek.cc" target="_blank" rel="noopener noreferrer">Grafana<span className="sr-only"> (새 창)</span></a>
+                        <span>node_exporter 지표 대시보드</span>
+                    </li>
+                    <li>
+                        <a className="text-link" href="https://jenkins.euntaek.cc/login?from=%2F" target="_blank" rel="noopener noreferrer">Jenkins<span className="sr-only"> (새 창)</span></a>
+                        <span>main 브랜치 병합 시 이미지 빌드와 재배포</span>
+                    </li>
+                </ul>
+            </section>
+        </div>
     );
 }

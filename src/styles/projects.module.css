@@ -1,220 +1,50 @@
-/* Projects page — light indigo theme */
-.section {
+/* 프로젝트 한 줄 목록 */
+.row + .row { border-top: 1px solid var(--line); }
+
+.rowLink {
   display: grid;
-  gap: 24px;
+  grid-template-columns: minmax(0, 1fr) 210px;
+  gap: 6px 28px;
+  align-items: center;
+  padding: 18px 22px;
+  transition: background 0.12s;
 }
+.rowLink:hover { background: var(--brand-tint); }
+.rowLink:focus-visible { outline-offset: -2px; border-radius: 10px; }
 
-.hero {
-  position: relative;
-  padding: 28px;
-  border: 1px solid var(--line);
-  border-radius: 20px;
-  background: white;
-  box-shadow: var(--shadow-md);
-  overflow: hidden;
-}
-
-.glow {
-  position: absolute;
-  inset: -40% -20% auto -20%;
-  height: 160px;
-  background: radial-gradient(60% 60% at 50% 50%, rgba(99,102,241,0.1), rgba(14,165,233,0.06) 50%, transparent 70%);
-  filter: blur(24px);
-  pointer-events: none;
-}
-
-.title {
-  font-size: 22px;
-  font-weight: 800;
-  margin: 0;
-  color: var(--text);
-}
-
-.subtitle {
-  margin: 8px 0 0 0;
-  color: var(--muted);
-  font-size: 14px;
-}
-
-.filters {
-  display: flex;
-  gap: 8px;
-  flex-wrap: wrap;
-  margin-top: 16px;
-}
-
-.chip {
-  color: var(--text);
-  font-size: 12px;
-  border: 1px solid var(--line);
-  padding: 6px 14px;
-  border-radius: 999px;
-  background: var(--bg);
-  font-weight: 500;
-  transition: all 0.2s ease;
-  cursor: pointer;
-}
-
-.chip:hover {
-  border-color: rgba(99,102,241,0.4);
-  color: var(--primary);
-}
-
-.chipActive {
-  border-color: rgba(99,102,241,0.5);
-  background: linear-gradient(90deg, rgba(99,102,241,0.1), rgba(14,165,233,0.07));
-  color: var(--primary);
+.rowName {
+  font-size: 17px;
   font-weight: 600;
+  line-height: 1.5;
+  letter-spacing: -0.01em;
 }
+.rowLink:hover .rowName { color: var(--brand-ink); }
 
-.grid {
-  display: grid;
-  gap: 14px;
-}
-
-.card {
-  border: 1px solid var(--line);
-  border-radius: 16px;
-  padding: 18px;
-  background: white;
-  box-shadow: var(--shadow-sm);
-  transition: box-shadow 0.2s ease, transform 0.2s ease;
-}
-
-.card:hover {
-  box-shadow: var(--shadow-md);
-}
-
-.header {
-  display: grid;
-  grid-template-columns: 64px 1fr;
-  gap: 12px;
-  align-items: center;
-}
-
-.thumb {
-  position: relative;
-  width: 64px;
-  height: 64px;
-  border-radius: 12px;
-  overflow: hidden;
-  border: 1px solid var(--line);
-  background: var(--bg);
-}
-
-.name {
-  font-size: 16px;
-  font-weight: 700;
-  margin: 0 0 4px 0;
-  color: var(--text);
-}
-
-.meta {
-  display: flex;
-  gap: 8px;
-  font-size: 12px;
+.rowSummary {
+  font-size: 14.5px;
   color: var(--muted);
 }
 
-.summary {
-  margin: 10px 0 8px 0;
-  color: var(--muted);
-  font-size: 14px;
-  line-height: 1.6;
-}
-
-/* ── 내 역할 강조 블록 ── */
-.myRole {
-  font-size: 13px;
-  padding: 8px 12px;
-  border-radius: 8px;
-  margin-bottom: 10px;
-  background: linear-gradient(135deg, rgba(99,102,241,0.07), rgba(139,92,246,0.04));
-  border-left: 3px solid #6366f1;
-  color: #374151;
+.rowMeta {
+  font-size: 13.5px;
   line-height: 1.65;
+  text-align: right;
 }
 
-.myRoleLabel {
-  display: block;
-  font-size: 10px;
-  font-weight: 700;
-  text-transform: uppercase;
-  letter-spacing: 0.08em;
-  color: #6366f1;
-  margin-bottom: 3px;
-}
-
-.description {
-  margin: 0 0 10px 0;
+.rowPeriod {
   color: var(--muted);
-  font-size: 13px;
-  line-height: 1.6;
+  font-variant-numeric: tabular-nums;
 }
 
-.tags {
-  display: flex;
-  gap: 6px;
-  flex-wrap: wrap;
-}
-
-.tag {
-  font-size: 12px;
-  border: 1px solid var(--line);
-  padding: 4px 8px;
-  border-radius: 8px;
-  background: var(--bg);
-  color: var(--muted);
-  font-weight: 500;
-}
-
-.actions {
-  margin-top: 12px;
-  display: flex;
-  gap: 8px;
-}
-
-.link {
-  display: inline-flex;
-  align-items: center;
-  gap: 6px;
-  font-size: 12px;
-  border: 1px solid var(--line);
-  padding: 8px 12px;
-  border-radius: 10px;
-  color: var(--text);
-  background: var(--bg);
-  transition: all 0.2s ease;
-  font-weight: 500;
-}
-
-.link:hover {
-  border-color: rgba(99,102,241,0.4);
-  color: var(--primary);
-  background: rgba(99,102,241,0.05);
-}
-
-@media (max-width: 768px) {
-  .section { gap: 16px; }
-  .hero { padding: 18px; }
-  .title { font-size: 20px; }
-  .filters { gap: 6px; }
-  .chip { padding: 5px 10px; font-size: 11px; }
-  .card { padding: 14px; }
-  .header { grid-template-columns: 48px 1fr; gap: 10px; }
-  .thumb { width: 48px; height: 48px; border-radius: 10px; }
-  .name { font-size: 15px; }
-  .tag { font-size: 11px; padding: 3px 6px; }
-  .myRole { font-size: 12px; }
-}
-
-/* ── 빈 목록 / 오류 상태 ── */
-.empty {
-  margin-top: 16px;
-  padding: 40px 24px;
-  text-align: center;
-  color: var(--muted);
-  background: var(--surface);
-  border: 1px dashed var(--line);
-  border-radius: 16px;
+@media (max-width: 640px) {
+  .rowLink {
+    grid-template-columns: minmax(0, 1fr);
+    padding: 16px 18px;
+  }
+  .rowMeta {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0 14px;
+    text-align: left;
+  }
 }
