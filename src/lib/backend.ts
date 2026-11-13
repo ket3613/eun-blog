@@ -1,12 +1,13 @@
 // Spring 백엔드(공개 API) 조회 함수 모음. 서버/클라이언트 양쪽에서 사용 가능.
-import { API_BASE } from "@/lib/config";
+// 서버에서는 내부 주소 + 메모리 캐시, 브라우저에서는 공개 주소로 매번 조회한다.
+import { API_BASE, apiBase } from "@/lib/config";
 import type { ApiResponse, Profile, Project, ServerStats, Troubleshooting } from "@/lib/dataType";
 
 /** 백엔드가 404 를 돌려준 경우. 페이지에서 notFound() 로 바꿔 쓴다. */
 export class NotFoundError extends Error {}
 
-async function getData<T>(path: string, init?: RequestInit): Promise<T> {
-    const res = await fetch(`${API_BASE}${path}`, {
+async function fetchData<T>(path: string, init?: RequestInit): Promise<T> {
+    const res = await fetch(`${apiBase()}${path}`, {
         cache: "no-store",
         headers: { accept: "application/json" },
         ...init,
@@ -16,6 +17,38 @@ async function getData<T>(path: string, init?: RequestInit): Promise<T> {
     const body = (await res.json()) as ApiResponse<T>;
     if (!body.success || body.data == null) throw new Error(`API ${path} 응답 오류`);
     return body.data;
+}
+
+// ----- 서버 메모리 캐시 -----
+// 포트폴리오 데이터는 자주 바뀌지 않으므로 서버에서 CACHE_TTL_MS 동안 재사용한다.
+// 만료된 뒤에는 기존 값을 바로 돌려주고 뒤에서 새로 받아온다(stale-while-revalidate).
+// 브라우저(서버 현황 30초 폴링 등)에서는 캐시하지 않는다.
+const CACHE_TTL_MS = 60_000;
+type CacheEntry = { data: unknown; fetchedAt: number; refreshing?: Promise<unknown> };
+const cache = new Map<string, CacheEntry>();
+
+/** 관리 화면에서 데이터를 바꾼 뒤 호출해 다음 조회부터 새 값을 받게 한다. */
+export function clearApiCache(): void {
+    cache.clear();
+}
+
+async function getData<T>(path: string): Promise<T> {
+    if (typeof window !== "undefined") return fetchData<T>(path);
+
+    const hit = cache.get(path);
+    if (hit) {
+        if (Date.now() - hit.fetchedAt > CACHE_TTL_MS && !hit.refreshing) {
+            hit.refreshing = fetchData<T>(path)
+                .then((data) => cache.set(path, { data, fetchedAt: Date.now() }))
+                .catch((e) => console.error(`[api-cache] ${path} 갱신 실패, 이전 값 유지:`, e))
+                .finally(() => { hit.refreshing = undefined; });
+        }
+        return hit.data as T;
+    }
+
+    const data = await fetchData<T>(path);
+    cache.set(path, { data, fetchedAt: Date.now() });
+    return data;
 }
 
 function normalizeProject(p: Project): Project {
