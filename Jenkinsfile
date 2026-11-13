@@ -6,7 +6,7 @@ pipeline {
     IMAGE       = 'eun-blog:latest'
 
     // 여기 추가
-    NEXT_PUBLIC_API_BASE_URL = 'https://api.euntaek.cc'
+    NEXT_PUBLIC_API_BASE_URL = 'https://api.taeklab.cc'
   }
   stages {
     stage('Checkout') {
