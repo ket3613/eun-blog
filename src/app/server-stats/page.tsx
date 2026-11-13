@@ -157,11 +157,11 @@ export default function ServerStatsPage() {
                 </div>
                 <ul className={s.tools}>
                     <li>
-                        <a className="text-link" href="https://grafana.euntaek.cc" target="_blank" rel="noopener noreferrer">Grafana<span className="sr-only"> (새 창)</span></a>
+                        <a className="text-link" href="https://grafana.taeklab.cc" target="_blank" rel="noopener noreferrer">Grafana<span className="sr-only"> (새 창)</span></a>
                         <span>node_exporter 지표 대시보드</span>
                     </li>
                     <li>
-                        <a className="text-link" href="https://jenkins.euntaek.cc/login?from=%2F" target="_blank" rel="noopener noreferrer">Jenkins<span className="sr-only"> (새 창)</span></a>
+                        <a className="text-link" href="https://jenkins.taeklab.cc/login?from=%2F" target="_blank" rel="noopener noreferrer">Jenkins<span className="sr-only"> (새 창)</span></a>
                         <span>main 브랜치 병합 시 이미지 빌드와 재배포</span>
                     </li>
                 </ul>
