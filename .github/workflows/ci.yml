@@ -25,4 +25,4 @@ jobs:
       - run: npx tsc --noEmit
       - run: npm run build
         env:
-          NEXT_PUBLIC_API_BASE_URL: https://api.euntaek.cc
+          NEXT_PUBLIC_API_BASE_URL: https://api.taeklab.cc
