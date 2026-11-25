@@ -6,7 +6,13 @@ export type Skill = {
     level?: string | null;
     usedIn?: string | null;
     categoryName?: string;
+    /** 기술 지도 칸. 없으면 기술 지도에 표시하지 않는다 */
+    lane?: Lane | null;
+    /** 칸 안의 묶음 (DB, 인증·연동, CI/CD 등) */
+    laneGroup?: string | null;
 };
+
+export type Lane = "FRONT" | "BACKEND" | "LOG" | "INFRA";
 
 export type Experience = {
     role: string;

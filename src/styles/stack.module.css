@@ -1,0 +1,340 @@
+/* 기술 지도: 칸(Front / Backend / 인프라 / Log)과 칸 사이를 흐르는 선 */
+
+.legend {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px 24px;
+  margin-bottom: 20px;
+  font-size: 13.5px;
+  color: var(--muted);
+}
+.legend li {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+}
+.legendRequest,
+.legendLog {
+  display: inline-block;
+  width: 28px;
+  height: 2px;
+}
+.legendRequest { background: var(--brand); }
+.legendLog {
+  background: repeating-linear-gradient(90deg, var(--muted) 0 4px, transparent 4px 8px);
+}
+.legendSide {
+  display: inline-block;
+  width: 16px;
+  height: 12px;
+  border: 1px dashed var(--line-strong);
+  border-radius: 3px;
+}
+
+/* ── 배치 ──
+   Front → Backend → 인프라 를 한 줄로, Log 는 그 아래 전체 폭.
+   칸 사이 열(c1, c2)과 Log 위 행(l1~l3)에 선을 둔다. */
+.map {
+  --gap: 76px;
+  display: grid;
+  grid-template-columns: minmax(0, 0.85fr) var(--gap) minmax(0, 1.3fr) var(--gap) minmax(0, 1fr);
+  grid-template-rows: auto 64px auto;
+  grid-template-areas:
+    "front  c1 backend c2 infra"
+    "l1     .  l2      .  l3"
+    "log    log log    log log";
+}
+
+.front   { grid-area: front; }
+.backend { grid-area: backend; }
+.infra   { grid-area: infra; }
+.log     { grid-area: log; }
+.c1 { grid-area: c1; }
+.c2 { grid-area: c2; }
+.l1 { grid-area: l1; }
+.l2 { grid-area: l2; }
+.l3 { grid-area: l3; }
+
+/* ── 칸 ── */
+.lane {
+  padding: 16px 16px 18px;
+  border: 1px solid var(--line-strong);
+  border-radius: 12px;
+  background: var(--surface);
+}
+
+.laneHead {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: baseline;
+  gap: 0 10px;
+  padding-bottom: 12px;
+  margin-bottom: 14px;
+  border-bottom: 1px solid var(--line);
+}
+.laneTitle {
+  font-size: 18px;
+  font-weight: 700;
+  letter-spacing: -0.01em;
+}
+.laneDesc {
+  font-size: 13px;
+  color: var(--muted);
+}
+
+.group + .group {
+  margin-top: 14px;
+  padding-top: 12px;
+  border-top: 1px dashed var(--line);
+}
+.groupTitle {
+  margin-bottom: 8px;
+  font-size: 13px;
+  font-weight: 600;
+  color: var(--muted);
+}
+
+.chips {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+}
+
+/* Log 칸은 넓으니 한 줄로 */
+.log .group { display: flex; flex-wrap: wrap; align-items: center; gap: 8px 16px; }
+.log .group + .group { margin-top: 0; padding-top: 0; border-top: 0; }
+
+/* ── 기술 칩 ── */
+.chip {
+  display: inline-flex;
+  align-items: center;
+  gap: 7px;
+  padding: 5px 10px 5px 6px;
+  border: 1px solid var(--line);
+  border-radius: 8px;
+  background: var(--surface);
+  font-size: 14px;
+  line-height: 1.4;
+  text-align: left;
+  cursor: pointer;
+  transition: border-color 0.12s, background 0.12s, opacity 0.15s;
+}
+.chip:hover { border-color: var(--brand); }
+
+.chipSide {
+  border-style: dashed;
+  border-color: var(--line-strong);
+}
+
+.chipActive,
+.chipActive:hover {
+  border-color: var(--brand);
+  border-style: solid;
+  background: var(--brand-tint);
+  color: var(--brand-ink);
+  font-weight: 600;
+}
+
+/* 하나를 고르면 나머지는 흐리게 */
+.hasSelection .chip:not(.chipActive) { opacity: 0.45; }
+.hasSelection .chip:not(.chipActive):hover { opacity: 1; }
+
+.logo {
+  display: inline-grid;
+  place-items: center;
+  width: 24px;
+  height: 24px;
+  flex: none;
+}
+.logo img {
+  width: 20px;
+  height: 20px;
+  object-fit: contain;
+}
+
+.mono {
+  display: inline-grid;
+  place-items: center;
+  min-width: 22px;
+  height: 22px;
+  padding: 0 3px;
+  white-space: nowrap;
+  border-radius: 5px;
+  background: var(--bg);
+  border: 1px solid var(--line);
+  font-family: var(--font-code);
+  font-size: 9.5px;
+  font-weight: 500;
+  letter-spacing: -0.02em;
+  color: var(--muted);
+}
+
+/* ── 흐르는 선 ── */
+.connector {
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.wire {
+  position: absolute;
+  left: 6px;
+  right: 10px;
+  top: var(--wire-y, 31px);
+  height: 2px;
+  background:
+    repeating-linear-gradient(90deg, var(--brand) 0 6px, transparent 6px 14px) 0 0 / 14px 2px,
+    color-mix(in srgb, var(--brand) 22%, transparent);
+}
+/* 화살촉 */
+.wire::after {
+  content: "";
+  position: absolute;
+  right: -8px;
+  top: 50%;
+  transform: translateY(-50%);
+  border: 5px solid transparent;
+  border-left: 8px solid var(--brand);
+  border-right: 0;
+}
+
+.wireLabel {
+  position: absolute;
+  top: calc(var(--wire-y, 31px) + 10px);
+  font-size: 12px;
+  color: var(--muted);
+  white-space: nowrap;
+}
+
+/* 로그 선: 칸에서 아래 Log 칸으로, 점선 */
+.connectorLog .wire {
+  left: 50%;
+  right: auto;
+  top: 4px;
+  bottom: 12px;
+  width: 2px;
+  height: auto;
+  transform: translateX(-50%);
+  background: repeating-linear-gradient(180deg, var(--muted) 0 4px, transparent 4px 9px) 0 0 / 2px 9px;
+}
+.connectorLog .wire::after {
+  right: auto;
+  top: auto;
+  left: 50%;
+  bottom: -8px;
+  transform: translateX(-50%);
+  border: 5px solid transparent;
+  border-top: 8px solid var(--muted);
+  border-bottom: 0;
+}
+.connectorLog .wireLabel {
+  bottom: auto;
+  left: calc(50% + 10px);
+  top: 50%;
+  transform: translateY(-50%);
+}
+
+@media (prefers-reduced-motion: no-preference) {
+  .wire { animation: flowX 0.9s linear infinite; }
+  .connectorLog .wire { animation: flowY 1.6s linear infinite; }
+  @keyframes flowX { to { background-position: 14px 0, 0 0; } }
+  @keyframes flowY { to { background-position: 0 9px; } }
+}
+
+/* ── 선택한 기술의 프로젝트 ── */
+.detail {
+  margin-top: 28px;
+  padding: 20px 22px;
+  border: 1px solid var(--line);
+  border-radius: 12px;
+  background: var(--surface);
+  min-height: 96px;
+}
+.detailHint { color: var(--muted); }
+.detailTitle {
+  font-size: 18px;
+  font-weight: 700;
+  letter-spacing: -0.01em;
+}
+.detailMeta {
+  margin-top: 2px;
+  font-size: 14px;
+  color: var(--muted);
+}
+
+.used {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+  gap: 8px;
+  margin-top: 14px;
+}
+.usedLink {
+  display: grid;
+  height: 100%;
+  padding: 10px 14px;
+  border: 1px solid var(--line);
+  border-radius: 8px;
+}
+a.usedLink:hover { border-color: var(--brand); background: var(--brand-tint); }
+.usedName { font-weight: 600; }
+a.usedLink:hover .usedName { color: var(--brand-ink); }
+.usedSummary { font-size: 13.5px; color: var(--muted); }
+.usedPeriod {
+  margin-top: 2px;
+  font-size: 12.5px;
+  color: var(--muted);
+  font-variant-numeric: tabular-nums;
+}
+
+/* ── 좁은 화면: 칸을 세로로 쌓고 선도 세로로 ── */
+@media (max-width: 900px) {
+  .map {
+    grid-template-columns: minmax(0, 1fr);
+    grid-template-rows: none;
+    grid-template-areas:
+      "front"
+      "c1"
+      "backend"
+      "c2"
+      "infra"
+      "l3"
+      "log";
+  }
+  .c1, .c2, .l3 { height: 56px; }
+  .l1, .l2 { display: none; }
+
+  .connector:not(.connectorLog) .wire {
+    left: 50%;
+    right: auto;
+    top: 4px;
+    bottom: 12px;
+    width: 2px;
+    height: auto;
+    transform: translateX(-50%);
+    background:
+      repeating-linear-gradient(180deg, var(--brand) 0 6px, transparent 6px 14px) 0 0 / 2px 14px,
+      color-mix(in srgb, var(--brand) 22%, transparent);
+  }
+  .connector:not(.connectorLog) .wire::after {
+    right: auto;
+    top: auto;
+    left: 50%;
+    bottom: -8px;
+    transform: translateX(-50%);
+    border: 5px solid transparent;
+    border-top: 8px solid var(--brand);
+    border-bottom: 0;
+  }
+  .connector .wireLabel {
+    bottom: auto;
+    left: calc(50% + 12px);
+    right: auto;
+    top: 50%;
+    transform: translateY(-50%);
+  }
+  @media (prefers-reduced-motion: no-preference) {
+    .connector:not(.connectorLog) .wire { animation-name: flowYReq; }
+    @keyframes flowYReq { to { background-position: 0 14px, 0 0; } }
+  }
+}

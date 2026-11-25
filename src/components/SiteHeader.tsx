@@ -7,6 +7,7 @@ import s from "@/styles/site.module.css";
 
 const items = [
     { href: "/profile", label: "프로필" },
+    { href: "/stack", label: "기술 지도" },
     { href: "/projects", label: "프로젝트" },
     { href: "/troubleshooting", label: "트러블슈팅" },
     { href: "/server-stats", label: "서버 현황" },

@@ -14,6 +14,7 @@
 | 메뉴 | 경로 | 설명 |
 | --- | --- | --- |
 | 프로필 | `/profile` | 한 줄 소개, 운영 중에 올린 버전 기록(이전 → 이후), 누적 수치, 핵심 역량, 주요 프로젝트, 경력(근무 기간 자동 계산), 기술 스택, 자격·수상·학력 |
+| 기술 지도 | `/stack` | 써 본 언어·라이브러리를 Front → Backend → 인프라, Log 칸에 공식 로고와 함께 배치하고 흐르는 선으로 연결. 기술을 누르면 사용한 프로젝트 표시 |
 | 프로젝트 | `/projects` | 회사별·개인 프로젝트를 한 줄씩 나열. 항목을 누르면 상세로 이동 |
 | 프로젝트 상세 | `/projects/{id}` | 개요, 수치, 기술, 한 일(배경 → 해결 → 판단 → 결과), 관련 트러블슈팅, 첨부 PDF |
 | 트러블슈팅 | `/troubleshooting` | 증상 → 원인 → 조치 → 배운 점 순서의 문제 해결 기록 |
@@ -75,6 +76,7 @@ src/
 │   ├── profile/page.tsx            # 프로필
 │   ├── projects/page.tsx           # 프로젝트 목록
 │   ├── projects/[id]/page.tsx      # 프로젝트 상세
+│   ├── stack/page.tsx              # 기술 지도
 │   ├── troubleshooting/page.tsx    # 트러블슈팅
 │   ├── server-stats/page.tsx       # 서버 현황 (30초 폴링 클라이언트 컴포넌트)
 │   ├── manage/page.tsx             # 프로젝트 관리 (로그인 필요)
@@ -88,6 +90,7 @@ src/
 │   ├── SiteHeader.tsx              # 상단 메뉴, 로그인/로그아웃
 │   ├── SiteFooter.tsx              # 하단 영역
 │   ├── ProjectRows.tsx             # 프로젝트 한 줄 목록 (프로필·프로젝트 공용)
+│   ├── StackMap.tsx                # 기술 지도 칸·선·선택 (클라이언트 컴포넌트)
 │   ├── TroubleList.tsx             # 트러블슈팅 목록 (트러블슈팅·프로젝트 상세 공용)
 │   ├── LoginModal.tsx / LoginForm.tsx
 │   ├── ManageProjects.tsx          # 프로젝트 관리 폼·목록
@@ -104,6 +107,8 @@ src/
 ```
 
 ---
+
+기술 지도의 로고는 `public/stack/*.svg` 입니다. 대부분 [Simple Icons](https://simpleicons.org)(CC0)에서 가져와 브랜드 색을 입혔고, 각 로고의 상표권은 해당 회사에 있습니다. 어떤 로고를 쓸지는 DB `user_skills.image_path` 에서 정합니다.
 
 ## 사용하는 백엔드 API
 
