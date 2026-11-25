@@ -183,6 +183,9 @@ export default async function ProfilePage() {
                         <p className={c.sectionNote}>
                             <span className={s.sideMark}>점선</span>은 개인 프로젝트에서만 쓴 기술입니다.
                         </p>
+                        <p className={c.sectionNote}>
+                            <Link className="text-link" href="/stack">기술 지도에서 흐름으로 보기</Link>
+                        </p>
                     </div>
                     <dl className={s.skills}>
                         {groupSkills(profile.skills).map((g) => (

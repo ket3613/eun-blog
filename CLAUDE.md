@@ -10,8 +10,8 @@
 - `npm audit --omit=dev --audit-level=high` — CI 에서도 실행됨
 
 ## 구조
-- `src/app/` — 페이지(App Router). `profile`, `projects`, `projects/[id]`, `troubleshooting` 은 서버 컴포넌트, `server-stats` 는 30초 폴링 클라이언트 컴포넌트
-- `src/components/` — `SiteHeader`(상단 메뉴), `ProjectRows`, `TroubleList` 등 공용 컴포넌트
+- `src/app/` — 페이지(App Router). `profile`, `projects`, `projects/[id]`, `troubleshooting`, `stack` 은 서버 컴포넌트, `server-stats` 는 30초 폴링 클라이언트 컴포넌트
+- `src/components/` — `SiteHeader`(상단 메뉴), `ProjectRows`, `TroubleList`, `StackMap`(기술 지도) 등 공용 컴포넌트
 - `src/app/api/` — Route Handler. 관리 API(`/api/manage/**`)는 세션 확인 후 백엔드로 프록시
 - `src/lib/backend.ts` — 백엔드 공개 API 조회 함수 (fetch 는 여기로 모은다)
 - `src/lib/server/` — 서버 전용: rate limit, 입력 검증, 백엔드 프록시 헬퍼
