@@ -38,7 +38,7 @@ export default async function StackPage() {
     }
     const projectIndex: Record<string, StackProject> = {};
     for (const p of projects) {
-        projectIndex[p.name] = { id: p.id, name: p.name, period: p.period ?? null, summary: p.summary };
+        projectIndex[p.name] = { id: p.id, name: p.name, kind: p.kind, period: p.period ?? null, summary: p.summary };
     }
 
     return (

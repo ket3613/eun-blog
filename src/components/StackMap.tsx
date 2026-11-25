@@ -7,7 +7,7 @@ import type { Lane, Project, Skill } from "@/lib/dataType";
 import { csv } from "@/lib/format";
 import s from "@/styles/stack.module.css";
 
-export type StackProject = Pick<Project, "id" | "name" | "summary"> & { period: string | null };
+export type StackProject = Pick<Project, "id" | "name" | "summary" | "kind"> & { period: string | null };
 
 const LANES: { key: Lane; title: string; desc: string; area: string }[] = [
     { key: "FRONT", title: "Front", desc: "사용자가 보는 화면", area: s.front },
@@ -85,6 +85,17 @@ export default function StackMap({ skills, projectIndex }: { skills: Skill[]; pr
 
     const usedIn = current ? csv(current.usedIn) : [];
 
+    /** 사용한 프로젝트의 종류(회사/개인)로 문구를 정한다. 프로젝트를 못 찾으면 숙련도 값을 쓴다 */
+    function usageLabel(sk: Skill): string {
+        const kinds = new Set(usedIn.map((name) => projectIndex[name]?.kind).filter(Boolean));
+        if (kinds.has("WORK") && kinds.has("PERSONAL")) return "회사·개인 프로젝트에서 사용";
+        if (kinds.has("WORK")) return "회사 프로젝트에서 사용";
+        if (kinds.has("PERSONAL")) return "개인 프로젝트에서 사용";
+        if (sk.level === "사이드") return "개인 프로젝트에서 사용";
+        if (sk.level === "실무") return "회사 프로젝트에서 사용";
+        return "사용 경험";
+    }
+
     return (
         <div>
             <ul className={s.legend} aria-label="범례">
@@ -126,7 +137,7 @@ export default function StackMap({ skills, projectIndex }: { skills: Skill[]; pr
                     <>
                         <h2 className={s.detailTitle}>{current.skillName}</h2>
                         <p className={s.detailMeta}>
-                            {current.level === "사이드" ? "개인 프로젝트에서 사용" : current.level === "실무" ? "회사 프로젝트에서 사용" : "사용 경험"}
+                            {usageLabel(current)}
                             {usedIn.length > 0 && `, 프로젝트 ${usedIn.length}개`}
                         </p>
                         {usedIn.length > 0 ? (
