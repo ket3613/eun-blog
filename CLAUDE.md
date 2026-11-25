@@ -1,7 +1,7 @@
 # eun-blog
 
 개인 포트폴리오 사이트. Next.js 15 (App Router) + React 19 + TypeScript, CSS Modules.
-데이터는 별도 Spring 백엔드(`ket3613/eun-api-server`, `https://api.euntaek.cc`)에서 가져온다.
+데이터는 별도 Spring 백엔드(`ket3613/eun-api-server`, `https://api.taeklab.cc`)에서 가져온다.
 
 ## 명령어
 - `npm run dev` — 개발 서버

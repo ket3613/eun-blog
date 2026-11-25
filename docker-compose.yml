@@ -4,7 +4,7 @@ services:
       context: .
       dockerfile: Dockerfile
       args:
-        NEXT_PUBLIC_API_BASE_URL: "https://api.euntaek.cc"
+        NEXT_PUBLIC_API_BASE_URL: "https://api.taeklab.cc"
     image: eun-blog:latest
     container_name: eun-blog
     ports:

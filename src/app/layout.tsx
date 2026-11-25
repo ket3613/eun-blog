@@ -20,7 +20,7 @@ const plexMono = IBM_Plex_Mono({
     variable: "--font-plex-mono",
 });
 
-const SITE_URL = process.env.NEXT_PUBLIC_SITE_URL ?? "https://euntaek.cc";
+const SITE_URL = process.env.NEXT_PUBLIC_SITE_URL ?? "https://blog.taeklab.cc";
 const DESCRIPTION = "레거시 시스템을 멈추지 않고 안전하게 바꾸는 백엔드 개발자 강은택의 경력, 프로젝트, 트러블슈팅 기록";
 
 export const metadata: Metadata = {

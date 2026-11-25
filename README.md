@@ -4,8 +4,8 @@
 프로필·기술 스택·경력, 프로젝트 목록, 홈 서버(Raspberry Pi) 실시간 상태를 보여주고,
 관리자 로그인 후 프로젝트를 등록·수정·삭제하고 PDF를 첨부할 수 있습니다.
 
-- 서비스 주소: <https://euntaek.cc>
-- 백엔드 API: <https://api.euntaek.cc> (별도 Spring Boot 서버)
+- 서비스 주소: <https://blog.taeklab.cc>
+- 백엔드 API: <https://api.taeklab.cc> (별도 Spring Boot 서버)
 
 ---
 
@@ -42,7 +42,7 @@
 브라우저
   │
   ├─ 공개 데이터 조회 (프로필, 프로젝트, 서버 현황, PDF 다운로드)
-  │      └──────────────▶  Spring Boot API (api.euntaek.cc)
+  │      └──────────────▶  Spring Boot API (api.taeklab.cc)
   │
   └─ 로그인 / 관리 기능
          └─▶ Next.js API Route (/api/*)
@@ -132,7 +132,7 @@ src/
 
 | 이름 | 적용 시점 | 설명 |
 | --- | --- | --- |
-| `NEXT_PUBLIC_API_BASE_URL` | **빌드 시** (클라이언트 번들에 포함) | 백엔드 API 주소. 기본값 `https://api.euntaek.cc` |
+| `NEXT_PUBLIC_API_BASE_URL` | **빌드 시** (클라이언트 번들에 포함) | 백엔드 API 주소. 기본값 `https://api.taeklab.cc` |
 | `AUTH_SECRET` | 실행 시 | JWT 서명 키. 없으면 로그인·세션 확인이 실패합니다 |
 | `ADMIN_TOKEN` | 실행 시 | Next.js → Spring 관리자 요청용 토큰. 백엔드 설정과 같아야 합니다 |
 | `NEXT_OUTPUT` | 빌드 시 | `export` 로 주면 정적 export, 아니면 `standalone` 빌드 |
@@ -140,7 +140,7 @@ src/
 로컬 개발 시에는 프로젝트 루트에 `.env.local` 파일을 만들어 넣으면 됩니다 (`.env*` 파일은 git에서 제외됨).
 
 ```env
-NEXT_PUBLIC_API_BASE_URL=https://api.euntaek.cc
+NEXT_PUBLIC_API_BASE_URL=https://api.taeklab.cc
 AUTH_SECRET=임의의_긴_랜덤_문자열
 ADMIN_TOKEN=백엔드와_같은_토큰
 ```
@@ -182,7 +182,7 @@ npm run lint    # ESLint 검사
 3. **runner**: `.next/standalone`, `.next/static`, `public` 만 복사해 `node server.js` 실행 (포트 **8082**)
 
 ```bash
-docker build --build-arg NEXT_PUBLIC_API_BASE_URL=https://api.euntaek.cc -t eun-blog:latest .
+docker build --build-arg NEXT_PUBLIC_API_BASE_URL=https://api.taeklab.cc -t eun-blog:latest .
 ```
 
 ### Docker Compose

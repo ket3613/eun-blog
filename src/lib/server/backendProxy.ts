@@ -1,5 +1,6 @@
 import { NextResponse } from "next/server";
-import { API_BASE } from "@/lib/config";
+import { apiBase } from "@/lib/config";
+import { clearApiCache } from "@/lib/backend";
 import { getAdminToken, requireAuth } from "@/lib/adminAuth";
 
 export const unauthorized = () =>
@@ -25,7 +26,7 @@ export async function forwardToBackend(
 
     let res: Response;
     try {
-        res = await fetch(`${API_BASE}${path}`, { method: init.method, headers, body, cache: "no-store" });
+        res = await fetch(`${apiBase()}${path}`, { method: init.method, headers, body, cache: "no-store" });
     } catch (e) {
         console.error(`[proxy] ${init.method} ${path} failed:`, e);
         return NextResponse.json({ success: false, error: "backend unreachable" }, { status: 502 });
@@ -35,6 +36,8 @@ export async function forwardToBackend(
     if (data === null) {
         return NextResponse.json({ success: false, error: "invalid backend response" }, { status: 502 });
     }
+    // 데이터가 바뀌었으면 조회 캐시를 비워 바로 반영되게 한다
+    if (res.ok && init.method !== "GET") clearApiCache();
     return NextResponse.json(data, { status: res.status });
 }
 

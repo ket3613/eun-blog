@@ -31,7 +31,7 @@ ENV NEXT_TELEMETRY_DISABLED=1
 # ----- 환경변수 주입 -----
 # 클라이언트 번들에서 사용할 공개 변수(NEXT_PUBLIC_*)는 "빌드 시점"에 고정됩니다.
 # CI나 docker build 시 아래 ARG로 값을 전달하세요.
-#   docker build --build-arg NEXT_PUBLIC_API_BASE_URL=https://api.euntaek.cc -t eun-blog:latest .
+#   docker build --build-arg NEXT_PUBLIC_API_BASE_URL=https://api.taeklab.cc -t eun-blog:latest .
 ARG NEXT_PUBLIC_API_BASE_URL
 ENV NEXT_PUBLIC_API_BASE_URL=$NEXT_PUBLIC_API_BASE_URL
 
